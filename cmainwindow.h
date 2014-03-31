@@ -32,6 +32,7 @@
 // Projekt-Header
 #include "cdatabasemanager.h"
 #include "crosterwindow.h"
+#include "cpersonaledit.h"
 
 namespace Ui {
 class CMainWindow;
@@ -47,20 +48,22 @@ public:
 
 private slots:
     void on_actionProgramm_be_enden_triggered();
-
     void on_actionBe_arbeiten_triggered();
-
     void on_cmdEditRoster_clicked();
+
+    void on_action_Personal_triggered();
 
 private:
     // Properties
     Ui::CMainWindow *ui;
     CDatabaseManager* m_dbman;
     CRosterWindow* m_Roster;
+    CPersonalEdit* m_PersEdit;
 
     // Funktionen
     void closeEvent(QCloseEvent* e);
     void openEditableRoster();
+    void openPersonalEdit();
 };
 
 #endif // CMAINWINDOW_H
