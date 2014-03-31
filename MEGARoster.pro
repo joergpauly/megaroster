@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     crosterwindow.cpp \
     cpersonal.cpp \
     cdutytype.cpp \
-    cduty.cpp
+    cduty.cpp \
+    cdatabasemanager.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
     cpersonal.h \
     cdutytype.h \
-    cduty.h
+    cduty.h \
+    cdatabasemanager.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui
