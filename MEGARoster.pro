@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        cmainwindow.cpp
+        cmainwindow.cpp \
+    crosterwindow.cpp
 
-HEADERS  += cmainwindow.h
+HEADERS  += cmainwindow.h \
+    crosterwindow.h
 
-FORMS    += cmainwindow.ui
+FORMS    += cmainwindow.ui \
+    crosterwindow.ui
