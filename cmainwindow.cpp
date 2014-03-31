@@ -28,6 +28,7 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
+    m_dbman = new CDatabaseManager(this);
 }
 
 CMainWindow::~CMainWindow()
