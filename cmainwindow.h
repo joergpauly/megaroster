@@ -27,6 +27,7 @@
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QMdiSubWindow>
 
 // Projekt-Header
 #include "crosterwindow.h"

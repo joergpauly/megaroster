@@ -24,6 +24,7 @@
 #define CROSTERWINDOW_H
 
 #include <QWidget>
+#include <QMdiSubWindow>
 
 namespace Ui {
 class CRosterWindow;
@@ -37,12 +38,18 @@ public:
     explicit CRosterWindow(QWidget *parent = 0);
     explicit CRosterWindow(QWidget *parent, int pMonth, int pYear);
     ~CRosterWindow();
+    void setSubWnd(QWidget* pSubWnd);
 
 private:
     // Properties
     Ui::CRosterWindow *ui;
+    QWidget* m_subWnd;
     int m_Month;
     int m_Year;
+
+    // Funktionen
+    void closeEvent(QCloseEvent* e);
+
 };
 
 #endif // CROSTERWINDOW_H
