@@ -25,6 +25,8 @@
 
 #include <QObject>
 #include <QtSql/QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 
 class CDatabaseManager : public QObject
@@ -34,7 +36,7 @@ public:
     explicit CDatabaseManager(QObject *parent = 0);
 
 private:
-    QWidget* m_parent;
+    QObject* m_parent;
     QSqlDatabase m_db;
 
 signals:

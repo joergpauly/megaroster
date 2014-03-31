@@ -20,47 +20,25 @@
 *
 *****************************************************************************************/
 
-#ifndef CMAINWINDOW_H
-#define CMAINWINDOW_H
+#ifndef CPERSONALEDIT_H
+#define CPERSONALEDIT_H
 
-// System-Header
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QMessageBox>
-#include <QMdiSubWindow>
-
-// Projekt-Header
-#include "cdatabasemanager.h"
-#include "crosterwindow.h"
+#include <QDialog>
 
 namespace Ui {
-class CMainWindow;
+class CPersonalEdit;
 }
 
-class CMainWindow : public QMainWindow
+class CPersonalEdit : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CMainWindow(QWidget *parent = 0);
-    ~CMainWindow();
-
-private slots:
-    void on_actionProgramm_be_enden_triggered();
-
-    void on_actionBe_arbeiten_triggered();
-
-    void on_cmdEditRoster_clicked();
+    explicit CPersonalEdit(QWidget *parent = 0);
+    ~CPersonalEdit();
 
 private:
-    // Properties
-    Ui::CMainWindow *ui;
-    CDatabaseManager* m_dbman;
-    CRosterWindow* m_Roster;
-
-    // Funktionen
-    void closeEvent(QCloseEvent* e);
-    void openEditableRoster();
+    Ui::CPersonalEdit *ui;
 };
 
-#endif // CMAINWINDOW_H
+#endif // CPERSONALEDIT_H
