@@ -48,7 +48,7 @@ private:
     int m_Year;
 
     // Funktionen
-    void closeEvent(QCloseEvent* e);
+
 
 };
 
