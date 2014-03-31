@@ -34,3 +34,36 @@ CMainWindow::~CMainWindow()
 {
     delete ui;
 }
+
+void CMainWindow::on_actionProgramm_be_enden_triggered()
+{
+    this->close();
+}
+
+void CMainWindow::closeEvent(QCloseEvent *e)
+{
+    QMessageBox lQuitDlg;
+    lQuitDlg.setWindowTitle("Programmende");
+    lQuitDlg.setText("Möchten Sie MEGARoster beenden?");
+    lQuitDlg.setInformativeText("Die Daten werden gespeichert und das Programm wird beendet.");
+    lQuitDlg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    lQuitDlg.setDefaultButton(QMessageBox::No);
+    lQuitDlg.setButtonText(QMessageBox::Yes,"Be&enden");
+    lQuitDlg.setButtonText(QMessageBox::No, "&Nicht beenden");
+    lQuitDlg.setIcon(QMessageBox::Question);
+    if(lQuitDlg.exec() == QMessageBox::Yes)
+    {
+        e->accept();
+    }
+    else
+    {
+        e->ignore();
+    }
+}
+
+
+void CMainWindow::on_actionBe_arbeiten_triggered()
+{
+    m_Roster = new CRosterWindow(this);
+    m_Roster->showNormal();
+}

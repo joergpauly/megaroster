@@ -28,6 +28,16 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     ui(new Ui::CRosterWindow)
 {
     ui->setupUi(this);
+    ui->dtedMonthChoice->setDate(QDate::currentDate());
+}
+
+CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
+    QWidget(parent),
+    ui(new Ui::CRosterWindow)
+{
+    m_Month = pMonth;
+    m_Year = pYear;
+    ui->setupUi(this);
 }
 
 CRosterWindow::~CRosterWindow()

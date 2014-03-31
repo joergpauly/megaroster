@@ -35,10 +35,14 @@ class CRosterWindow : public QWidget
 
 public:
     explicit CRosterWindow(QWidget *parent = 0);
+    explicit CRosterWindow(QWidget *parent, int pMonth, int pYear);
     ~CRosterWindow();
 
 private:
+    // Properties
     Ui::CRosterWindow *ui;
+    int m_Month;
+    int m_Year;
 };
 
 #endif // CROSTERWINDOW_H

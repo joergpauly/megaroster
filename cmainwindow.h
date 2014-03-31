@@ -23,7 +23,13 @@
 #ifndef CMAINWINDOW_H
 #define CMAINWINDOW_H
 
+// System-Header
 #include <QMainWindow>
+#include <QCloseEvent>
+#include <QMessageBox>
+
+// Projekt-Header
+#include "crosterwindow.h"
 
 namespace Ui {
 class CMainWindow;
@@ -37,8 +43,18 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
 
+private slots:
+    void on_actionProgramm_be_enden_triggered();
+
+    void on_actionBe_arbeiten_triggered();
+
 private:
+    // Properties
     Ui::CMainWindow *ui;
+    CRosterWindow* m_Roster;
+
+    // Funktionen
+    void closeEvent(QCloseEvent* e);
 };
 
 #endif // CMAINWINDOW_H
