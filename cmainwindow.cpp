@@ -69,6 +69,12 @@ void CMainWindow::openEditableRoster()
     m_Roster->show();
 }
 
+void CMainWindow::openPersonalEdit()
+{
+    m_PersEdit = new CPersonalEdit(this);
+    m_PersEdit->show();
+}
+
 
 void CMainWindow::on_actionBe_arbeiten_triggered()
 {    
@@ -78,4 +84,9 @@ void CMainWindow::on_actionBe_arbeiten_triggered()
 void CMainWindow::on_cmdEditRoster_clicked()
 {
     openEditableRoster();
+}
+
+void CMainWindow::on_action_Personal_triggered()
+{
+    openPersonalEdit();
 }

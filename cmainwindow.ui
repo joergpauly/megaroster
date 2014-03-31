@@ -123,8 +123,8 @@ bearbeiten</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>126</width>
-         <height>362</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="label">
@@ -180,7 +180,15 @@ bearbeiten</string>
     <addaction name="separator"/>
     <addaction name="actionProgramm_be_enden"/>
    </widget>
+   <widget class="QMenu" name="menu_Basis_Daten">
+    <property name="title">
+     <string>&amp;Basis-Daten</string>
+    </property>
+    <addaction name="action_Personal"/>
+    <addaction name="action_Dienst_Arten"/>
+   </widget>
    <addaction name="menu_Dienstplan"/>
+   <addaction name="menu_Basis_Daten"/>
   </widget>
   <action name="actionBe_arbeiten">
    <property name="text">
@@ -190,6 +198,16 @@ bearbeiten</string>
   <action name="actionProgramm_be_enden">
    <property name="text">
     <string>Programm be&amp;enden...</string>
+   </property>
+  </action>
+  <action name="action_Personal">
+   <property name="text">
+    <string>&amp;Personal...</string>
+   </property>
+  </action>
+  <action name="action_Dienst_Arten">
+   <property name="text">
+    <string>&amp;Dienst-Arten...</string>
    </property>
   </action>
  </widget>
