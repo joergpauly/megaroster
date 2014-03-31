@@ -50,7 +50,4 @@ void CRosterWindow::setSubWnd(QWidget *pSubWnd)
     m_subWnd = pSubWnd;
 }
 
-void CRosterWindow::closeEvent(QCloseEvent *e)
-{
-    (QMdiSubWindow*) m_subWnd->close();
-}
+

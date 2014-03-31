@@ -63,9 +63,8 @@ void CMainWindow::closeEvent(QCloseEvent *e)
 
 
 void CMainWindow::on_actionBe_arbeiten_triggered()
-{
-    QMdiSubWindow* lRoster = new QMdiSubWindow();
-    m_Roster = new CRosterWindow(this);
-    m_Roster->setSubWnd(ui->mdiArea->addSubWindow(lRoster));
+{    
+    m_Roster = new CRosterWindow();
+    m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
     m_Roster->show();
 }
