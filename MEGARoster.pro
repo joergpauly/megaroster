@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         cmainwindow.cpp \
     crosterwindow.cpp \
     cpersonal.cpp \
-    cdutytype.cpp
+    cdutytype.cpp \
+    cduty.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
     cpersonal.h \
-    cdutytype.h
+    cdutytype.h \
+    cduty.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui
