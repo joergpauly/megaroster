@@ -20,41 +20,72 @@
 *
 *****************************************************************************************/
 
-#ifndef CROSTERWINDOW_H
-#define CROSTERWINDOW_H
+#include "cpersonal.h"
 
-#include <QWidget>
-#include <QMdiSubWindow>
-
-namespace Ui {
-class CRosterWindow;
+CPersonal::CPersonal()
+{
 }
 
-class CRosterWindow : public QWidget
+CPersonal::CPersonal(QString pName, QString pVName, QString pPersNo, QDate pGebDat, int pSollTag)
 {
-    Q_OBJECT
+    m_Name = pName;
+    m_VName = pVName;
+    m_PersNo = pPersNo;
+    m_GebDat = pGebDat;
+    m_SollTag = pSollTag;
+}
 
-public:
-    explicit CRosterWindow(QWidget *parent = 0);
-    explicit CRosterWindow(QWidget *parent, int pMonth, int pYear);
-    ~CRosterWindow();
-    void setSubWnd(QWidget* pSubWnd);
+QString CPersonal::Name() const
+{
+    return m_Name;
+}
 
-private slots:
-    void on_dtedMonthChoice_dateChanged(const QDate &date);
+void CPersonal::setName(const QString &Name)
+{
+    m_Name = Name;
+}
 
-private:
-    // Properties
-    Ui::CRosterWindow *ui;
-    QWidget* m_subWnd;
-    QString m_Prefix;
-    int m_Month;
-    int m_Year;
+QString CPersonal::VName() const
+{
+    return m_VName;
+}
 
-    // Funktionen
-    void setTabTitle(QString pPrefix, QDate pDate);
+void CPersonal::setVName(const QString &VName)
+{
+    m_VName = VName;
+}
+
+QString CPersonal::PersNo() const
+{
+    return m_PersNo;
+}
+
+void CPersonal::setPersNo(const QString &PersNo)
+{
+    m_PersNo = PersNo;
+}
+
+int CPersonal::SollTag() const
+{
+    return m_SollTag;
+}
+
+void CPersonal::setSollTag(int SollTag)
+{
+    m_SollTag = SollTag;
+}
+
+QDate CPersonal::GebDat() const
+{
+    return m_GebDat;
+}
+
+void CPersonal::setGebDat(const QDate &GebDat)
+{
+    m_GebDat = GebDat;
+}
 
 
-};
 
-#endif // CROSTERWINDOW_H
+
+

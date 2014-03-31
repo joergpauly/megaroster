@@ -20,41 +20,44 @@
 *
 *****************************************************************************************/
 
-#ifndef CROSTERWINDOW_H
-#define CROSTERWINDOW_H
+#ifndef CPERSONAL_H
+#define CPERSONAL_H
 
-#include <QWidget>
-#include <QMdiSubWindow>
+#include <QString>
+#include <QDate>
 
-namespace Ui {
-class CRosterWindow;
-}
-
-class CRosterWindow : public QWidget
+class CPersonal
 {
-    Q_OBJECT
-
 public:
-    explicit CRosterWindow(QWidget *parent = 0);
-    explicit CRosterWindow(QWidget *parent, int pMonth, int pYear);
-    ~CRosterWindow();
-    void setSubWnd(QWidget* pSubWnd);
+    CPersonal();
+    CPersonal(QString pName,
+                QString pVName,
+                QString pPersNo,
+                QDate   pGebDat,
+                int     pSollTag);
 
-private slots:
-    void on_dtedMonthChoice_dateChanged(const QDate &date);
+    QString Name() const;
+    void setName(const QString &Name);
+
+    QString VName() const;
+    void setVName(const QString &VName);
+
+    QString PersNo() const;
+    void setPersNo(const QString &PersNo);
+
+    int SollTag() const;
+    void setSollTag(int SollTag);
+
+    QDate GebDat() const;
+    void setGebDat(const QDate &GebDat);
 
 private:
-    // Properties
-    Ui::CRosterWindow *ui;
-    QWidget* m_subWnd;
-    QString m_Prefix;
-    int m_Month;
-    int m_Year;
-
-    // Funktionen
-    void setTabTitle(QString pPrefix, QDate pDate);
-
+    QString m_Name;
+    QString m_VName;
+    QString m_PersNo;
+    QDate   m_GebDat;
+    int     m_SollTag;
 
 };
 
-#endif // CROSTERWINDOW_H
+#endif // CPERSONAL_H
