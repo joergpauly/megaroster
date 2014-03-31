@@ -61,10 +61,20 @@ void CMainWindow::closeEvent(QCloseEvent *e)
     }
 }
 
-
-void CMainWindow::on_actionBe_arbeiten_triggered()
-{    
+void CMainWindow::openEditableRoster()
+{
     m_Roster = new CRosterWindow();
     m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
     m_Roster->show();
+}
+
+
+void CMainWindow::on_actionBe_arbeiten_triggered()
+{    
+    openEditableRoster();
+}
+
+void CMainWindow::on_cmdEditRoster_clicked()
+{
+    openEditableRoster();
 }

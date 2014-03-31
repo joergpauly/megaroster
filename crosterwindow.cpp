@@ -28,7 +28,9 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     ui(new Ui::CRosterWindow)
 {
     ui->setupUi(this);
+    m_Prefix = "Soll";
     ui->dtedMonthChoice->setDate(QDate::currentDate());
+    setTabTitle(m_Prefix, QDate::currentDate());
 }
 
 CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
@@ -50,4 +52,19 @@ void CRosterWindow::setSubWnd(QWidget *pSubWnd)
     m_subWnd = pSubWnd;
 }
 
+void CRosterWindow::setTabTitle(QString pPrefix, QDate pDate)
+{
+    QString ltitle = pPrefix;
+    ltitle.append("-Dienstplan ");
+    ltitle.append(QDate::longMonthName(pDate.month()));
+    ltitle.append(" ");
+    ltitle.append(QString::number(pDate.year()));
+    this->setWindowTitle(ltitle);
+}
 
+
+
+void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
+{
+    setTabTitle(m_Prefix, date);
+}

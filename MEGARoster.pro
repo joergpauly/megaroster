@@ -14,10 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         cmainwindow.cpp \
-    crosterwindow.cpp
+    crosterwindow.cpp \
+    cpersonal.cpp \
+    cdutytype.cpp
 
 HEADERS  += cmainwindow.h \
-    crosterwindow.h
+    crosterwindow.h \
+    cpersonal.h \
+    cdutytype.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui

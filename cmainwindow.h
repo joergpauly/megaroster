@@ -49,6 +49,8 @@ private slots:
 
     void on_actionBe_arbeiten_triggered();
 
+    void on_cmdEditRoster_clicked();
+
 private:
     // Properties
     Ui::CMainWindow *ui;
@@ -56,6 +58,7 @@ private:
 
     // Funktionen
     void closeEvent(QCloseEvent* e);
+    void openEditableRoster();
 };
 
 #endif // CMAINWINDOW_H
