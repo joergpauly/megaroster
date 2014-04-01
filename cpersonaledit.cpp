@@ -76,3 +76,8 @@ void CPersonalEdit::fillPersTable()
     }    
 }
 
+
+void CPersonalEdit::on_tblPersonal_cellClicked(int row, int column)
+{
+
+}

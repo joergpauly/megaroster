@@ -40,6 +40,9 @@ public:
     ~CPersonalEdit();
     void setSubWnd(QMdiSubWindow* pSubWnd);
 
+private slots:
+    void on_tblPersonal_cellClicked(int row, int column);
+
 private:
     // Member
     Ui::CPersonalEdit *ui;
