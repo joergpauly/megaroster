@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include <QMdiSubWindow>
+#include <QMessageBox>
 #include "cdatabasemanager.h"
 
 namespace Ui {
@@ -43,16 +44,40 @@ public:
 private slots:
     void on_tblPersonal_cellClicked(int row, int column);
 
+    void on_cmdNew_clicked();
+
+    void on_txtName_editingFinished();
+
+    void on_txtVName_editingFinished();
+
+    void on_datGebDat_editingFinished();
+
+    void on_txtPersNo_editingFinished();
+
+    void on_timSollTag_editingFinished();
+
+    void on_cmdSave_clicked();
+
+    void on_cmdKill_clicked();
+
+    void on_datEintritt_editingFinished();
+
+    void on_datAustritt_editingFinished();
+
 private:
     // Member
     Ui::CPersonalEdit *ui;
     QMdiSubWindow *m_SubWnd;
     QSqlQuery* m_qry;
+    int m_id;
+    int m_lastInserted;
 
     // Funktionen
     void loadTable();
     void fillPersTable();
-
+    void updateUI();
+    void getFromID(int pID);
+    void updateRecord(int pID);
 
 };
 
