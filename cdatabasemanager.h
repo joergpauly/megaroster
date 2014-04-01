@@ -27,6 +27,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlRecord>
 
 
 class CDatabaseManager : public QObject

@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include <QMdiSubWindow>
+#include "cdatabasemanager.h"
 
 namespace Ui {
 class CPersonalEdit;
@@ -40,8 +41,15 @@ public:
     void setSubWnd(QMdiSubWindow* pSubWnd);
 
 private:
+    // Member
     Ui::CPersonalEdit *ui;
     QMdiSubWindow *m_SubWnd;
+    QSqlQuery* m_qry;
+
+    // Funktionen
+    void loadTable();
+    void fillPersTable();
+
 
 };
 
