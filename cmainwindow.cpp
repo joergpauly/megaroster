@@ -72,6 +72,7 @@ void CMainWindow::openEditableRoster()
 void CMainWindow::openPersonalEdit()
 {
     m_PersEdit = new CPersonalEdit(this);
+    m_PersEdit->setSubWnd(ui->mdiArea->addSubWindow(m_PersEdit));
     m_PersEdit->show();
 }
 

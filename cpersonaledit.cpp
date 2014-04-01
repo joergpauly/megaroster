@@ -34,3 +34,8 @@ CPersonalEdit::~CPersonalEdit()
 {
     delete ui;
 }
+
+void CPersonalEdit::setSubWnd(QMdiSubWindow *pSubWnd)
+{
+    m_SubWnd = pSubWnd;
+}

@@ -24,6 +24,7 @@
 #define CPERSONALEDIT_H
 
 #include <QDialog>
+#include <QMdiSubWindow>
 
 namespace Ui {
 class CPersonalEdit;
@@ -36,9 +37,12 @@ class CPersonalEdit : public QDialog
 public:
     explicit CPersonalEdit(QWidget *parent = 0);
     ~CPersonalEdit();
+    void setSubWnd(QMdiSubWindow* pSubWnd);
 
 private:
     Ui::CPersonalEdit *ui;
+    QMdiSubWindow *m_SubWnd;
+
 };
 
 #endif // CPERSONALEDIT_H
