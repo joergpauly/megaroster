@@ -28,6 +28,8 @@ CPersonalEdit::CPersonalEdit(QWidget *parent) :
     ui(new Ui::CPersonalEdit)
 {
     ui->setupUi(this);
+    loadTable();
+    fillPersTable();
 }
 
 CPersonalEdit::~CPersonalEdit()
@@ -39,3 +41,38 @@ void CPersonalEdit::setSubWnd(QMdiSubWindow *pSubWnd)
 {
     m_SubWnd = pSubWnd;
 }
+
+void CPersonalEdit::loadTable()
+{
+    m_qry = new QSqlQuery();
+    m_qry->prepare("SELECT * FROM tblPersonal order by Name;");
+    m_qry->exec();
+}
+
+void CPersonalEdit::fillPersTable()
+{
+    ui->tblPersonal->clear();
+    ui->tblPersonal->setColumnCount(5);
+
+    m_qry->first();
+    int i = 0;
+    while(m_qry->isValid())
+    {
+        ui->tblPersonal->setRowCount(ui->tblPersonal->rowCount()+1);
+        QTableWidgetItem *lName = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("Name")).toString());
+        QTableWidgetItem *lVName = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("VName")).toString());
+        QTableWidgetItem *lPersNo = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("PNr")).toString());
+        QTableWidgetItem *lGebDat = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("GebDat")).toString());
+        QTableWidgetItem *lSollH = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("SollTag")).toString());
+
+
+        ui->tblPersonal->setItem(i,0,lName);
+        ui->tblPersonal->setItem(i,1,lVName);
+        ui->tblPersonal->setItem(i,2,lPersNo);
+        ui->tblPersonal->setItem(i,3,lGebDat);
+        ui->tblPersonal->setItem(i,4,lSollH);
+        i++;
+        m_qry->next();
+    }    
+}
+
