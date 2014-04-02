@@ -1,11 +1,11 @@
 /****************************************************************************************
 *
-*   This file is part of the ChartButler Project.
+*   This file is part of the MEGA-Series Project.
 *   Copyright (C) 2014 Joerg Pauly
-*   Created 02.04.2014 by joerg
+*   Created 01.04.2014 by Joerg Pauly
 *   All Rights reserved
 *
-*   ChartButler ist Freie Software: Sie können es unter den Bedingungen
+*   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
 *   der GNU Lesser General Public License, wie von der Free Software Foundation,
 *   Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren
 *   veröffentlichten Version, weiterverbreiten und/oder modifizieren.
@@ -25,6 +25,10 @@
 
 #include <QDialog>
 #include <QMdiSubWindow>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+
 
 namespace Ui {
 class CDutyTypeEdit;
@@ -42,6 +46,7 @@ public:
 private:
     Ui::CDutyTypeEdit *ui;
     QMdiSubWindow* m_SubWnd;
+    QSqlQuery* m_qry;
 
 };
 
