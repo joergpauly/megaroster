@@ -35,6 +35,7 @@ CDutyType::CDutyType(QString pMark, QString pDesc, QTime pTimeFrom, QTime pTimeT
     m_TimeElapsed = pTimeElapsed;
     m_MinOffBefore = pMinOffBefore;
     m_MinOffAfter = pMinOffAfter;
+    m_RosterColor = pRosterColor;
 }
 
 QString CDutyType::Mark() const
