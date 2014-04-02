@@ -2,7 +2,7 @@
 *
 *   This file is part of the ChartButler Project.
 *   Copyright (C) 2014 Joerg Pauly
-*   Created 31.03.2014 by joerg
+*   Created 02.04.2014 by joerg
 *   All Rights reserved
 *
 *   ChartButler ist Freie Software: Sie können es unter den Bedingungen
@@ -20,59 +20,29 @@
 *
 *****************************************************************************************/
 
-#ifndef CMAINWINDOW_H
-#define CMAINWINDOW_H
+#ifndef CDUTYTYPEEDIT_H
+#define CDUTYTYPEEDIT_H
 
-// System-Header
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QMessageBox>
+#include <QDialog>
 #include <QMdiSubWindow>
 
-// Projekt-Header
-#include "cdatabasemanager.h"
-#include "crosterwindow.h"
-#include "cpersonaledit.h"
-#include "cdutytypeedit.h"
-
 namespace Ui {
-class CMainWindow;
+class CDutyTypeEdit;
 }
 
-class CMainWindow : public QMainWindow
+class CDutyTypeEdit : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CMainWindow(QWidget *parent = 0);
-    ~CMainWindow();
-
-private slots:
-    void on_actionProgramm_be_enden_triggered();
-    void on_actionBe_arbeiten_triggered();
-    void on_cmdEditRoster_clicked();
-
-    void on_action_Personal_triggered();
-
-    void on_action_Dienst_Arten_triggered();
-
-    void on_cmdPersEdit_clicked();
-
-    void on_cmdDType_clicked();
+    explicit CDutyTypeEdit(QWidget *parent = 0);
+    ~CDutyTypeEdit();
+    void setSubWnd(QMdiSubWindow *pSubWnd);
 
 private:
-    // Properties
-    Ui::CMainWindow *ui;
-    CDatabaseManager* m_dbman;
-    CRosterWindow* m_Roster;
-    CPersonalEdit* m_PersEdit;
-    CDutyTypeEdit* m_DTEdit;
+    Ui::CDutyTypeEdit *ui;
+    QMdiSubWindow* m_SubWnd;
 
-    // Funktionen
-    void closeEvent(QCloseEvent* e);
-    void openEditableRoster();
-    void openPersonalEdit();
-    void openDutyTypeEdit();
 };
 
-#endif // CMAINWINDOW_H
+#endif // CDUTYTYPEEDIT_H

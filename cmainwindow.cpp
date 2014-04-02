@@ -76,6 +76,13 @@ void CMainWindow::openPersonalEdit()
     m_PersEdit->show();
 }
 
+void CMainWindow::openDutyTypeEdit()
+{
+    m_DTEdit = new CDutyTypeEdit(this);
+    m_DTEdit->setSubWnd(ui->mdiArea->addSubWindow(m_DTEdit));
+    m_DTEdit->show();
+}
+
 
 void CMainWindow::on_actionBe_arbeiten_triggered()
 {    
@@ -90,4 +97,19 @@ void CMainWindow::on_cmdEditRoster_clicked()
 void CMainWindow::on_action_Personal_triggered()
 {
     openPersonalEdit();
+}
+
+void CMainWindow::on_action_Dienst_Arten_triggered()
+{
+    openDutyTypeEdit();
+}
+
+void CMainWindow::on_cmdPersEdit_clicked()
+{
+    openPersonalEdit();
+}
+
+void CMainWindow::on_cmdDType_clicked()
+{
+    openDutyTypeEdit();
 }

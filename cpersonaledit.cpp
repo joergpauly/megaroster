@@ -125,10 +125,10 @@ void CPersonalEdit::updateUI()
     ui->timSollTag->setTime(STg);
     QString ETat = m_qry->value(m_qry->record().indexOf("Eintritt")).toString();
     QDate ETDate = QDate::fromString(ETat,"yyyy-MM-dd");
-    ui->datGebDat->setDate(ETDate);
+    ui->datEintritt->setDate(ETDate);
     QString ATDat = m_qry->value(m_qry->record().indexOf("Austritt")).toString();
     QDate ATDate = QDate::fromString(ATDat,"yyyy-MM-dd");
-    ui->datGebDat->setDate(ATDate);
+    ui->datAustritt->setDate(ATDate);
 }
 
 void CPersonalEdit::getFromID(int pID)
@@ -161,8 +161,10 @@ void CPersonalEdit::updateRecord(int pID)
 
 void CPersonalEdit::on_tblPersonal_cellClicked(int row, int column)
 {
+    //column auf 0 setzen, um die Warnung zu unterdrücken
+    column = 0;
     //Record holen
-    m_id = ui->tblPersonal->item(row,0)->data(1).toInt();
+    m_id = ui->tblPersonal->item(row,column)->data(1).toInt();
     getFromID(m_id);
     updateUI();
 }

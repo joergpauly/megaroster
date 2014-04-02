@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     cdutytype.cpp \
     cduty.cpp \
     cdatabasemanager.cpp \
-    cpersonaledit.cpp
+    cpersonaledit.cpp \
+    cdutytypeedit.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -27,11 +28,13 @@ HEADERS  += cmainwindow.h \
     cdutytype.h \
     cduty.h \
     cdatabasemanager.h \
-    cpersonaledit.h
+    cpersonaledit.h \
+    cdutytypeedit.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
-    cpersonaledit.ui
+    cpersonaledit.ui \
+    cdutytypeedit.ui
 
 OTHER_FILES += \
     mr.sql
