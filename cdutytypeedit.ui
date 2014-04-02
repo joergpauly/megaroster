@@ -15,7 +15,43 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tblDutytps"/>
+    <widget class="QTableWidget" name="tblDutytps">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="columnCount">
+      <number>4</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>F/S/N</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Bezeichnung</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Von</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Bis</string>
+      </property>
+     </column>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -89,6 +125,71 @@
          </item>
          <item>
           <widget class="QTimeEdit" name="timDur">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::NoButtons</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>2. Dienst-Beg.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTimeEdit" name="timStart2"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>2. Dienstende</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTimeEdit" name="timEnd2"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Dauer</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTimeEdit" name="timDur2">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -109,7 +210,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QTimeEdit" name="timeEdit"/>
+          <widget class="QTimeEdit" name="timBefore"/>
          </item>
          <item>
           <widget class="QLabel" name="label_7">
@@ -119,7 +220,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QTimeEdit" name="timeEdit_2"/>
+          <widget class="QTimeEdit" name="timAfter"/>
          </item>
         </layout>
        </item>
@@ -139,7 +240,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="lblColorL">
            <property name="text">
             <string>Farbe im Dienstplan</string>
            </property>
@@ -568,7 +669,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="lblColorR">
            <property name="text">
             <string>(Klicken zum Einstellen)</string>
            </property>
@@ -643,6 +744,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tblDutytps</tabstop>
+  <tabstop>txtMark</tabstop>
+  <tabstop>txtDescr</tabstop>
+  <tabstop>timStart</tabstop>
+  <tabstop>timEnd</tabstop>
+  <tabstop>timStart2</tabstop>
+  <tabstop>timEnd2</tabstop>
+  <tabstop>timBefore</tabstop>
+  <tabstop>timAfter</tabstop>
+  <tabstop>cmdColor</tabstop>
+  <tabstop>cmdNew</tabstop>
+  <tabstop>cmdKill</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

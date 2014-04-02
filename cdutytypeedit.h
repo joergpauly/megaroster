@@ -28,6 +28,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QTableWidgetItem>
+#include <QColorDialog>
 
 
 namespace Ui {
@@ -43,10 +45,44 @@ public:
     ~CDutyTypeEdit();
     void setSubWnd(QMdiSubWindow *pSubWnd);
 
+private slots:
+    void on_tblDutytps_cellClicked(int row, int column);
+
+    void on_cmdColor_clicked();
+
+    void on_cmdNew_clicked();
+
+    void on_txtMark_editingFinished();
+
+    void on_txtDescr_editingFinished();
+
+    void on_timStart_editingFinished();
+
+    void on_timEnd_editingFinished();
+
+    void on_timBefore_editingFinished();
+
+    void on_timAfter_editingFinished();
+
+    void on_timStart2_editingFinished();
+
+    void on_timEnd2_editingFinished();
+
 private:
+    // Member
     Ui::CDutyTypeEdit *ui;
     QMdiSubWindow* m_SubWnd;
     QSqlQuery* m_qry;
+    QColor m_clr;
+    int m_ID;
+    int m_lastInserted;
+
+    // Funktionen
+    void loadTable();
+    void fillDTypeTable();
+    void updateUI();
+    void updateRecord(int pID);
+    void getFromID(int pID);
 
 };
 
