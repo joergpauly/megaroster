@@ -30,11 +30,12 @@ class CPersonal
 {
 public:
     CPersonal();
-    CPersonal(QString pName,
+    CPersonal(int ID,
+                QString pName,
                 QString pVName,
                 QString pPersNo,
                 QDate   pGebDat,
-                int     pSollTag);
+                QTime   pSollTag);
 
     QString Name() const;
     void setName(const QString &Name);
@@ -45,18 +46,22 @@ public:
     QString PersNo() const;
     void setPersNo(const QString &PersNo);
 
-    int SollTag() const;
-    void setSollTag(int SollTag);
+    QTime SollTag() const;
+    void setSollTag(const QTime &SollTag);
 
     QDate GebDat() const;
     void setGebDat(const QDate &GebDat);
 
+    int id() const;
+    void setId(int id);
+
 private:
+    int m_id;
     QString m_Name;
     QString m_VName;
     QString m_PersNo;
     QDate   m_GebDat;
-    int     m_SollTag;
+    QTime   m_SollTag;
 
 };
 

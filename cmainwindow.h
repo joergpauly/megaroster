@@ -46,6 +46,7 @@ class CMainWindow : public QMainWindow
 public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
+    CDatabaseManager* dataBase();
 
 private slots:
     void on_actionProgramm_be_enden_triggered();

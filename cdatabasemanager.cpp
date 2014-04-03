@@ -76,3 +76,27 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
     }
 }
 
+QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
+{
+    QSqlQuery* lqry = new QSqlQuery();
+    //TODO: Diese Abfrage filtert nicht!!! Filterung evtl. beim Listenaufbau vornehmen?
+    lqry->prepare("SELECT * FROM tblPersonal WHERE Eintritt < :TO AND Austritt > :FROM ORDER BY Name;");
+    lqry->bindValue(":TO", toDate.toString("yyyy-MM-dd"));
+    lqry->bindValue(":FROM",fromDate.toString("yyyy-MM-dd"));
+    lqry->exec();
+    lqry->first();
+    QList<CPersonal>* llist = new QList<CPersonal>();
+    while (lqry->isValid())
+    {
+        CPersonal item;
+        item.setId(lqry->value(lqry->record().indexOf("ID")).toInt());
+        item.setName(lqry->value(lqry->record().indexOf("Name")).toString());
+        item.setVName(lqry->value(lqry->record().indexOf("VName")).toString());
+        item.setPersNo(lqry->value(lqry->record().indexOf("PNr")).toString());
+        item.setSollTag(QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz"));
+        llist->append(item);
+        lqry->next();
+    }
+    return llist;
+}
+

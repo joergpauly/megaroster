@@ -22,11 +22,13 @@
 
 #include "crosterwindow.h"
 #include "ui_crosterwindow.h"
+#include "cmainwindow.h"
 
 CRosterWindow::CRosterWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CRosterWindow)
 {
+    m_parent = parent;
     ui->setupUi(this);
     m_Prefix = "Soll";
     ui->dtedMonthChoice->setDate(QDate::currentDate());
@@ -66,5 +68,21 @@ void CRosterWindow::setTabTitle(QString pPrefix, QDate pDate)
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
+    m_dbman = ((CMainWindow*)m_parent)->dataBase();
     setTabTitle(m_Prefix, date);
+    QDate lfirstDate;
+    lfirstDate.setDate(date.year(),date.month(),1);
+    QDate llastDate;
+    llastDate.setDate(date.year(),date.month(),date.daysInMonth());
+    QList<CPersonal>* lpersonalList = m_dbman->personalList(lfirstDate, llastDate);
+    ui->tbwRoster->setRowCount(lpersonalList->count());
+    ui->tbwRoster->setColumnCount(date.daysInMonth()+3);
+    for(int i = 0; i < ui->tbwRoster->rowCount(); i++)
+    {
+        QString lfullname = lpersonalList->at(i).Name();
+        lfullname.append(", ");
+        lfullname.append(lpersonalList->at(i).VName());
+        QTableWidgetItem* hdr = new QTableWidgetItem(lfullname);
+        ui->tbwRoster->setVerticalHeaderItem(i,hdr);
+    }
 }

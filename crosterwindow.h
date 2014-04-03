@@ -22,8 +22,15 @@
 #ifndef CROSTERWINDOW_H
 #define CROSTERWINDOW_H
 
+// System-Header
 #include <QWidget>
 #include <QMdiSubWindow>
+
+// Projekt-Header
+#include "cdatabasemanager.h"
+#include "cpersonal.h"
+#include "cdutytype.h"
+#include "cduty.h"
 
 namespace Ui {
 class CRosterWindow;
@@ -49,6 +56,8 @@ private:
     QString m_Prefix;
     int m_Month;
     int m_Year;
+    QWidget* m_parent;
+    CDatabaseManager* m_dbman;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
