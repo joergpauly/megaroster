@@ -23,12 +23,18 @@
 #ifndef CDATABASEMANAGER_H
 #define CDATABASEMANAGER_H
 
+// System-Header
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QList>
 
+// Projekt-Header
+#include "cpersonal.h"
+#include "cdutytype.h"
+#include "cduty.h"
 
 class CDatabaseManager : public QObject
 {
@@ -43,6 +49,11 @@ private:
 signals:
 
 public slots:
+
+public:
+    QList<CPersonal> *personalList(QDate fromDate, QDate toDate);
+
+
 
 };
 

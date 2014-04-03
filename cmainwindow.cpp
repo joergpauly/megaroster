@@ -36,6 +36,11 @@ CMainWindow::~CMainWindow()
     delete ui;
 }
 
+CDatabaseManager *CMainWindow::dataBase()
+{
+    return m_dbman;
+}
+
 void CMainWindow::on_actionProgramm_be_enden_triggered()
 {
     this->close();
@@ -64,7 +69,7 @@ void CMainWindow::closeEvent(QCloseEvent *e)
 
 void CMainWindow::openEditableRoster()
 {
-    m_Roster = new CRosterWindow();
+    m_Roster = new CRosterWindow(this);
     m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
     m_Roster->show();
 }

@@ -26,8 +26,9 @@ CPersonal::CPersonal()
 {
 }
 
-CPersonal::CPersonal(QString pName, QString pVName, QString pPersNo, QDate pGebDat, int pSollTag)
+CPersonal::CPersonal(int pID, QString pName, QString pVName, QString pPersNo, QDate pGebDat, QTime pSollTag)
 {
+    m_id = pID;
     m_Name = pName;
     m_VName = pVName;
     m_PersNo = pPersNo;
@@ -65,12 +66,12 @@ void CPersonal::setPersNo(const QString &PersNo)
     m_PersNo = PersNo;
 }
 
-int CPersonal::SollTag() const
+QTime CPersonal::SollTag() const
 {
     return m_SollTag;
 }
 
-void CPersonal::setSollTag(int SollTag)
+void CPersonal::setSollTag(const QTime &SollTag)
 {
     m_SollTag = SollTag;
 }
@@ -84,6 +85,16 @@ void CPersonal::setGebDat(const QDate &GebDat)
 {
     m_GebDat = GebDat;
 }
+int CPersonal::id() const
+{
+    return m_id;
+}
+
+void CPersonal::setId(int id)
+{
+    m_id = id;
+}
+
 
 
 
