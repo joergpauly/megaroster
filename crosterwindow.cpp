@@ -64,19 +64,14 @@ void CRosterWindow::setTabTitle(QString pPrefix, QDate pDate)
     this->setWindowTitle(ltitle);
 }
 
-
-
-void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
+void CRosterWindow::makeRows(QDate pDate)
 {
-    m_dbman = ((CMainWindow*)m_parent)->dataBase();
-    setTabTitle(m_Prefix, date);
     QDate lfirstDate;
-    lfirstDate.setDate(date.year(),date.month(),1);
+    lfirstDate.setDate(pDate.year(),pDate.month(),1);
     QDate llastDate;
-    llastDate.setDate(date.year(),date.month(),date.daysInMonth());
+    llastDate.setDate(pDate.year(),pDate.month(),pDate.daysInMonth());
     QList<CPersonal>* lpersonalList = m_dbman->personalList(lfirstDate, llastDate);
     ui->tbwRoster->setRowCount(lpersonalList->count());
-    ui->tbwRoster->setColumnCount(date.daysInMonth()+3);
     for(int i = 0; i < ui->tbwRoster->rowCount(); i++)
     {
         QString lfullname = lpersonalList->at(i).Name();
@@ -85,4 +80,93 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
         QTableWidgetItem* hdr = new QTableWidgetItem(lfullname);
         ui->tbwRoster->setVerticalHeaderItem(i,hdr);
     }
+}
+
+void CRosterWindow::makeColumns(QDate pDate)
+{
+    QColor lSat(100,100,255);
+    QColor lSun(255,0,0);
+    QColor lHol(255,255,0);
+    QColor lHolFg(255,0,0);
+    int ldays = pDate.daysInMonth();
+    int lwdays = ldays;
+    ui->tbwRoster->setColumnCount(ldays+3);
+    for(int i = 0; i < pDate.daysInMonth(); i++)
+    {
+        pDate.setDate(pDate.year(),pDate.month(),i+1);
+        QTableWidgetItem* litem = new QTableWidgetItem(QString::number(i+1));
+
+        if(pDate.dayOfWeek() == 6)
+        {
+            litem->setBackgroundColor(lSat);
+            lwdays--;
+        }
+
+        if(pDate.dayOfWeek() == 7)
+        {
+            litem->setBackgroundColor(lSun);
+            lwdays--;
+        }
+
+        if(m_Holidays->checkForHoliday(pDate))
+        {
+            litem->setTextColor(lHolFg);
+            litem->setBackgroundColor(lHol);
+            if(pDate.dayOfWeek()<6)
+            {
+                lwdays--;
+            }
+        }
+
+        ui->tbwRoster->setHorizontalHeaderItem(i,litem);
+        ui->tbwRoster->setColumnWidth(i,25);
+    }
+    QTableWidgetItem* litem = new QTableWidgetItem("Ist-h");
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth(),litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth(),50);
+    litem = new QTableWidgetItem("Soll-h");
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+1,litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+1,50);
+    litem = new QTableWidgetItem("Diff.");
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+2,litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2,50);
+    makeSollH(pDate,lwdays,ldays+1);
+}
+
+void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
+{
+    QDate lfirstDate;
+    lfirstDate.setDate(pDate.year(),pDate.month(),1);
+    QDate llastDate;
+    llastDate.setDate(pDate.year(),pDate.month(),pDate.daysInMonth());
+    QList<CPersonal>* lpersonalList = m_dbman->personalList(lfirstDate, llastDate);
+    for(int i = 0; i < lpersonalList->count(); i++)
+    {
+        int shr = lpersonalList->at(i).SollTag().toString("hh:mm").left(2).toInt();
+        int smn = lpersonalList->at(i).SollTag().toString("hh:mm").right(2).toInt();
+        smn += (shr * 60);
+        smn = smn * pwdays;
+        int sshr = smn / 60;
+        int ssmn = smn - (sshr * 60);
+        QString ltime = QString::number(sshr);
+        ltime.append(":");
+        if(ssmn < 10)
+        {
+            ltime.append("0");
+        }
+        ltime.append(QString::number(ssmn));
+        QTableWidgetItem* litem = new QTableWidgetItem(ltime);
+        ui->tbwRoster->setItem(i, pcol, litem);
+    }
+}
+
+
+
+void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
+{
+    m_Holidays = new CHoliday(date.year());
+    m_dbman = ((CMainWindow*)m_parent)->dataBase();
+    setTabTitle(m_Prefix, date);
+    makeRows(date);
+    makeColumns(date);
 }
