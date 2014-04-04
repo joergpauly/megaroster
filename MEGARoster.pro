@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     cduty.cpp \
     cdatabasemanager.cpp \
     cpersonaledit.cpp \
-    cdutytypeedit.cpp
+    cdutytypeedit.cpp \
+    choliday.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -29,7 +30,8 @@ HEADERS  += cmainwindow.h \
     cduty.h \
     cdatabasemanager.h \
     cpersonaledit.h \
-    cdutytypeedit.h
+    cdutytypeedit.h \
+    choliday.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

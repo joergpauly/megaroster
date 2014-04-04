@@ -2,7 +2,7 @@
 *
 *   This file is part of the MEGA-Series Project.
 *   Copyright (C) 2014 Joerg Pauly
-*   Created 01.04.2014 by Joerg Pauly
+*   Created 04.04.2014 by joerg
 *   All Rights reserved
 *
 *   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
@@ -19,54 +19,46 @@
 *   Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 *****************************************************************************************/
-#ifndef CROSTERWINDOW_H
-#define CROSTERWINDOW_H
 
-// System-Header
-#include <QWidget>
-#include <QMdiSubWindow>
+/* Liste aller Feiertage
+        1,1,jahr,   "Neujahr"
+        15,8,jahr,  "Mariä Himmelfahrt"
+        1,11,jahr,  "Allerheiligen"
+        8,12,jahr,  "Maria Empfängnis"
+        24,12,jahr, "Heilig Abend"
+        25,12,jahr, "1.Weihnachtsfeiertag"
+        26,12,jahr, "2.Weihnachtsfeiertag"
+        // von Ostern abhängige Feiertage
+        Ostern-7,   "Palmsonntag"
+        Ostern-2,   "Karfreitag"
+        Ostern-1,   "Karsamstag"
+        Ostern,     "Ostersonntag"
+        Ostern+1,   "Ostermontag"
+        Ostern+39,  "Christi Himmelfahrt"
+        Ostern+49,  "Pfingstsonntag"
+        Ostern+50,  "Pfingstmontag"
+        Ostern+60,  "Fronleichnam"
+*/
 
-// Projekt-Header
-#include "cdatabasemanager.h"
-#include "cpersonal.h"
-#include "cdutytype.h"
-#include "cduty.h"
-#include "choliday.h"
 
-namespace Ui {
-class CRosterWindow;
-}
+#ifndef CHOLIDAY_H
+#define CHOLIDAY_H
 
-class CRosterWindow : public QWidget
+#include <QDate>
+#include <QList>
+
+class CHoliday
 {
-    Q_OBJECT
-
 public:
-    explicit CRosterWindow(QWidget *parent = 0);
-    explicit CRosterWindow(QWidget *parent, int pMonth, int pYear);
-    ~CRosterWindow();
-    void setSubWnd(QWidget* pSubWnd);
-
-private slots:
-    void on_dtedMonthChoice_dateChanged(const QDate &date);
+    CHoliday(int pJahr);
+    bool checkForHoliday(QDate pDate);
 
 private:
-    // Properties
-    Ui::CRosterWindow *ui;
-    QWidget* m_subWnd;
-    QString m_Prefix;
-    int m_Month;
-    int m_Year;
-    QWidget* m_parent;
-    CDatabaseManager* m_dbman;
-    CHoliday* m_Holidays;
-
-    // Funktionen
-    void setTabTitle(QString pPrefix, QDate pDate);
-    void makeRows(QDate pDate);
-    void makeColumns(QDate pDate);
-    void makeSollH(QDate pDate, int pwdays, int pcol);
+    QDate m_osterSonntag;
+    QList<QDate>* m_holidayList;
+    void makeHolidayList();
+    void makeOsterSonntag(int pJahr);
 
 };
 
-#endif // CROSTERWINDOW_H
+#endif // CHOLIDAY_H

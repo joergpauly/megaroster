@@ -34,6 +34,7 @@
 #include "crosterwindow.h"
 #include "cpersonaledit.h"
 #include "cdutytypeedit.h"
+#include "choliday.h"
 
 namespace Ui {
 class CMainWindow;
