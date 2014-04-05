@@ -129,13 +129,22 @@ QList<CDutyType> *CDatabaseManager::dutyTypeList()
     return llist;
 }
 
-QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate)
+QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID)
 {
     QList<CDuty> *llist = new QList<CDuty>();
     QSqlQuery* lqry = new QSqlQuery();
-    lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO ORDER BY DDate, PersID");
+    if(PerID > 0)
+    {
+        lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO AND PersID = :PID ORDER BY DDate;");
+        lqry->bindValue(":PID", PerID);
+    }
+    else
+    {
+        lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO ORDER BY DDate;");
+    }
     lqry->bindValue(":FROM", fromDate.toString("yyyy-MM-dd"));
-    lqry->bindValue(":TO",toDate.toString("yyyy-MM-dd"));
+    lqry->bindValue(":TO",toDate.toString("yyyy-MM-dd"));    
+
     lqry->exec();
     lqry->first();
     while(lqry->isValid())
