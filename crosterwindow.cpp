@@ -98,20 +98,20 @@ void CRosterWindow::makeColumns(QDate pDate)
 
         if(pDate.dayOfWeek() == 6)
         {
-            litem->setBackgroundColor(lSat);
+            litem->setBackground(QBrush(lSat));
             lwdays--;
         }
 
         if(pDate.dayOfWeek() == 7)
         {
-            litem->setBackgroundColor(lSun);
+            litem->setBackground(QBrush(lSun));
             lwdays--;
         }
 
         if(m_Holidays->checkForHoliday(pDate))
         {
-            litem->setTextColor(lHolFg);
-            litem->setBackgroundColor(lHol);
+            litem->setForeground(QBrush(lHolFg));
+            litem->setBackground(QBrush(lHol));
             if(pDate.dayOfWeek()<6)
             {
                 lwdays--;

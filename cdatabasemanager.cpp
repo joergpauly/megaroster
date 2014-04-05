@@ -78,8 +78,7 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
 
 QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
 {
-    QSqlQuery* lqry = new QSqlQuery();
-    //TODO: Diese Abfrage filtert nicht!!! Filterung evtl. beim Listenaufbau vornehmen?
+    QSqlQuery* lqry = new QSqlQuery();    
     lqry->prepare("SELECT * FROM tblPersonal WHERE Eintritt < :TO AND Austritt > :FROM ORDER BY Name;");
     lqry->bindValue(":TO", toDate.toString("yyyy-MM-dd"));
     lqry->bindValue(":FROM",fromDate.toString("yyyy-MM-dd"));
@@ -94,6 +93,62 @@ QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
         item.setVName(lqry->value(lqry->record().indexOf("VName")).toString());
         item.setPersNo(lqry->value(lqry->record().indexOf("PNr")).toString());
         item.setSollTag(QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz"));
+        llist->append(item);
+        lqry->next();
+    }
+    delete lqry;
+    return llist;
+}
+
+QList<CDutyType> *CDatabaseManager::dutyTypeList()
+{
+    QList<CDutyType> *llist = new QList<CDutyType>();
+    QSqlQuery* lqry = new QSqlQuery();
+    lqry->exec("SELECT * FROM tblDutyTypes ORDER BY Mark;");
+    lqry->first();
+    while(lqry->isValid())
+    {
+        CDutyType item;
+        item.setId(lqry->value(lqry->record().indexOf("ID")).toInt());
+        item.setMark(lqry->value(lqry->record().indexOf("Mark")).toString());
+        item.setDesc(lqry->value(lqry->record().indexOf("Decr")).toString());
+        item.setTimeFrom(QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeFrom2(QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom2")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeTo(QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeTo2(QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeElapsed(QTime::fromString(lqry->value(lqry->record().indexOf("TimeElapsed")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeElapsed2(QTime::fromString(lqry->value(lqry->record().indexOf("TimeElapsed2")).toString(),"hh:mm:ss.zzz"));
+        item.setMinOffBefore(QTime::fromString(lqry->value(lqry->record().indexOf("MinOffBefore")).toString(),"hh:mm:ss.zzz"));
+        item.setMinOffAfter(QTime::fromString(lqry->value(lqry->record().indexOf("MinOffAfter")).toString(),"hh:mm:ss.zzz"));
+        item.setRosterColorR(lqry->value(lqry->record().indexOf("ColorR")).toInt());
+        item.setRosterColorG(lqry->value(lqry->record().indexOf("ColorG")).toInt());
+        item.setRosterColorB(lqry->value(lqry->record().indexOf("ColorB")).toInt());
+        llist->append(item);
+        lqry->next();
+    }
+    return llist;
+}
+
+QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate)
+{
+    QList<CDuty> *llist = new QList<CDuty>();
+    QSqlQuery* lqry = new QSqlQuery();
+    lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO ORDER BY DDate, PersID");
+    lqry->bindValue(":FROM", fromDate.toString("yyyy-MM-dd"));
+    lqry->bindValue(":TO",toDate.toString("yyyy-MM-dd"));
+    lqry->exec();
+    lqry->first();
+    while(lqry->isValid())
+    {
+        CDuty item;
+        item.setId(lqry->value(lqry->record().indexOf("ID")).toInt());
+        item.setDate(QDate::fromString(lqry->value(lqry->record().indexOf("DDate")).toString(),"yyyy-MM-dd"));
+        item.setKollege(CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt()));
+        item.setTimeFrom(QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeTo(QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeFrom2(QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom2")).toString(),"hh:mm:ss.zzz"));
+        item.setTimeTo2(QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss.zzz"));
+        item.setTyp(CDutyType(lqry->value(lqry->record().indexOf("TypID")).toInt()));
         llist->append(item);
         lqry->next();
     }

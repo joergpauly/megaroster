@@ -68,6 +68,8 @@ private slots:
 
     void on_timEnd2_editingFinished();
 
+    void setSelected(QWidget* pold, QWidget* pnew);
+
 private:
     // Member
     Ui::CDutyTypeEdit *ui;

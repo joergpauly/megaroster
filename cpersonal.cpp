@@ -26,14 +26,21 @@ CPersonal::CPersonal()
 {
 }
 
-CPersonal::CPersonal(int pID, QString pName, QString pVName, QString pPersNo, QDate pGebDat, QTime pSollTag)
+CPersonal::CPersonal(int pID)
 {
-    m_id = pID;
-    m_Name = pName;
-    m_VName = pVName;
-    m_PersNo = pPersNo;
-    m_GebDat = pGebDat;
-    m_SollTag = pSollTag;
+    QSqlQuery* lqry = new QSqlQuery();
+    lqry->prepare("SELECT * FROM tblPersonal WHERE ID = :ID;");
+    lqry->bindValue(":ID", pID);
+    lqry->exec();
+    lqry->first();
+    m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
+    m_Name = lqry->value(lqry->record().indexOf("Name")).toString();
+    m_VName = lqry->value(lqry->record().indexOf("VName")).toString();
+    m_PersNo = lqry->value(lqry->record().indexOf("PNr")).toString();
+    m_GebDat = QDate::fromString(lqry->value(lqry->record().indexOf("GebDat")).toString(),"yyyy-MM-dd");
+    m_Eintritt = QDate::fromString(lqry->value(lqry->record().indexOf("Eintritt")).toString(),"yyyy-MM-dd");
+    m_Austritt = QDate::fromString(lqry->value(lqry->record().indexOf("Austritt")).toString(),"yyyy-MM-dd");
+    m_SollTag = QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz");
 }
 
 QString CPersonal::Name() const
@@ -85,6 +92,7 @@ void CPersonal::setGebDat(const QDate &GebDat)
 {
     m_GebDat = GebDat;
 }
+
 int CPersonal::id() const
 {
     return m_id;
@@ -94,6 +102,28 @@ void CPersonal::setId(int id)
 {
     m_id = id;
 }
+
+QDate CPersonal::Eintritt() const
+{
+    return m_Eintritt;
+}
+
+void CPersonal::setEintritt(const QDate &Eintritt)
+{
+    m_Eintritt = Eintritt;
+}
+
+QDate CPersonal::Austritt() const
+{
+    return m_Austritt;
+}
+
+void CPersonal::setAustritt(const QDate &Austritt)
+{
+    m_Austritt = Austritt;
+}
+
+
 
 
 

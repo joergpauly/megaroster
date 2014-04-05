@@ -64,6 +64,8 @@ private slots:
 
     void on_datAustritt_editingFinished();
 
+    void setSelected(QWidget* pold, QWidget* pnew);
+
 private:
     // Member
     Ui::CPersonalEdit *ui;

@@ -26,16 +26,24 @@ CDutyType::CDutyType()
 {
 }
 
-CDutyType::CDutyType(QString pMark, QString pDesc, QTime pTimeFrom, QTime pTimeTo, QTime pTimeElapsed, QTime pMinOffBefore, QTime pMinOffAfter, QColor pRosterColor)
+CDutyType::CDutyType(QString pMark)
 {
-    m_Mark = pMark;
-    m_Desc = pDesc;
-    m_TimeFrom = pTimeFrom;
-    m_TimeTo = pTimeTo;
-    m_TimeElapsed = pTimeElapsed;
-    m_MinOffBefore = pMinOffBefore;
-    m_MinOffAfter = pMinOffAfter;
-    m_RosterColor = pRosterColor;
+    QSqlQuery *lqry = new QSqlQuery();
+    lqry->prepare("SELECT * FROM tblDutyTypes WHERE Mark = :Mark;");
+    lqry->bindValue(":Mark", QVariant::fromValue(pMark));
+    lqry->exec();
+    lqry->first();
+    readDB(lqry);
+}
+
+CDutyType::CDutyType(int pID)
+{
+    QSqlQuery *lqry = new QSqlQuery();
+    lqry->prepare("SELECT * FROM tblDutyTypes WHERE ID = :ID;");
+    lqry->bindValue(":ID", pID);
+    lqry->exec();
+    lqry->first();
+    readDB(lqry);
 }
 
 QString CDutyType::Mark() const
@@ -108,20 +116,89 @@ void CDutyType::setMinOffAfter(const QTime &MinOffAfter)
     m_MinOffAfter = MinOffAfter;
 }
 
-QColor CDutyType::RosterColor() const
+QTime CDutyType::TimeFrom2() const
 {
-    return m_RosterColor;
+    return m_TimeFrom2;
 }
 
-void CDutyType::setRosterColor(const QColor &RosterColor)
+void CDutyType::setTimeFrom2(const QTime &TimeFrom2)
 {
-    m_RosterColor = RosterColor;
+    m_TimeFrom2 = TimeFrom2;
 }
 
+QTime CDutyType::TimeTo2() const
+{
+    return m_TimeTo2;
+}
 
+void CDutyType::setTimeTo2(const QTime &TimeTo2)
+{
+    m_TimeTo2 = TimeTo2;
+}
 
+QTime CDutyType::TimeElapsed2() const
+{
+    return m_TimeElapsed2;
+}
 
+void CDutyType::setTimeElapsed2(const QTime &TimeElapsed2)
+{
+    m_TimeElapsed2 = TimeElapsed2;
+}
 
+int CDutyType::RosterColorR() const
+{
+    return m_RosterColorR;
+}
 
+void CDutyType::setRosterColorR(int RosterColorR)
+{
+    m_RosterColorR = RosterColorR;
+}
 
+int CDutyType::RosterColorG() const
+{
+    return m_RosterColorG;
+}
+
+void CDutyType::setRosterColorG(int RosterColorG)
+{
+    m_RosterColorG = RosterColorG;
+}
+
+int CDutyType::RosterColorB() const
+{
+    return m_RosterColorB;
+}
+
+void CDutyType::setRosterColorB(int RosterColorB)
+{
+    m_RosterColorB = RosterColorB;
+}
+
+int CDutyType::id() const
+{
+    return m_id;
+}
+
+void CDutyType::setId(int id)
+{
+    m_id = id;
+}
+
+void CDutyType::readDB(QSqlQuery* pqry)
+{
+    m_id = pqry->value(pqry->record().indexOf("ID")).toInt();
+    m_Mark = pqry->value(pqry->record().indexOf("Mark")).toString();
+    m_Desc = pqry->value(pqry->record().indexOf("Decr")).toString();
+    m_TimeFrom = QTime::fromString(pqry->value(pqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss-zzz");
+    m_TimeTo = QTime::fromString(pqry->value(pqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss-zzz");
+    m_TimeElapsed = QTime::fromString(pqry->value(pqry->record().indexOf("TimeElapsed")).toString(),"hh:mm:ss-zzz");
+    m_TimeFrom2 = QTime::fromString(pqry->value(pqry->record().indexOf("TimeFrom2")).toString(),"hh:mm:ss-zzz");
+    m_TimeTo2 = QTime::fromString(pqry->value(pqry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss-zzz");
+    m_TimeElapsed2 = QTime::fromString(pqry->value(pqry->record().indexOf("TimeElapsed2")).toString(),"hh:mm:ss-zzz");
+    m_RosterColorR = pqry->value(pqry->record().indexOf("ColorR")).toInt();
+    m_RosterColorG = pqry->value(pqry->record().indexOf("ColorG")).toInt();
+    m_RosterColorB = pqry->value(pqry->record().indexOf("ColorB")).toInt();
+}
 
