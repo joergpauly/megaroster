@@ -30,7 +30,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
 {
     m_parent = parent;
     ui->setupUi(this);
-    m_Prefix = "Soll";
+    m_Prefix = "";
     ui->dtedMonthChoice->setDate(QDate::currentDate());
     setTabTitle(m_Prefix, QDate::currentDate());
 }
@@ -57,7 +57,7 @@ void CRosterWindow::setSubWnd(QWidget *pSubWnd)
 void CRosterWindow::setTabTitle(QString pPrefix, QDate pDate)
 {
     QString ltitle = pPrefix;
-    ltitle.append("-Dienstplan ");
+    ltitle.append("Dienstplan ");
     ltitle.append(QDate::longMonthName(pDate.month()));
     ltitle.append(" ");
     ltitle.append(QString::number(pDate.year()));
@@ -78,6 +78,7 @@ void CRosterWindow::makeRows(QDate pDate)
         lfullname.append(", ");
         lfullname.append(lpersonalList->at(i).VName());
         QTableWidgetItem* hdr = new QTableWidgetItem(lfullname);
+        hdr->setData(1,lpersonalList->at(i).id());
         ui->tbwRoster->setVerticalHeaderItem(i,hdr);
     }
 }
@@ -160,7 +161,56 @@ void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
     }
 }
 
-
+void CRosterWindow::makeRoster(QDate pDate)
+{
+    QSqlQuery *lqry = new QSqlQuery();
+    QDate lfirstDate;
+    lfirstDate.setDate(pDate.year(),pDate.month(),1);
+    QDate llastDate;
+    llastDate.setDate(pDate.year(),pDate.month(),pDate.daysInMonth());
+    for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
+    {
+        int PerID = ui->tbwRoster->verticalHeaderItem(row)->data(1).toInt();
+        for(int col = 1; col <= pDate.daysInMonth(); col++)
+        {
+            QDate ldate(pDate.year(),pDate.month(),col);
+            lqry->prepare("SELECT * FROM tblDuty WHERE PersID = :PID AND DDate = :DATE;");
+            lqry->bindValue(":PID", PerID);
+            lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
+            lqry->exec();
+            lqry->first();
+            if(!lqry->isValid())
+            {
+                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status) VALUES (:PID, :DATE, 0, 0);");
+                lqry->bindValue(":PID", PerID);
+                lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
+                lqry->exec();
+                QString err = lqry->lastError().text();
+                QTableWidgetItem *item = new QTableWidgetItem("?");
+                item->setData(1,lqry->lastInsertId().toInt());
+                ui->tbwRoster->setItem(row, col-1, item);
+            }
+            else
+            {                
+                QColor lcol;
+                lcol.setRed(lqry->value(lqry->record().indexOf("ColorR")).toInt());
+                lcol.setGreen(lqry->value(lqry->record().indexOf("ColorG")).toInt());
+                lcol.setBlue(lqry->value(lqry->record().indexOf("ColorB")).toInt());
+                QTableWidgetItem *item = new QTableWidgetItem();
+                if(lqry->value(lqry->record().indexOf("TypID")).toInt() == 0)
+                {
+                    item->setText("?");
+                }
+                else
+                {
+                    item->setText(CDutyType(lqry->value(lqry->record().indexOf("TypID")).toInt()).Mark());
+                }
+                item->setBackground(QBrush(lcol));
+                ui->tbwRoster->setItem(row,col-1, item);
+            }
+        }
+    }
+}
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
@@ -168,5 +218,6 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
     m_dbman = ((CMainWindow*)m_parent)->dataBase();
     setTabTitle(m_Prefix, date);
     makeRows(date);
-    makeColumns(date);
+    makeColumns(date);    
+    makeRoster(date);
 }

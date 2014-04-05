@@ -25,6 +25,7 @@
 // System-Header
 #include <QWidget>
 #include <QMdiSubWindow>
+#include <QList>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -60,12 +61,14 @@ private:
     QWidget* m_parent;
     CDatabaseManager* m_dbman;
     CHoliday* m_Holidays;
+    QList<CDuty>* m_duty;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
     void makeRows(QDate pDate);
     void makeColumns(QDate pDate);
     void makeSollH(QDate pDate, int pwdays, int pcol);
+    void makeRoster(QDate pDate);
 
 };
 

@@ -53,9 +53,7 @@ public slots:
 public:
     QList<CPersonal>    *personalList(QDate fromDate, QDate toDate);
     QList<CDutyType>    *dutyTypeList();
-    QList<CDuty>        *dutyList(QDate fromDate, QDate toDate);
-
-
+    QList<CDuty>        *dutyList(QDate fromDate, QDate toDate, int PerID = 0);
 
 };
 
