@@ -25,17 +25,15 @@
 
 #include <QString>
 #include <QDate>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QVariant>
 
 class CPersonal
 {
 public:
+    CPersonal(int pID);
     CPersonal();
-    CPersonal(int ID,
-                QString pName,
-                QString pVName,
-                QString pPersNo,
-                QDate   pGebDat,
-                QTime   pSollTag);
 
     QString Name() const;
     void setName(const QString &Name);
@@ -55,6 +53,12 @@ public:
     int id() const;
     void setId(int id);
 
+    QDate Eintritt() const;
+    void setEintritt(const QDate &Eintritt);
+
+    QDate Austritt() const;
+    void setAustritt(const QDate &Austritt);
+
 private:
     int m_id;
     QString m_Name;
@@ -62,6 +66,8 @@ private:
     QString m_PersNo;
     QDate   m_GebDat;
     QTime   m_SollTag;
+    QDate   m_Eintritt;
+    QDate   m_Austritt;
 
 };
 

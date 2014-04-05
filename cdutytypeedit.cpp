@@ -28,12 +28,14 @@ CDutyTypeEdit::CDutyTypeEdit(QWidget *parent) :
     ui(new Ui::CDutyTypeEdit)
 {
     ui->setupUi(this);
+    connect(qApp,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(setSelected(QWidget*,QWidget*)));
     loadTable();
     fillDTypeTable();
 }
 
 CDutyTypeEdit::~CDutyTypeEdit()
 {
+    disconnect(this,SLOT(setSelected(QWidget*,QWidget*)));
     delete ui;
 }
 
@@ -265,4 +267,16 @@ void CDutyTypeEdit::on_timEnd2_editingFinished()
     QTime ltime2 = ltime.addSecs(lsecs);
     ui->timDur2->setTime(ltime2);
     updateRecord(m_ID);
+}
+
+void CDutyTypeEdit::setSelected(QWidget *pold, QWidget *pnew)
+{
+    if(pnew)
+    {
+        if(pnew->objectName().left(3) == "txt")
+        {
+            ((QLineEdit*)pnew)->selectAll();
+        }
+    }
+
 }

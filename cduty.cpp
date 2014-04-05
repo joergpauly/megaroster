@@ -62,5 +62,60 @@ void CDuty::setTyp(const CDutyType &Typ)
     m_Typ = Typ;
 }
 
+int CDuty::id() const
+{
+    return m_id;
+}
+
+void CDuty::setId(int id)
+{
+    m_id = id;
+}
+
+QTime CDuty::TimeFrom() const
+{
+    return m_TimeFrom;
+}
+
+void CDuty::setTimeFrom(const QTime &TimeFrom)
+{
+    m_TimeFrom = TimeFrom;
+}
+
+QTime CDuty::TimeTo() const
+{
+    return m_TimeTo;
+}
+
+void CDuty::setTimeTo(const QTime &TimeTo)
+{
+    m_TimeTo = TimeTo;
+}
+
+QTime CDuty::TimeFrom2() const
+{
+    return m_TimeFrom2;
+}
+
+void CDuty::setTimeFrom2(const QTime &TimeFrom2)
+{
+    m_TimeFrom2 = TimeFrom2;
+}
+
+QTime CDuty::TimeTo2() const
+{
+    return m_TimeTo2;
+}
+
+void CDuty::setTimeTo2(const QTime &TimeTo2)
+{
+    m_TimeTo2 = TimeTo2;
+}
+
+
+
+
+
+
 
 

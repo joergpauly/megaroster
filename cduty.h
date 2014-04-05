@@ -45,11 +45,30 @@ public:
     CDutyType Typ() const;
     void setTyp(const CDutyType &Typ);
 
+    int id() const;
+    void setId(int id);
+
+    QTime TimeFrom() const;
+    void setTimeFrom(const QTime &TimeFrom);
+
+    QTime TimeTo() const;
+    void setTimeTo(const QTime &TimeTo);
+
+    QTime TimeFrom2() const;
+    void setTimeFrom2(const QTime &TimeFrom2);
+
+    QTime TimeTo2() const;
+    void setTimeTo2(const QTime &TimeTo2);
+
 private:
+    int         m_id;
     QDate       m_Date;
     CPersonal   m_Kollege;
     CDutyType   m_Typ;
-
+    QTime       m_TimeFrom;
+    QTime       m_TimeTo;
+    QTime       m_TimeFrom2;
+    QTime       m_TimeTo2;
 };
 
 #endif // CDUTY_H

@@ -28,12 +28,14 @@ CPersonalEdit::CPersonalEdit(QWidget *parent) :
     ui(new Ui::CPersonalEdit)
 {
     ui->setupUi(this);
+    connect(qApp,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(setSelected(QWidget*,QWidget*)));
     loadTable();
     fillPersTable();
 }
 
 CPersonalEdit::~CPersonalEdit()
 {
+    disconnect(this,SLOT(setSelected(QWidget*,QWidget*)));
     delete ui;
 }
 
@@ -167,6 +169,7 @@ void CPersonalEdit::on_tblPersonal_cellClicked(int row, int column)
     m_id = ui->tblPersonal->item(row,column)->data(1).toInt();
     getFromID(m_id);
     updateUI();
+    ui->txtName->setFocus();
 }
 
 void CPersonalEdit::on_cmdNew_clicked()
@@ -245,4 +248,16 @@ void CPersonalEdit::on_datEintritt_editingFinished()
 void CPersonalEdit::on_datAustritt_editingFinished()
 {
     updateRecord(m_id);
+}
+
+void CPersonalEdit::setSelected(QWidget *pold, QWidget *pnew)
+{
+    if(pnew)
+    {
+        if(pnew->objectName().left(3) == "txt")
+        {
+            ((QLineEdit*)pnew)->selectAll();
+        }
+    }
+
 }
