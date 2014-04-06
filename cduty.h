@@ -26,6 +26,9 @@
 #include <QDate>
 #include <QString>
 #include <QTime>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QVariant>
 
 #include "cpersonal.h"
 #include "cdutytype.h"
@@ -33,16 +36,16 @@
 class CDuty
 {
 public:
-    CDuty();
-    CDuty(QDate pDate, CPersonal pKollege, CDutyType pTyp);
+    CDuty();    
+    CDuty(int pid);
 
     QDate Date() const;
     void setDate(const QDate &Date);
 
-    CPersonal Kollege() const;
+    CPersonal *Kollege() const;
     void setKollege(const CPersonal &Kollege);
 
-    CDutyType Typ() const;
+    CDutyType *Typ() const;
     void setTyp(const CDutyType &Typ);
 
     int id() const;
@@ -63,8 +66,8 @@ public:
 private:
     int         m_id;
     QDate       m_Date;
-    CPersonal   m_Kollege;
-    CDutyType   m_Typ;
+    CPersonal   *m_Kollege;
+    CDutyType   *m_Typ;
     QTime       m_TimeFrom;
     QTime       m_TimeTo;
     QTime       m_TimeFrom2;
