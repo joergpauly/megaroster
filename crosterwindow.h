@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QMdiSubWindow>
 #include <QList>
+#include <QTableWidgetItem>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -50,7 +51,8 @@ public:
 
 private slots:
     void on_dtedMonthChoice_dateChanged(const QDate &date);
-
+    void on_tbwRoster_itemChanged(QTableWidgetItem *item);
+    void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
 private:
     // Properties
@@ -63,12 +65,15 @@ private:
     CDatabaseManager* m_dbman;
     CHoliday* m_Holidays;
     QList<CDuty>* m_duty;
+    bool m_init;
+    int oldRow;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
     void makeRows(QDate pDate);
     void makeColumns(QDate pDate);
     void makeSollH(QDate pDate, int pwdays, int pcol);
+    void makeIstH();
     void makeRoster(QDate pDate);
 
 };

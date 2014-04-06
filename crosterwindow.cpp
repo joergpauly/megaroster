@@ -95,7 +95,11 @@ void CRosterWindow::makeColumns(QDate pDate)
     for(int i = 0; i < pDate.daysInMonth(); i++)
     {
         pDate.setDate(pDate.year(),pDate.month(),i+1);
-        QTableWidgetItem* litem = new QTableWidgetItem(QString::number(i+1));
+        QTableWidgetItem* litem = new QTableWidgetItem();
+        QString dt = QDate::shortDayName(pDate.dayOfWeek());
+        dt.append("\n");
+        dt.append(QString::number(i+1));
+        litem->setText(dt);
 
         if(pDate.dayOfWeek() == 6)
         {
@@ -131,7 +135,7 @@ void CRosterWindow::makeColumns(QDate pDate)
     litem = new QTableWidgetItem("Diff.");
     ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+2,litem);
     ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2,50);
-    makeSollH(pDate,lwdays,ldays+1);
+    makeSollH(pDate,lwdays,ldays+1);    
 }
 
 void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
@@ -156,8 +160,43 @@ void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
             ltime.append("0");
         }
         ltime.append(QString::number(ssmn));
-        QTableWidgetItem* litem = new QTableWidgetItem(ltime);
+        QTableWidgetItem* litem = new QTableWidgetItem();
+        litem->setText(ltime);
+        litem->setTextAlignment(Qt::AlignRight);
         ui->tbwRoster->setItem(i, pcol, litem);
+    }
+}
+
+void CRosterWindow::makeIstH()
+{
+    CDuty *dty = new CDuty(ui->tbwRoster->item(0,0)->data(Qt::UserRole).toInt());
+    int mins;
+    int hrs;
+    QDate lDate = dty->Date();
+    for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
+    {
+        mins = 0;
+        for(int col = 0; col < lDate.daysInMonth(); col++)
+        {
+            int lid = ui->tbwRoster->item(row,col)->data(Qt::UserRole).toInt();
+            dty = new CDuty(lid);
+            mins += dty->Duration().minute() + (dty->Duration().hour() * 60);
+            mins += dty->Duration2().minute() + (dty->Duration2().hour() * 60);
+        }
+        hrs = mins / 60;
+        mins = mins-(hrs*60);
+        QString ltime = QString::number(hrs);
+        ltime.append(":");
+        if(mins < 10)
+        {
+            ltime.append("0");
+        }
+        ltime.append(QString::number(mins));
+        QTableWidgetItem* litem = new QTableWidgetItem();
+        litem->setText(ltime);
+        litem->setTextAlignment(Qt::AlignRight);
+        litem->setData(Qt::UserRole,"IST");
+        ui->tbwRoster->setItem(row, dty->Date().daysInMonth(), litem);
     }
 }
 
@@ -168,6 +207,7 @@ void CRosterWindow::makeRoster(QDate pDate)
     lfirstDate.setDate(pDate.year(),pDate.month(),1);
     QDate llastDate;
     llastDate.setDate(pDate.year(),pDate.month(),pDate.daysInMonth());
+    bool newPlan = false;
     for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
     {
         int PerID = ui->tbwRoster->verticalHeaderItem(row)->data(1).toInt();
@@ -181,13 +221,16 @@ void CRosterWindow::makeRoster(QDate pDate)
             lqry->first();
             if(!lqry->isValid())
             {
-                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status) VALUES (:PID, :DATE, 6, 0);");
+                newPlan = true;
+                CDutyType *dtyp = new CDutyType("--");
+                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, Dura, Dura2) VALUES (:PID, :DATE, 6, 0, '00:00:00.000', '00:00:00.000');");
                 lqry->bindValue(":PID", PerID);
                 lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
                 lqry->exec();
-                QString err = lqry->lastError().text();
-                QTableWidgetItem *item = new QTableWidgetItem("?");
-                item->setData(1,lqry->lastInsertId().toInt());
+                QTableWidgetItem *item = new QTableWidgetItem();
+                QColor lclr(dtyp->RosterColorR(),dtyp->RosterColorG(),dtyp->RosterColorB());
+                item->setBackground(QBrush(lclr));
+                item->setData(Qt::UserRole,lqry->lastInsertId().toInt());
                 ui->tbwRoster->setItem(row, col-1, item);
             }
 
@@ -198,18 +241,75 @@ void CRosterWindow::makeRoster(QDate pDate)
             QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
             item->setBackground(QBrush(lcol));
             item->setData(Qt::UserRole,ditem->id());
-            ui->tbwRoster->setItem(row, col-1, item);
-        }
+            ui->tbwRoster->setItem(row, col-1, item);            
+        }        
+    }
+    if(newPlan)
+    {
+        makeRoster(pDate);
     }
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
+    m_init = true;
+    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
     m_Holidays = new CHoliday(date.year());
     m_dbman = ((CMainWindow*)m_parent)->dataBase();
     setTabTitle(m_Prefix, date);
     makeRows(date);
     makeColumns(date);    
     makeRoster(date);
+    makeIstH();
+    qApp->restoreOverrideCursor();
+    m_init = false;
 }
 
+
+void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
+{
+    if(item->data(Qt::UserRole).toString() == "IST")
+    {
+        return;
+    }
+    if(!m_init)
+    {
+        CDuty *dty = new CDuty(item->data(Qt::UserRole).toInt());
+        CDutyType *dtyp = new CDutyType(item->text().toUpper());
+        item->setText(dtyp->Mark());
+        dty->setTyp(*dtyp);
+        dty->setTimeFrom(dtyp->TimeFrom());
+        dty->setTimeTo(dtyp->TimeTo());
+        dty->setDuration(dtyp->TimeElapsed());
+        dty->setTimeFrom2(dtyp->TimeFrom2());
+        dty->setTimeTo2(dtyp->TimeTo2());
+        dty->setDuration2(dtyp->TimeElapsed2());
+        QColor lclr(dtyp->RosterColorR(),dtyp->RosterColorG(),dtyp->RosterColorB());        
+        item->setBackground(QBrush(lclr));
+        QSqlQuery qry;
+        qry.prepare("UPDATE tblDuty SET TypeID = :TID, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
+        int tid = dtyp->id();
+        qry.bindValue(":TID", tid);
+        QString tf = dty->TimeFrom().toString("hh:mm:ss.zzz");
+        qry.bindValue(":TF", tf);
+        QString tt = dty->TimeTo().toString("hh:mm:ss.zzz");
+        qry.bindValue(":TT", tt);
+        QString dur = dty->Duration().toString("hh:mm:ss.zzz");
+        qry.bindValue(":Dura", dur);
+        QString tf2 = dty->TimeFrom2().toString("hh:mm:ss.zzz");
+        qry.bindValue(":TFF", tf2);
+        QString tt2 = dty->TimeTo2().toString("hh:mm:ss.zzz");
+        qry.bindValue(":TTT", tt2);
+        QString dur2 = dty->Duration2().toString("hh:mm:ss.zzz");
+        qry.bindValue(":Dura2", dur2);
+        int did = dty->id();        
+        qry.bindValue(":ID", did);
+        qry.exec();
+    }
+}
+
+
+void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    makeIstH();
+}
