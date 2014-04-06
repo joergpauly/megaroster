@@ -63,6 +63,12 @@ public:
     QTime TimeTo2() const;
     void setTimeTo2(const QTime &TimeTo2);
 
+    QTime Duration() const;
+    void setDuration(const QTime &Duration);
+
+    QTime Duration2() const;
+    void setDuration2(const QTime &Duration2);
+
 private:
     int         m_id;
     QDate       m_Date;
@@ -70,8 +76,10 @@ private:
     CDutyType   *m_Typ;
     QTime       m_TimeFrom;
     QTime       m_TimeTo;
+    QTime       m_Duration;
     QTime       m_TimeFrom2;
     QTime       m_TimeTo2;
+    QTime       m_Duration2;
 };
 
 #endif // CDUTY_H

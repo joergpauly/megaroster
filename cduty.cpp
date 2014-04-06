@@ -31,15 +31,15 @@ CDuty::CDuty(int pid)
     lqry->prepare("SELECT * FROM tblDuty WHERE ID = :ID;");
     lqry->bindValue(":ID", QVariant(pid));
     lqry->exec();
-    lqry->first();
-    QString qry = lqry->lastQuery();
-    QString err = lqry->lastError().text();
+    lqry->first();    
     m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
     m_Date = QDate::fromString(lqry->value(lqry->record().indexOf("DDate")).toString(),"yyyy-MM-dd");
     m_TimeFrom = QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz");
     m_TimeTo = QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss.zzz");
+    m_Duration = QTime::fromString(lqry->value(lqry->record().indexOf("Dura")).toString(),"hh:mm:ss.zzz");
     m_TimeFrom2 = QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom2")).toString(),"hh:mm:ss.zzz");
     m_TimeTo2 = QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss.zzz");
+    m_Duration2 = QTime::fromString(lqry->value(lqry->record().indexOf("Dura2")).toString(),"hh:mm:ss.zzz");
     m_Typ = new CDutyType(lqry->value(lqry->record().indexOf("TypeID")).toInt());
     m_Kollege = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
 }
@@ -125,6 +125,28 @@ void CDuty::setTimeTo2(const QTime &TimeTo2)
 {
     m_TimeTo2 = TimeTo2;
 }
+
+QTime CDuty::Duration() const
+{
+    return m_Duration;
+}
+
+void CDuty::setDuration(const QTime &Duration)
+{
+    m_Duration = Duration;
+}
+
+QTime CDuty::Duration2() const
+{
+    return m_Duration2;
+}
+
+void CDuty::setDuration2(const QTime &Duration2)
+{
+    m_Duration2 = Duration2;
+}
+
+
 
 
 
