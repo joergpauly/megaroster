@@ -190,26 +190,15 @@ void CRosterWindow::makeRoster(QDate pDate)
                 item->setData(1,lqry->lastInsertId().toInt());
                 ui->tbwRoster->setItem(row, col-1, item);
             }
-            else
-            {
-                //FIXME: Hier stimmt NIX!!!
-                //TODO: Daten holen, Objekte ziehen, ggf. zusammenkuerzen
-                QColor lcol;
-                lcol.setRed(lqry->value(lqry->record().indexOf("ColorR")).toInt());
-                lcol.setGreen(lqry->value(lqry->record().indexOf("ColorG")).toInt());
-                lcol.setBlue(lqry->value(lqry->record().indexOf("ColorB")).toInt());
-                QTableWidgetItem *item = new QTableWidgetItem();
-                if(lqry->value(lqry->record().indexOf("TypID")).toInt() == 0)
-                {
-                    item->setText("?");
-                }
-                else
-                {
-                    item->setText(CDutyType(lqry->value(lqry->record().indexOf("TypID")).toInt()).Mark());
-                }
-                item->setBackground(QBrush(lcol));
-                ui->tbwRoster->setItem(row,col-1, item);
-            }
+
+            CDuty* ditem = new CDuty(lqry->value(lqry->record().indexOf("ID")).toInt());
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setText(ditem->Typ()->Mark());
+            item->setTextAlignment(Qt::AlignCenter);
+            QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
+            item->setBackground(QBrush(lcol));
+            item->setData(Qt::UserRole,ditem->id());
+            ui->tbwRoster->setItem(row, col-1, item);
         }
     }
 }
@@ -223,3 +212,4 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
     makeColumns(date);    
     makeRoster(date);
 }
+

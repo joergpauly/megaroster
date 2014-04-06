@@ -51,6 +51,7 @@ public:
 private slots:
     void on_dtedMonthChoice_dateChanged(const QDate &date);
 
+
 private:
     // Properties
     Ui::CRosterWindow *ui;

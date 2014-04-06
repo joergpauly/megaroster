@@ -25,11 +25,23 @@ CDuty::CDuty()
 {
 }
 
-CDuty::CDuty(QDate pDate, CPersonal pKollege, CDutyType pTyp)
+CDuty::CDuty(int pid)
 {
-    m_Date = pDate;
-    m_Kollege = pKollege;
-    m_Typ = pTyp;
+    QSqlQuery* lqry = new QSqlQuery();
+    lqry->prepare("SELECT * FROM tblDuty WHERE ID = :ID;");
+    lqry->bindValue(":ID", QVariant(pid));
+    lqry->exec();
+    lqry->first();
+    QString qry = lqry->lastQuery();
+    QString err = lqry->lastError().text();
+    m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
+    m_Date = QDate::fromString(lqry->value(lqry->record().indexOf("DDate")).toString(),"yyyy-MM-dd");
+    m_TimeFrom = QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz");
+    m_TimeTo = QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss.zzz");
+    m_TimeFrom2 = QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom2")).toString(),"hh:mm:ss.zzz");
+    m_TimeTo2 = QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss.zzz");
+    m_Typ = new CDutyType(lqry->value(lqry->record().indexOf("TypeID")).toInt());
+    m_Kollege = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
 }
 
 QDate CDuty::Date() const
@@ -42,24 +54,26 @@ void CDuty::setDate(const QDate &Date)
     m_Date = Date;
 }
 
-CPersonal CDuty::Kollege() const
+CPersonal *CDuty::Kollege() const
 {
     return m_Kollege;
 }
 
 void CDuty::setKollege(const CPersonal &Kollege)
 {
-    m_Kollege = Kollege;
+    m_Kollege = new CPersonal();
+    *m_Kollege = Kollege;
 }
 
-CDutyType CDuty::Typ() const
+CDutyType *CDuty::Typ() const
 {
     return m_Typ;
 }
 
 void CDuty::setTyp(const CDutyType &Typ)
 {
-    m_Typ = Typ;
+    m_Typ = new CDutyType();
+    *m_Typ = Typ;
 }
 
 int CDuty::id() const

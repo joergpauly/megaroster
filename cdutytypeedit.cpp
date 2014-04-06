@@ -63,7 +63,7 @@ void CDutyTypeEdit::fillDTypeTable()
     {
         ui->tblDutytps->setRowCount(ui->tblDutytps->rowCount()+1);
         QTableWidgetItem* litem = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("Mark")).toString());
-        litem->setData(1,m_qry->value(m_qry->record().indexOf("ID")).toInt());
+        litem->setData(Qt::UserRole,m_qry->value(m_qry->record().indexOf("ID")).toInt());
         QColor lclr;
         lclr.setRed(m_qry->value(m_qry->record().indexOf("ColorR")).toInt());
         lclr.setGreen(m_qry->value(m_qry->record().indexOf("ColorG")).toInt());
@@ -188,7 +188,7 @@ void CDutyTypeEdit::on_tblDutytps_cellClicked(int row, int column)
     //column auf 0 setzen, um die Warnung zu unterdrücken
     column = 0;
     //Record holen
-    m_ID = ui->tblDutytps->item(row,column)->data(1).toInt();
+    m_ID = ui->tblDutytps->item(row,column)->data(Qt::UserRole).toInt();
     getFromID(m_ID);
     updateUI();
     ui->txtMark->setFocus();
