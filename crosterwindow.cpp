@@ -181,7 +181,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             lqry->first();
             if(!lqry->isValid())
             {
-                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status) VALUES (:PID, :DATE, 0, 0);");
+                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status) VALUES (:PID, :DATE, 6, 0);");
                 lqry->bindValue(":PID", PerID);
                 lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
                 lqry->exec();
