@@ -191,7 +191,9 @@ void CRosterWindow::makeRoster(QDate pDate)
                 ui->tbwRoster->setItem(row, col-1, item);
             }
             else
-            {                
+            {
+                //FIXME: Hier stimmt NIX!!!
+                //TODO: Daten holen, Objekte ziehen, ggf. zusammenkuerzen
                 QColor lcol;
                 lcol.setRed(lqry->value(lqry->record().indexOf("ColorR")).toInt());
                 lcol.setGreen(lqry->value(lqry->record().indexOf("ColorG")).toInt());
