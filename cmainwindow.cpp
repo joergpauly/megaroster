@@ -28,7 +28,13 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
-    m_dbman = new CDatabaseManager(this);
+    m_dbman = new CDatabaseManager(this);    
+    m_Username = qgetenv("USER");
+    if(m_Username.isEmpty())
+    {
+        m_Username = qgetenv("USERNAME");
+    }
+
 }
 
 CMainWindow::~CMainWindow()

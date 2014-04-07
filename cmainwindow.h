@@ -69,6 +69,7 @@ private:
     CRosterWindow* m_Roster;
     CPersonalEdit* m_PersEdit;
     CDutyTypeEdit* m_DTEdit;
+    QString m_Username;
 
     // Funktionen
     void closeEvent(QCloseEvent* e);
