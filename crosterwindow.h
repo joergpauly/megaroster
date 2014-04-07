@@ -74,7 +74,10 @@ private:
     void makeColumns(QDate pDate);
     void makeSollH(QDate pDate, int pwdays, int pcol);
     void makeIstH();
+    void makeDiff();
     void makeRoster(QDate pDate);
+    void updateDetails(int prow, int pcol);
+    void updateDetails(CDuty* pDuty);
 
 };
 
