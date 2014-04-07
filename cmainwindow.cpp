@@ -34,7 +34,6 @@ CMainWindow::CMainWindow(QWidget *parent) :
     {
         m_Username = qgetenv("USERNAME");
     }
-
 }
 
 CMainWindow::~CMainWindow()
