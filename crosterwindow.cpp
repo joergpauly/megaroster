@@ -198,6 +198,42 @@ void CRosterWindow::makeIstH()
         litem->setData(Qt::UserRole,"IST");
         ui->tbwRoster->setItem(row, dty->Date().daysInMonth(), litem);
     }
+    makeDiff();
+}
+
+void CRosterWindow::makeDiff()
+{
+    for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
+    {
+
+        int istCol = ui->tbwRoster->columnCount()-3;
+        int solCol = ui->tbwRoster->columnCount()-2;
+        int difCol = ui->tbwRoster->columnCount()-1;
+        QString istT = ui->tbwRoster->item(row,istCol)->text();
+        int istMins = istT.right(2).toInt();
+        istMins += (istT.left(istT.length()-3).toInt() * 60);
+        QString solT = ui->tbwRoster->item(row,solCol)->text();
+        int solMins = solT.right(2).toInt();
+        solMins += (solT.left(solT.length()-3).toInt() * 60);
+        int difMins = istMins - solMins;
+        int difHrs = difMins / 60;
+        QString difT = QString::number(difHrs);
+        difT.append(":");
+        difMins = difMins - (difHrs * 60);
+        if(difMins < 0)
+        {
+            difMins = difMins - (difMins * 2);
+        }
+        if(difMins < 10)
+        {
+            difT.append("0");
+        }
+        difT.append(QString::number(difMins));
+        QTableWidgetItem* item = new QTableWidgetItem();
+        item->setText(difT);
+        item->setTextAlignment(Qt::AlignRight);
+        ui->tbwRoster->setItem(row,difCol,item);
+    }
 }
 
 void CRosterWindow::makeRoster(QDate pDate)
@@ -250,6 +286,31 @@ void CRosterWindow::makeRoster(QDate pDate)
     }
 }
 
+void CRosterWindow::updateDetails(int prow, int pcol)
+{
+    CDuty *dty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
+    updateDetails(dty);
+}
+
+void CRosterWindow::updateDetails(CDuty *pDuty)
+{
+    QString txt = pDuty->Typ()->Desc();
+    ui->txtDutyType->setText(txt);
+    ui->timFrom->setTime(pDuty->TimeFrom());
+    ui->timTo->setTime(pDuty->TimeTo());
+    ui->timFrom2->setTime(pDuty->TimeFrom2());
+    ui->timTo2->setTime(pDuty->TimeTo2());
+    int hrs = pDuty->Duration().hour() + pDuty->Duration2().hour();
+    int mins = pDuty->Duration().minute() + pDuty->Duration2().minute();
+    if(mins > 59)
+    {
+        hrs +=1;
+        mins-=60;
+    }
+    QTime ltim(hrs,mins);
+    ui->timDura->setTime(ltim);
+}
+
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
     m_init = true;
@@ -268,12 +329,9 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 
 void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
 {
-    if(item->data(Qt::UserRole).toString() == "IST")
-    {
-        return;
-    }
-    if(!m_init)
-    {
+
+    if(!m_init && item->data(Qt::UserRole).toInt() != 0)
+    {        
         CDuty *dty = new CDuty(item->data(Qt::UserRole).toInt());
         CDutyType *dtyp = new CDutyType(item->text().toUpper());
         item->setText(dtyp->Mark());
@@ -305,11 +363,28 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
         int did = dty->id();        
         qry.bindValue(":ID", did);
         qry.exec();
+        updateDetails(dty);        
     }
 }
 
 
 void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-    makeIstH();
+    if(currentRow == previousRow)
+    {
+        makeIstH();
+    }
+    updateDetails(currentRow, currentColumn);
 }
+
+/*
+    QSqlQuery* lqry = new QSqlQuery("SELECT * FROM tblDutyTypes ORDER BY Mark;");
+    lqry->exec();
+    lqry->first();
+    ui->cmbDutyType->clear();
+    while(lqry->isValid())
+    {
+        ui->cmbDutyType->addItem(lqry->value(lqry->record().indexOf("Decr")).toString(),QVariant(lqry->value(lqry->record().indexOf("ID")).toInt()));
+        lqry->next();
+    }
+*/
