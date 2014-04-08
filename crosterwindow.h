@@ -54,6 +54,14 @@ private slots:
     void on_tbwRoster_itemChanged(QTableWidgetItem *item);
     void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
+
+
+    void on_cmbDutyType_currentIndexChanged(const QString &arg1);
+
+    void on_tbwRoster_itemClicked(QTableWidgetItem *item);
+
+    void on_tbwRoster_itemSelectionChanged();
+
 private:
     // Properties
     Ui::CRosterWindow *ui;
@@ -67,6 +75,7 @@ private:
     QList<CDuty>* m_duty;
     bool m_init;
     int oldRow;
+    CDutyType* m_DType;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
@@ -74,7 +83,8 @@ private:
     void makeColumns(QDate pDate);
     void makeSollH(QDate pDate, int pwdays, int pcol);
     void makeIstH();
-    void makeDiff();
+    void makeIstH(int prow);
+    void makeDiff(int prow);
     void makeRoster(QDate pDate);
     void updateDetails(int prow, int pcol);
     void updateDetails(CDuty* pDuty);
