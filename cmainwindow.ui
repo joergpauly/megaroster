@@ -40,7 +40,7 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>128</width>
+        <width>125</width>
         <height>0</height>
        </size>
       </property>
@@ -74,8 +74,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>128</width>
-         <height>362</height>
+         <width>134</width>
+         <height>348</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -93,12 +93,6 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="cmdEditRoster">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
            <string>Soll-Plan
 be&amp;arbeiten</string>
@@ -106,27 +100,15 @@ be&amp;arbeiten</string>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="cmdCopyApproved">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QPushButton" name="cmdPreAlerts">
           <property name="text">
-           <string>Genehmigten
-Plan &amp;spiegeln</string>
+           <string>&amp;Vormerkungen
+bearbeiten</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="cmdActualRoster">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
            <string>&amp;Ist-Plan
 bearbeiten</string>
@@ -135,12 +117,6 @@ bearbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdChangeLog">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
            <string>Änderungen
 &amp;einsehen</string>
@@ -155,7 +131,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>350</height>
+         <height>348</height>
         </rect>
        </property>
        <property name="font">
@@ -178,12 +154,6 @@ bearbeiten</string>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPushButton" name="cmdPersEdit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
            <string>Personaldaten
 bearbeiten</string>
@@ -192,12 +162,6 @@ bearbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdDType">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
            <string>Dienst-Arten
 bearbeiten</string>
