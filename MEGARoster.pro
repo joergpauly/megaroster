@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     cdatabasemanager.cpp \
     cpersonaledit.cpp \
     cdutytypeedit.cpp \
-    choliday.cpp
+    choliday.cpp \
+    cprintform.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -31,12 +32,18 @@ HEADERS  += cmainwindow.h \
     cdatabasemanager.h \
     cpersonaledit.h \
     cdutytypeedit.h \
-    choliday.h
+    choliday.h \
+    cprintform.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
     cpersonaledit.ui \
-    cdutytypeedit.ui
+    cdutytypeedit.ui \
+    cprintform.ui
 
 OTHER_FILES += \
-    mr.sql
+    mr.sql \
+    mr.bmp
+
+RESOURCES += \
+    megaroster.qrc
