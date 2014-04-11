@@ -28,9 +28,50 @@ CPrintForm::CPrintForm(QWidget *parent) :
     ui(new Ui::CPrintForm)
 {
     ui->setupUi(this);
+    setGraph();
 }
 
 CPrintForm::~CPrintForm()
 {
     delete ui;
+}
+
+void CPrintForm::setGraph()
+{
+    QGraphicsScene *scene = new QGraphicsScene();
+    QString fname = qApp->applicationDirPath();
+    fname.append("/wappen.jpeg");
+    QPixmap *img = new QPixmap(fname);
+    scene->addPixmap(*img);
+    ui->graphicsView->setScene(scene);
+}
+
+void CPrintForm::setTextTopLeft(QString pTxt)
+{
+    ui->txtLeft->setText(pTxt);
+}
+
+void CPrintForm::setTextTipMid(QString pTxt)
+{
+    ui->txtMid->setText(pTxt);
+}
+
+void CPrintForm::setTextTopRight(QString pTxt)
+{
+    ui->txtRight->setText(pTxt);
+}
+
+void CPrintForm::setTextFooter(QString pTxt)
+{
+    ui->txtFooter->setText(pTxt);
+}
+
+void CPrintForm::setTable(QTableWidget *table)
+{
+    ui->tableWidget = table;
+}
+
+void CPrintForm::setSubWnd(QMdiSubWindow *pSubWnd)
+{
+    m_SubWnd = pSubWnd;
 }

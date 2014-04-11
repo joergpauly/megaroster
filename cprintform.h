@@ -24,6 +24,8 @@
 #define CPRINTFORM_H
 
 #include <QWidget>
+#include <QTableWidget>
+#include <QMdiSubWindow>
 
 namespace Ui {
 class CPrintForm;
@@ -36,9 +38,17 @@ class CPrintForm : public QWidget
 public:
     explicit CPrintForm(QWidget *parent = 0);
     ~CPrintForm();
+    void setGraph();
+    void setTextTopLeft(QString pTxt);
+    void setTextTipMid(QString pTxt);
+    void setTextTopRight(QString pTxt);
+    void setTextFooter(QString pTxt);
+    void setTable(QTableWidget *table);
+    void setSubWnd(QMdiSubWindow *pSubWnd);
 
 private:
     Ui::CPrintForm *ui;
+    QMdiSubWindow *m_SubWnd;
 };
 
 #endif // CPRINTFORM_H

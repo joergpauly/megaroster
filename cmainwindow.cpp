@@ -123,3 +123,10 @@ void CMainWindow::on_cmdDType_clicked()
 {
     openDutyTypeEdit();
 }
+
+void CMainWindow::on_actionDruckvorlage_bearbeiten_triggered()
+{
+    CPrintForm *pForm = new CPrintForm(this);
+    pForm->setSubWnd(ui->mdiArea->addSubWindow(pForm));
+    pForm->show();
+}
