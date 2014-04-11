@@ -37,6 +37,7 @@
 #include "cdutytype.h"
 #include "cduty.h"
 #include "choliday.h"
+#include "cprintform.h"
 
 namespace Ui {
 class CRosterWindow;

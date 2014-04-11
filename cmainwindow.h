@@ -35,6 +35,7 @@
 #include "cpersonaledit.h"
 #include "cdutytypeedit.h"
 #include "choliday.h"
+#include "cprintform.h"
 
 namespace Ui {
 class CMainWindow;
@@ -61,6 +62,8 @@ private slots:
     void on_cmdPersEdit_clicked();
 
     void on_cmdDType_clicked();
+
+    void on_actionDruckvorlage_bearbeiten_triggered();
 
 private:
     // Properties

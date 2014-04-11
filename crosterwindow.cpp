@@ -334,6 +334,10 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
 {
     QString txt = pDuty->Typ()->Desc();
     ui->txtDutyType->setText(txt);
+    QPalette pal = ui->txtDutyType->palette();
+    QColor lclr(pDuty->Typ()->RosterColorR(),pDuty->Typ()->RosterColorG(),pDuty->Typ()->RosterColorB());
+    pal.setColor(QPalette::Base,lclr);
+    ui->txtDutyType->setPalette(pal);
     ui->timFrom->setTime(pDuty->TimeFrom());
     ui->timTo->setTime(pDuty->TimeTo());
     ui->timFrom2->setTime(pDuty->TimeFrom2());
@@ -452,11 +456,14 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 void CRosterWindow::on_cmdPrint_clicked()
 {
     QPrinter* prt = new QPrinter();
+    prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
     dlg->exec();
+    QTableWidget *table = new QTableWidget(ui->tbwRoster);
+    table->setParent(this);
+    table->setGeometry(0,0,(table->horizontalHeader()->width() + (table->columnCount() * table->verticalHeader()->width())),table->horizontalHeader()->height() * (table->rowCount()+1));
     QPainter painter;
-    painter.begin(prt);
-    prt->setOrientation(QPrinter::Landscape);
+    painter.begin(prt);    
     double xscale = prt->pageRect().width()/double(ui->tbwRoster->width());
     double yscale = prt->pageRect().height()/double(ui->tbwRoster->height());
     double scale = qMin(xscale, yscale);
