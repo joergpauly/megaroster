@@ -87,6 +87,8 @@ void CRosterWindow::makeRows(QDate pDate)
         lfullname.append(", ");
         lfullname.append(lpersonalList->at(i).VName());
         QTableWidgetItem* hdr = new QTableWidgetItem(lfullname);
+        QColor white(255,255,255);
+        hdr->setBackground(QBrush(white));
         hdr->setData(1,lpersonalList->at(i).id());
         ui->tbwRoster->setVerticalHeaderItem(i,hdr);
     }
@@ -295,7 +297,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             {
                 newPlan = true;
                 CDutyType *dtyp = new CDutyType("--");
-                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, Dura, Dura2) VALUES (:PID, :DATE, 6, 0, '00:00:00.000', '00:00:00.000');");
+                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, TimeFrom, TimeTo, TimeFrom2, TimeTo2, Dura, Dura2) VALUES (:PID, :DATE, 6, 0, '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000');");
                 lqry->bindValue(":PID", PerID);
                 lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
                 lqry->exec();
@@ -445,4 +447,24 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
             llist->at(i)->setText(ui->cmbDutyType->currentText());
         }
     }
+}
+
+void CRosterWindow::on_cmdPrint_clicked()
+{
+    QPrinter* prt = new QPrinter();
+    QPrintDialog* dlg = new QPrintDialog(prt, this);
+    dlg->exec();
+    QPainter painter;
+    painter.begin(prt);
+    prt->setOrientation(QPrinter::Landscape);
+    double xscale = prt->pageRect().width()/double(ui->tbwRoster->width());
+    double yscale = prt->pageRect().height()/double(ui->tbwRoster->height());
+    double scale = qMin(xscale, yscale);
+    painter.translate(prt->paperRect().x() + prt->pageRect().width()/2,
+                       prt->paperRect().y() + prt->pageRect().height()/2);
+    painter.scale(scale, scale);
+    painter.translate(-width()/2, -height()/2);
+
+    ui->tbwRoster->render(&painter);
+    painter.end();
 }

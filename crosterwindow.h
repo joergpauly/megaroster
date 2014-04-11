@@ -27,6 +27,9 @@
 #include <QMdiSubWindow>
 #include <QList>
 #include <QTableWidgetItem>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPainter>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -61,6 +64,8 @@ private slots:
     void on_tbwRoster_itemClicked(QTableWidgetItem *item);
 
     void on_tbwRoster_itemSelectionChanged();
+
+    void on_cmdPrint_clicked();
 
 private:
     // Properties
