@@ -130,3 +130,10 @@ void CMainWindow::on_actionDruckvorlage_bearbeiten_triggered()
     pForm->setSubWnd(ui->mdiArea->addSubWindow(pForm));
     pForm->show();
 }
+
+void CMainWindow::on_cmdPreAlerts_clicked()
+{
+    CPrealert *pAlert = new CPrealert(this);
+    pAlert->setSubWnd(ui->mdiArea->addSubWindow(pAlert));
+    pAlert->show();
+}
