@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     cpersonaledit.cpp \
     cdutytypeedit.cpp \
     choliday.cpp \
-    cprintform.cpp
+    cprintform.cpp \
+    cprealert.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -33,13 +34,15 @@ HEADERS  += cmainwindow.h \
     cpersonaledit.h \
     cdutytypeedit.h \
     choliday.h \
-    cprintform.h
+    cprintform.h \
+    cprealert.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
     cpersonaledit.ui \
     cdutytypeedit.ui \
-    cprintform.ui
+    cprintform.ui \
+    cprealert.ui
 
 OTHER_FILES += \
     mr.sql \
