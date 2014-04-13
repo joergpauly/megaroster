@@ -23,7 +23,21 @@
 #ifndef CPREALERT_H
 #define CPREALERT_H
 
+// System-Header
 #include <QWidget>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QVariant>
+#include <QList>
+#include <QMdiSubWindow>
+#include <QMenu>
+#include <QAction>
+#include <QTreeWidgetItem>
+
+// Projekt-Header
+#include "cpersonal.h"
+#include "cdutytype.h"
+#include "cdatabasemanager.h"
 
 namespace Ui {
 class CPrealert;
@@ -36,9 +50,29 @@ class CPrealert : public QWidget
 public:
     explicit CPrealert(QWidget *parent = 0);
     ~CPrealert();
+    void setSubWnd(QMdiSubWindow *pSubWnd);
+
+private slots:
+    void on_cmbPersonal_currentIndexChanged(int index);
+    void on_dtMenu(QAction *pAction);
+
+    void on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+
+
+    void on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column);
+
+    void on_cmdNewDuty_clicked();
 
 private:
     Ui::CPrealert *ui;
+    QWidget *m_parent;
+    QMdiSubWindow *m_subWnd;
+    CDatabaseManager *m_db;
+    QList<CPersonal> *m_PersList;
+    QList<CDutyType> *m_DutyTypes;
+    CPersonal *m_actPers;
+    QMenu *m_dtMenu;
+
 };
 
 #endif // CPREALERT_H

@@ -22,15 +22,74 @@
 
 #include "cprealert.h"
 #include "ui_cprealert.h"
+#include "cmainwindow.h"
 
 CPrealert::CPrealert(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CPrealert)
 {
     ui->setupUi(this);
+    m_parent = parent;
+    m_db = ((CMainWindow*)m_parent)->dataBase();
+    m_DutyTypes = m_db->dutyTypeList();
+    m_PersList = m_db->personalList(QDate::currentDate(),QDate::currentDate());
+    for(int i = 0; i < m_PersList->count(); i++)
+    {
+        QString lFullName = m_PersList->at(i).Name() + ", " + m_PersList->at(i).VName();
+        ui->cmbPersonal->addItem(lFullName, QVariant(m_PersList->at(i).id()));
+    }
+    ui->datFromDate->setDate(QDate::currentDate());
+    ui->datBisDate->setDate(QDate::currentDate());
+    m_dtMenu = new QMenu("Dienstart auswählen", ui->trvDutyTypes);
+    QList<QAction*> *lActions = new QList<QAction*>();
+    for(int dt = 0; dt < m_DutyTypes->count(); dt++)
+    {
+        QAction *lact = new QAction(m_DutyTypes->at(dt).Desc(), m_dtMenu);
+        lact->setData(QVariant(m_DutyTypes->at(dt).id()));
+        lActions->append(lact);
+    }
+    m_dtMenu->addActions(*lActions);
+    connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
 }
 
 CPrealert::~CPrealert()
 {
     delete ui;
+}
+
+void CPrealert::setSubWnd(QMdiSubWindow *pSubWnd)
+{
+    m_subWnd = pSubWnd;
+}
+
+void CPrealert::on_cmbPersonal_currentIndexChanged(int index)
+{
+    m_actPers = new CPersonal(ui->cmbPersonal->currentData().toInt());
+}
+
+void CPrealert::on_dtMenu(QAction *pAction)
+{
+    int lDtID = pAction->data().toInt();
+}
+
+void CPrealert::on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+    if(current)
+    {
+        QAction* lsep = m_dtMenu->addSeparator();
+        QAction *lAction = new QAction("Löschen", m_dtMenu);
+        m_dtMenu->insertAction(lsep,lAction);
+    }
+    m_dtMenu->exec();
+}
+
+
+void CPrealert::on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column)
+{
+    m_dtMenu->exec();
+}
+
+void CPrealert::on_cmdNewDuty_clicked()
+{
+    m_dtMenu->exec(QCursor::pos());
 }
