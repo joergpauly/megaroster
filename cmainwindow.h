@@ -36,7 +36,7 @@
 #include "cdutytypeedit.h"
 #include "choliday.h"
 #include "cprintform.h"
-#include "cprealert.h"
+#include "cprealertedit.h"
 
 namespace Ui {
 class CMainWindow;
