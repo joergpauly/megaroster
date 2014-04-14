@@ -540,3 +540,8 @@ void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
     CDutyType ltyp(item->data(Qt::UserRole).toInt());
     ui->tbwRoster->currentItem()->setText(ltyp.Mark());
 }
+
+void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
+{
+
+}

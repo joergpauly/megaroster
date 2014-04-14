@@ -72,6 +72,8 @@ private slots:
 
     void on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item);
 
+    void on_cbShowAlerts_clicked(bool checked);
+
 private:
     // Properties
     Ui::CRosterWindow *ui;
