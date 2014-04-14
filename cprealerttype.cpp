@@ -22,6 +22,40 @@
 
 #include "cprealerttype.h"
 
+
 CPrealertType::CPrealertType()
 {
 }
+
+int CPrealertType::id() const
+{
+    return m_id;
+}
+
+void CPrealertType::setId(int id)
+{
+    m_id = id;
+}
+
+int CPrealertType::pid() const
+{
+    return m_pid;
+}
+
+void CPrealertType::setPid(int pid)
+{
+    m_pid = pid;
+}
+
+CDutyType *CPrealertType::type() const
+{
+    return m_type;
+}
+
+void CPrealertType::setType(CDutyType *type)
+{
+    m_type = type;
+}
+
+
+

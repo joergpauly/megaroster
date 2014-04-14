@@ -83,6 +83,7 @@ QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
     lqry->bindValue(":TO", toDate.toString("yyyy-MM-dd"));
     lqry->bindValue(":FROM",fromDate.toString("yyyy-MM-dd"));
     lqry->exec();
+    QString err = lqry->lastError().text();
     lqry->first();
     QList<CPersonal>* llist = new QList<CPersonal>();
     while (lqry->isValid())

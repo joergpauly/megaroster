@@ -45,26 +45,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>bis</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDateEdit" name="datBisDate">
-         <property name="displayFormat">
-          <string>dd.MM.yyyy</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -150,7 +130,6 @@
  <tabstops>
   <tabstop>cmbPersonal</tabstop>
   <tabstop>datFromDate</tabstop>
-  <tabstop>datBisDate</tabstop>
   <tabstop>cmdNew</tabstop>
   <tabstop>cmdKill</tabstop>
   <tabstop>trvPrealerts</tabstop>

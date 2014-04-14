@@ -23,10 +23,44 @@
 #ifndef CPREALERT_H
 #define CPREALERT_H
 
+#include <QString>
+#include <QVariant>
+#include <QDate>
+#include <QSqlQuery>
+#include <QList>
+
+#include "cdatabasemanager.h"
+#include "cpersonal.h"
+#include "cdutytype.h"
+#include "cprealerttype.h"
+
+
 class CPrealert
 {
 public:
     CPrealert();
+    CPrealert(int pPID, QDate pDate);
+    CPrealert(int pID);
+
+    CPersonal *Pers() const;
+    void setPers(CPersonal *Pers);
+
+    QList<CPrealertType> *paTypes() const;
+    void setPaTypes(QList<CPrealertType> *paTypes);
+
+    QDate Date() const;
+    void setDate(const QDate &Date);
+
+    int id() const;
+    void setId(int id);
+
+private:
+    int m_id;
+    CPersonal *m_Pers;
+    QList<CPrealertType> *m_paTypes;
+    QDate m_Date;
+    QList<CPrealertType>* getTypes(int id);
+
 };
 
 #endif // CPREALERT_H
