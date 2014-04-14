@@ -357,6 +357,32 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     }
     QTime ltim(hrs,mins);
     ui->timDura->setTime(ltim);
+    updatePrealerts(pDuty);
+}
+
+void CRosterWindow::updatePrealerts(CDuty *pDuty)
+{
+    if(ui->tbwRoster->selectedItems().count() > 1)
+    {
+        return;
+    }
+    ui->tblPrealerts->clear();
+    ui->tblPrealerts->setColumnCount(1);
+    CPrealert lpa(pDuty->Kollege()->id(), pDuty->Date());
+    ui->tblPrealerts->setRowCount(lpa.paTypes()->count());
+    QTableWidgetItem *lhdr = new QTableWidgetItem(pDuty->Date().toString("dd.MM.yy"));
+    ui->tblPrealerts->setHorizontalHeaderItem(0,lhdr);
+    for(int i = 0; i < lpa.paTypes()->count(); i++)
+    {
+        QTableWidgetItem *litem = new QTableWidgetItem(lpa.paTypes()->at(i).type()->Mark());
+        litem->setData(Qt::UserRole,QVariant(lpa.paTypes()->at(i).type()->id()));
+        QColor lclr(lpa.paTypes()->at(i).type()->RosterColorR(),
+                    lpa.paTypes()->at(i).type()->RosterColorG(),
+                    lpa.paTypes()->at(i).type()->RosterColorB());
+        litem->setBackground(QBrush(lclr));
+        ui->tblPrealerts->setItem(i,0,litem);
+    }
+
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
@@ -459,6 +485,31 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
             llist->at(i)->setText(ui->cmbDutyType->currentText());
         }
     }
+
+    ui->tblPrealerts->clear();
+    QList<QTableWidgetItem*> llist = ui->tbwRoster->selectedItems();
+    ui->tblPrealerts->setColumnCount(llist.count());
+    for(int j = 0; j < llist.count(); j++)
+    {
+        CDuty *dty = new CDuty(llist.at(j)->data(Qt::UserRole).toInt());
+        QTableWidgetItem *lhdr = new QTableWidgetItem(dty->Date().toString("dd.MM.yy"));
+        ui->tblPrealerts->setHorizontalHeaderItem(j,lhdr);
+        CPrealert lpa(dty->Kollege()->id(),dty->Date());
+        if(ui->tblPrealerts->rowCount() < lpa.paTypes()->count())
+        {
+            ui->tblPrealerts->setRowCount(lpa.paTypes()->count());
+        }
+        for(int k = 0; k < lpa.paTypes()->count(); k++)
+        {
+            QTableWidgetItem *litem = new QTableWidgetItem(lpa.paTypes()->at(k).type()->Mark());
+            litem->setData(Qt::UserRole,QVariant(lpa.paTypes()->at(k).type()->id()));
+            QColor lclr(lpa.paTypes()->at(k).type()->RosterColorR(),
+                        lpa.paTypes()->at(k).type()->RosterColorG(),
+                        lpa.paTypes()->at(k).type()->RosterColorB());
+            litem->setBackground(QBrush(lclr));
+            ui->tblPrealerts->setItem(k,j,litem);
+        }
+    }
 }
 
 void CRosterWindow::on_cmdPrint_clicked()
@@ -482,4 +533,10 @@ void CRosterWindow::on_cmdPrint_clicked()
 
     ui->tbwRoster->render(&painter);
     painter.end();
+}
+
+void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
+{
+    CDutyType ltyp(item->data(Qt::UserRole).toInt());
+    ui->tbwRoster->currentItem()->setText(ltyp.Mark());
 }

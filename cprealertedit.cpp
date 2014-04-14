@@ -28,9 +28,11 @@ CPrealertEdit::CPrealertEdit(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CPrealertEdit)
 {
+    m_actAlert = new CPrealert();
     m_alerts = new QList<CPrealert>();
     m_paTypes = new QList<CPrealertType>();
     ui->setupUi(this);
+    setWindowTitle("Vormerk-Liste ");
     m_parent = parent;
     m_db = ((CMainWindow*)m_parent)->dataBase();
     m_DutyTypes = m_db->dutyTypeList();
@@ -65,7 +67,95 @@ void CPrealertEdit::setSubWnd(QMdiSubWindow *pSubWnd)
 
 void CPrealertEdit::on_cmbPersonal_currentIndexChanged(int index)
 {
-    m_actPers = new CPersonal(ui->cmbPersonal->currentData().toInt());
+    m_actPers = new CPersonal(ui->cmbPersonal->currentData().toInt());    
+    reloadAlerts();
+    QString ltitle = "Vormerk-Liste " + m_actPers->Name() + ", " + m_actPers->VName();
+    setWindowTitle(ltitle);
+}
+
+void CPrealertEdit::on_dtMenu(QAction *pAction)
+{
+    CDutyType *dtyp = new CDutyType(pAction->data().toInt());
+    CPrealertType ltype;
+    ltype.setType(dtyp);
+    if(m_actAlert)
+    {
+        int pID = m_actAlert->id();
+        ltype.setPid(pID);
+        QSqlQuery lqry;
+        lqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PID, :TID);");
+        lqry.bindValue(":PID", m_actAlert->id());
+        lqry.bindValue(":TID", dtyp->id());
+        lqry.exec();
+    }
+    m_paTypes->append(ltype);
+    updateTypes();
+}
+
+void CPrealertEdit::on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column)
+{
+    m_tid = item->data(0,Qt::UserRole).toInt();
+}
+
+void CPrealertEdit::on_cmdNewDuty_clicked()
+{
+    m_dtMenu->exec(QCursor::pos());
+}
+
+void CPrealertEdit::on_cmdNew_clicked()
+{
+    QSqlQuery lqry;
+    lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
+    lqry.bindValue(":Date", ui->datFromDate->date().toString("yyyy-MM-dd"));
+    lqry.bindValue(":PID", m_actPers->id());
+    lqry.exec();
+    reloadAlerts();
+    int ppid = lqry.lastInsertId().toInt();
+    for(int i = 0; i < m_paTypes->count(); i++)
+    {
+        QSqlQuery ltqry;
+        ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
+        ltqry.bindValue(":PAID", ppid);
+        ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
+        ltqry.exec();
+    }    
+    reloadTypes();
+}
+
+void CPrealertEdit::updateTypes()
+{
+    if(m_paTypes)
+    {
+        ui->trvDutyTypes->clear();
+        for(int i = 0; i < m_paTypes->count(); i++)
+        {
+            QTreeWidgetItem* litem = new QTreeWidgetItem();
+            litem->setText(0, m_paTypes->at(i).type()->Desc());
+            QColor lclr(m_paTypes->at(i).type()->RosterColorR(),m_paTypes->at(i).type()->RosterColorG(),m_paTypes->at(i).type()->RosterColorB());
+            litem->setBackground(0,QBrush(lclr));
+            litem->setData(0, Qt::UserRole, QVariant(m_paTypes->at(i).id()));
+            ui->trvDutyTypes->addTopLevelItem(litem);
+        }
+    }
+}
+
+void CPrealertEdit::updateAlerts()
+{
+    if(m_alerts)
+    {
+        ui->trvPrealerts->clear();
+        for(int i = 0; i < m_alerts->count(); i++)
+        {
+            QTreeWidgetItem *litem = new QTreeWidgetItem();
+            litem->setText(0,m_alerts->at(i).Date().toString("dd.MM.yyyy"));
+            litem->setData(0,Qt::UserRole,m_alerts->at(i).id());
+            ui->trvPrealerts->addTopLevelItem(litem);
+        }
+    }
+}
+
+void CPrealertEdit::reloadAlerts()
+{
     m_alerts = new QList<CPrealert>();
     QSqlQuery lqry;
     lqry.prepare("SELECT * FROM tblPrealert WHERE PersID = :PID ORDER BY DDate;");
@@ -86,88 +176,60 @@ void CPrealertEdit::on_cmbPersonal_currentIndexChanged(int index)
     updateAlerts();
 }
 
-void CPrealertEdit::on_dtMenu(QAction *pAction)
+void CPrealertEdit::reloadTypes()
 {
-    CDutyType *dtyp = new CDutyType(pAction->data().toInt());
-    CPrealertType ltype;
-    ltype.setType(dtyp);
-    if(m_actAlert->id())
+    if(!ui->trvPrealerts->currentItem())
     {
-        int pID = m_actAlert->id();
-        ltype.setPid(pID);
-        QSqlQuery lqry;
-        lqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PID, :TID);");
-        lqry.bindValue(":PID", m_actAlert->id());
-        lqry.bindValue(":TID", dtyp->id());
-        lqry.exec();
+        return;
     }
-    m_paTypes->append(ltype);
+    m_actAlert = new CPrealert(ui->trvPrealerts->currentItem()->data(0,Qt::UserRole).toInt());
+    m_paTypes = m_actAlert->paTypes();
     updateTypes();
-}
-
-void CPrealertEdit::on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column)
-{
-
-}
-
-void CPrealertEdit::on_cmdNewDuty_clicked()
-{
-    m_dtMenu->exec(QCursor::pos());
-}
-
-void CPrealertEdit::on_cmdNew_clicked()
-{
-    QSqlQuery lqry;
-    lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
-    lqry.bindValue(":Date", ui->datFromDate->date().toString("yyyy-MM-dd"));
-    lqry.bindValue(":PID", m_actPers->id());
-    lqry.exec();
-    int ppid = lqry.lastInsertId().toInt();
-    for(int i = 0; i < m_paTypes->count(); i++)
-    {
-        QSqlQuery ltqry;
-        ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
-        ltqry.bindValue(":PAID", ppid);
-        ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
-        ltqry.exec();
-    }
-}
-
-void CPrealertEdit::updateTypes()
-{
-    if(m_paTypes)
-    {
-        ui->trvDutyTypes->clear();
-        for(int i = 0; i < m_paTypes->count(); i++)
-        {
-            QTreeWidgetItem* litem = new QTreeWidgetItem();
-            litem->setText(0, m_paTypes->at(i).type()->Desc());
-            QColor lclr(m_paTypes->at(i).type()->RosterColorR(),m_paTypes->at(i).type()->RosterColorG(),m_paTypes->at(i).type()->RosterColorB());
-            litem->setBackground(0,QBrush(lclr));
-            ui->trvDutyTypes->addTopLevelItem(litem);
-        }
-    }
-
-
-}
-
-void CPrealertEdit::updateAlerts()
-{
-    if(m_alerts)
-    {
-        for(int i = 0; i < m_alerts->count(); i++)
-        {
-            QTreeWidgetItem *litem = new QTreeWidgetItem();
-            litem->setText(0,m_alerts->at(i).Date().toString("dd.MM.yyyy"));
-            litem->setData(0,Qt::UserRole,m_alerts->at(i).id());
-            ui->trvPrealerts->addTopLevelItem(litem);
-        }
-    }
 }
 
 void CPrealertEdit::on_trvPrealerts_itemClicked(QTreeWidgetItem *item, int column)
 {
-    m_actAlert = new CPrealert(item->data(0,Qt::UserRole).toInt());
-    m_paTypes = m_actAlert->paTypes();
+    reloadTypes();
+    ui->datFromDate->setDate(QDate::fromString(item->text(0),"dd.MM.yyyy"));
+}
+
+void CPrealertEdit::on_cmdKillDuty_clicked()
+{
+    QSqlQuery lqry;
+    lqry.prepare("DELETE FROM tblPATypes WHERE ID = :ID;");
+    lqry.bindValue(":ID",m_tid);
+    for(int i = 0; i < m_paTypes->count(); i++)
+    {
+        if(m_paTypes->at(i).id() == m_tid)
+        {
+            m_paTypes->removeAt(i);
+        }
+    }
+    lqry.exec();
     updateTypes();
+}
+
+void CPrealertEdit::on_cmdKill_clicked()
+{
+    int pid = ui->trvPrealerts->currentItem()->data(0, Qt::UserRole).toInt();
+    QSqlQuery lqry;
+    lqry.prepare("DELETE FROM tblPATypes WHERE PAID = :PID;");
+    lqry.bindValue(":PID", pid);
+    lqry.exec();
+    reloadTypes();
+    lqry.prepare("DELETE FROM tblPrealert WHERE ID = :PID;");
+    lqry.bindValue(":PID", pid);
+    lqry.exec();
+    reloadAlerts();
+}
+
+void CPrealertEdit::on_datFromDate_dateChanged(const QDate &date)
+{
+    m_actAlert->setDate(date);
+    QSqlQuery lqry;
+    lqry.prepare("UPDATE tblPrealert SET DDate = :DD WHERE ID = :ID;");
+    lqry.bindValue(":DD", m_actAlert->Date().toString("yyyy-MM-dd"));
+    lqry.bindValue(":ID", m_actAlert->id());
+    lqry.exec();
+    reloadAlerts();
 }
