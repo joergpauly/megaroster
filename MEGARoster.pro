@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     cdutytypeedit.cpp \
     choliday.cpp \
     cprintform.cpp \
-    cprealertedit.cpp
+    cprealertedit.cpp \
+    cprealert.cpp \
+    cprealerttype.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -35,7 +37,9 @@ HEADERS  += cmainwindow.h \
     cdutytypeedit.h \
     choliday.h \
     cprintform.h \
-    cprealertedit.h
+    cprealertedit.h \
+    cprealert.h \
+    cprealerttype.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
