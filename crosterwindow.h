@@ -38,6 +38,8 @@
 #include "cduty.h"
 #include "choliday.h"
 #include "cprintform.h"
+#include "cprealert.h"
+#include "cprealerttype.h"
 
 namespace Ui {
 class CRosterWindow;
@@ -66,7 +68,9 @@ private slots:
 
     void on_tbwRoster_itemSelectionChanged();
 
-    void on_cmdPrint_clicked();
+    void on_cmdPrint_clicked();   
+
+    void on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item);
 
 private:
     // Properties
@@ -94,6 +98,7 @@ private:
     void makeRoster(QDate pDate);
     void updateDetails(int prow, int pcol);
     void updateDetails(CDuty* pDuty);
+    void updatePrealerts(CDuty* pDuty);
 
 };
 

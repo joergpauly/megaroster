@@ -62,6 +62,12 @@ private slots:
     void on_trvPrealerts_itemClicked(QTreeWidgetItem *item, int column);
     void on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_cmdKillDuty_clicked();
+
+    void on_cmdKill_clicked();
+
+    void on_datFromDate_dateChanged(const QDate &date);
+
 private:
     Ui::CPrealertEdit *ui;
     QWidget *m_parent;
@@ -74,8 +80,11 @@ private:
     QList<CPrealert> *m_alerts;
     QList<CPrealertType> *m_paTypes;
     CPrealert* m_actAlert;
+    int m_tid;
     void updateTypes();
     void updateAlerts();
+    void reloadAlerts();
+    void reloadTypes();
 };
 
 #endif // CPREALERTEDIT_H
