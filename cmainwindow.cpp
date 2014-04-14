@@ -133,7 +133,7 @@ void CMainWindow::on_actionDruckvorlage_bearbeiten_triggered()
 
 void CMainWindow::on_cmdPreAlerts_clicked()
 {
-    CPrealert *pAlert = new CPrealert(this);
+    CPrealertEdit *pAlert = new CPrealertEdit(this);
     pAlert->setSubWnd(ui->mdiArea->addSubWindow(pAlert));
     pAlert->show();
 }

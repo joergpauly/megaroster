@@ -20,13 +20,13 @@
 *
 *****************************************************************************************/
 
-#include "cprealert.h"
-#include "ui_cprealert.h"
+#include "cprealertedit.h"
+#include "ui_cprealertedit.h"
 #include "cmainwindow.h"
 
-CPrealert::CPrealert(QWidget *parent) :
+CPrealertEdit::CPrealertEdit(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CPrealert)
+    ui(new Ui::CPrealertEdit)
 {
     ui->setupUi(this);
     m_parent = parent;
@@ -52,27 +52,27 @@ CPrealert::CPrealert(QWidget *parent) :
     connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
 }
 
-CPrealert::~CPrealert()
+CPrealertEdit::~CPrealertEdit()
 {
     delete ui;
 }
 
-void CPrealert::setSubWnd(QMdiSubWindow *pSubWnd)
+void CPrealertEdit::setSubWnd(QMdiSubWindow *pSubWnd)
 {
     m_subWnd = pSubWnd;
 }
 
-void CPrealert::on_cmbPersonal_currentIndexChanged(int index)
+void CPrealertEdit::on_cmbPersonal_currentIndexChanged(int index)
 {
     m_actPers = new CPersonal(ui->cmbPersonal->currentData().toInt());
 }
 
-void CPrealert::on_dtMenu(QAction *pAction)
+void CPrealertEdit::on_dtMenu(QAction *pAction)
 {
     int lDtID = pAction->data().toInt();
 }
 
-void CPrealert::on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void CPrealertEdit::on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if(current)
     {
@@ -84,12 +84,12 @@ void CPrealert::on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTr
 }
 
 
-void CPrealert::on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column)
+void CPrealertEdit::on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column)
 {
     m_dtMenu->exec();
 }
 
-void CPrealert::on_cmdNewDuty_clicked()
+void CPrealertEdit::on_cmdNewDuty_clicked()
 {
     m_dtMenu->exec(QCursor::pos());
 }

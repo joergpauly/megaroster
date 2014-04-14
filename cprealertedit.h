@@ -40,16 +40,16 @@
 #include "cdatabasemanager.h"
 
 namespace Ui {
-class CPrealert;
+class CPrealertEdit;
 }
 
-class CPrealert : public QWidget
+class CPrealertEdit : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CPrealert(QWidget *parent = 0);
-    ~CPrealert();
+    explicit CPrealertEdit(QWidget *parent = 0);
+    ~CPrealertEdit();
     void setSubWnd(QMdiSubWindow *pSubWnd);
 
 private slots:
@@ -64,7 +64,7 @@ private slots:
     void on_cmdNewDuty_clicked();
 
 private:
-    Ui::CPrealert *ui;
+    Ui::CPrealertEdit *ui;
     QWidget *m_parent;
     QMdiSubWindow *m_subWnd;
     CDatabaseManager *m_db;
