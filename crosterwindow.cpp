@@ -42,6 +42,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
         ui->cmbDutyType->addItem(lqry->value(lqry->record().indexOf("Mark")).toString(),QVariant(lqry->value(lqry->record().indexOf("ID")).toInt()));
         lqry->next();
     }
+    delete lqry;
 }
 
 CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
@@ -55,7 +56,7 @@ CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
 
 CRosterWindow::~CRosterWindow()
 {
-    delete ui;
+    delete ui;     
 }
 
 void CRosterWindow::setSubWnd(QWidget *pSubWnd)
@@ -209,7 +210,8 @@ void CRosterWindow::makeIstH()
         litem->setData(Qt::UserRole,"IST");
         ui->tbwRoster->setItem(row, dty->Date().daysInMonth(), litem);
         makeDiff(row);
-    }    
+    }
+    delete dty;
 }
 
 void CRosterWindow::makeIstH(int prow)
@@ -240,6 +242,7 @@ void CRosterWindow::makeIstH(int prow)
     litem->setTextAlignment(Qt::AlignRight);
     litem->setData(Qt::UserRole,"IST");
     ui->tbwRoster->setItem(prow, dty->Date().daysInMonth(), litem);
+    delete dty;
     makeDiff(prow);
 }
 
@@ -306,6 +309,7 @@ void CRosterWindow::makeRoster(QDate pDate)
                 item->setBackground(QBrush(lclr));
                 item->setData(Qt::UserRole,lqry->lastInsertId().toInt());
                 ui->tbwRoster->setItem(row, col-1, item);
+                delete dtyp;
             }
 
             CDuty* ditem = new CDuty(lqry->value(lqry->record().indexOf("ID")).toInt());
@@ -322,12 +326,14 @@ void CRosterWindow::makeRoster(QDate pDate)
     {
         makeRoster(pDate);
     }
+    delete lqry;
 }
 
 void CRosterWindow::updateDetails(int prow, int pcol)
 {
     CDuty *dty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
     updateDetails(dty);
+    delete dty;
 }
 
 void CRosterWindow::updateDetails(CDuty *pDuty)
@@ -412,6 +418,8 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
     qry.exec();
     updateDetails(dty);
     makeIstH(ui->tbwRoster->currentRow());
+    delete dty;
+    delete dtyp;
 }
 
 void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)

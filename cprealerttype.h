@@ -23,10 +23,26 @@
 #ifndef CPREALERTTYPE_H
 #define CPREALERTTYPE_H
 
+#include "cdutytype.h"
+
 class CPrealertType
 {
 public:
     CPrealertType();
+
+    int id() const;
+    void setId(int id);
+
+    int pid() const;
+    void setPid(int pid);
+
+    CDutyType *type() const;
+    void setType(CDutyType *type);
+
+private:
+    int m_id;
+    int m_pid;
+    CDutyType* m_type;
 };
 
 #endif // CPREALERTTYPE_H

@@ -20,8 +20,8 @@
 *
 *****************************************************************************************/
 
-#ifndef CPREALERT_H
-#define CPREALERT_H
+#ifndef CPREALERTEDIT_H
+#define CPREALERTEDIT_H
 
 // System-Header
 #include <QWidget>
@@ -38,6 +38,8 @@
 #include "cpersonal.h"
 #include "cdutytype.h"
 #include "cdatabasemanager.h"
+#include "cprealert.h"
+#include "cprealerttype.h"
 
 namespace Ui {
 class CPrealertEdit;
@@ -54,14 +56,11 @@ public:
 
 private slots:
     void on_cmbPersonal_currentIndexChanged(int index);
-    void on_dtMenu(QAction *pAction);
-
-    void on_trvDutyTypes_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-
-
-    void on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column);
-
+    void on_dtMenu(QAction *pAction);    
     void on_cmdNewDuty_clicked();
+    void on_cmdNew_clicked();
+    void on_trvPrealerts_itemClicked(QTreeWidgetItem *item, int column);
+    void on_trvDutyTypes_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::CPrealertEdit *ui;
@@ -72,7 +71,11 @@ private:
     QList<CDutyType> *m_DutyTypes;
     CPersonal *m_actPers;
     QMenu *m_dtMenu;
-
+    QList<CPrealert> *m_alerts;
+    QList<CPrealertType> *m_paTypes;
+    CPrealert* m_actAlert;
+    void updateTypes();
+    void updateAlerts();
 };
 
-#endif // CPREALERT_H
+#endif // CPREALERTEDIT_H
