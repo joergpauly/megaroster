@@ -225,6 +225,7 @@ void CPrealertEdit::on_cmdKill_clicked()
 
 void CPrealertEdit::on_datFromDate_dateChanged(const QDate &date)
 {
+    ui->calDate->setSelectedDate(date);
     m_actAlert->setDate(date);
     QSqlQuery lqry;
     lqry.prepare("UPDATE tblPrealert SET DDate = :DD WHERE ID = :ID;");
@@ -232,4 +233,9 @@ void CPrealertEdit::on_datFromDate_dateChanged(const QDate &date)
     lqry.bindValue(":ID", m_actAlert->id());
     lqry.exec();
     reloadAlerts();
+}
+
+void CPrealertEdit::on_calDate_clicked(const QDate &date)
+{
+    ui->datFromDate->setDate(date);
 }
