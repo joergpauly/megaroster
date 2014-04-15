@@ -68,6 +68,8 @@ private slots:
 
     void on_datFromDate_dateChanged(const QDate &date);
 
+    void on_calDate_clicked(const QDate &date);
+
 private:
     Ui::CPrealertEdit *ui;
     QWidget *m_parent;

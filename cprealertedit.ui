@@ -36,10 +36,20 @@
        </item>
        <item>
         <widget class="QDateEdit" name="datFromDate">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <property name="displayFormat">
           <string>dd.MM.yyyy</string>
          </property>
          <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCalendarWidget" name="calDate">
+         <property name="gridVisible">
           <bool>true</bool>
          </property>
         </widget>
