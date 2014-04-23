@@ -296,6 +296,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
             lqry->exec();
             lqry->first();
+
             if(!lqry->isValid())
             {
                 newPlan = true;
@@ -316,6 +317,16 @@ void CRosterWindow::makeRoster(QDate pDate)
             QTableWidgetItem *item = new QTableWidgetItem();
             item->setText(ditem->Typ()->Mark());
             item->setTextAlignment(Qt::AlignCenter);
+
+            if(ui->cbShowAlerts->isChecked())
+            {
+                item->font().setBold(true);
+            }
+            else
+            {
+                item->font().setBold(false);
+            }
+
             QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
             item->setBackground(QBrush(lcol));
             item->setData(Qt::UserRole,ditem->id());
@@ -543,5 +554,5 @@ void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
 
 void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 {
-
+    makeRoster(QDate(m_Year,m_Month,1));
 }
