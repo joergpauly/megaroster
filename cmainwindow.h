@@ -50,6 +50,7 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
     CDatabaseManager* dataBase();
+    void setStatusText(QString pText);
 
 private slots:
     void on_actionProgramm_be_enden_triggered();

@@ -46,6 +46,11 @@ CDatabaseManager *CMainWindow::dataBase()
     return m_dbman;
 }
 
+void CMainWindow::setStatusText(QString pText)
+{
+    ui->statusBar->showMessage(pText);
+}
+
 void CMainWindow::on_actionProgramm_be_enden_triggered()
 {
     this->close();
