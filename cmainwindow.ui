@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>645</width>
-    <height>457</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -79,7 +79,7 @@
          <x>0</x>
          <y>0</y>
          <width>134</width>
-         <height>348</height>
+         <height>393</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -135,7 +135,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>348</height>
+         <height>100</height>
         </rect>
        </property>
        <property name="font">
@@ -232,6 +232,7 @@ bearbeiten</string>
    <addaction name="menu_Dienstplan"/>
    <addaction name="menu_Basis_Daten"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionBe_arbeiten">
    <property name="text">
     <string>Be&amp;arbeiten...</string>

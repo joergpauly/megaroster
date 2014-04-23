@@ -31,6 +31,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     m_parent = parent;
     ui->setupUi(this);
     m_Prefix = "";
+    ui->cbShowAlerts->setChecked(true);
     ui->dtedMonthChoice->setDate(QDate::currentDate());
     setTabTitle(m_Prefix, QDate::currentDate());
     QSqlQuery* lqry = new QSqlQuery("SELECT * FROM tblDutyTypes ORDER BY Mark;");
@@ -41,7 +42,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     {
         ui->cmbDutyType->addItem(lqry->value(lqry->record().indexOf("Mark")).toString(),QVariant(lqry->value(lqry->record().indexOf("ID")).toInt()));
         lqry->next();
-    }
+    }    
     delete lqry;
 }
 
@@ -216,6 +217,11 @@ void CRosterWindow::makeIstH()
 
 void CRosterWindow::makeIstH(int prow)
 {
+    if(prow < 0)
+    {
+        return;
+    }
+
     CDuty *dty = new CDuty(ui->tbwRoster->item(0,0)->data(Qt::UserRole).toInt());
     int mins;
     int hrs;
@@ -316,16 +322,36 @@ void CRosterWindow::makeRoster(QDate pDate)
             CDuty* ditem = new CDuty(lqry->value(lqry->record().indexOf("ID")).toInt());
             QTableWidgetItem *item = new QTableWidgetItem();
             item->setText(ditem->Typ()->Mark());
-            item->setTextAlignment(Qt::AlignCenter);
+            item->setTextAlignment(Qt::AlignCenter);                        
+
 
             if(ui->cbShowAlerts->isChecked())
-            {
-                item->font().setBold(true);
+            {                
+                QString lstr = "Suche Vormerkungen: ";
+                CPersonal pers(PerID);
+                lstr.append(pers.Name());
+                lstr.append(", ");
+                lstr.append(pers.VName());
+                lstr.append("; ");
+                lstr.append(ldate.toString("dd.MM.yyyy"));
+                ((CMainWindow*)m_parent)->setStatusText(lstr);
+                QSqlQuery lvqry;
+                lvqry.prepare("SELECT * FROM tblPrealert WHERE DDate = :DAT AND PersID = :PID;");
+                lvqry.bindValue(":DAT",ldate.toString("yyyy-MM-dd"));
+                lvqry.bindValue(":PID", PerID);
+                lvqry.exec();
+                lvqry.first();
+                if(lvqry.isValid())
+                {
+                    QFont fnt = item->font();
+                    fnt.setBold(true);
+                    fnt.setItalic(true);
+                    fnt.setUnderline(true);
+                    fnt.setPointSize(fnt.pointSize() + 2);
+                    item->setFont(fnt);
+                }
             }
-            else
-            {
-                item->font().setBold(false);
-            }
+
 
             QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
             item->setBackground(QBrush(lcol));
@@ -338,6 +364,8 @@ void CRosterWindow::makeRoster(QDate pDate)
         makeRoster(pDate);
     }
     delete lqry;
+    qApp->restoreOverrideCursor();
+    ((CMainWindow*)m_parent)->setStatusText("");
 }
 
 void CRosterWindow::updateDetails(int prow, int pcol)
@@ -554,5 +582,6 @@ void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
 
 void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 {
-    makeRoster(QDate(m_Year,m_Month,1));
+    qApp->setOverrideCursor(Qt::WaitCursor);
+    makeRoster(ui->dtedMonthChoice->date());
 }
