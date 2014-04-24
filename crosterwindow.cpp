@@ -175,7 +175,7 @@ void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
         ltime.append(QString::number(ssmn));
         QTableWidgetItem* litem = new QTableWidgetItem();
         litem->setText(ltime);
-        litem->setTextAlignment(Qt::AlignRight);
+        litem->setTextAlignment(Qt::AlignRight);        
         ui->tbwRoster->setItem(i, pcol, litem);
     }
 }
@@ -419,9 +419,9 @@ void CRosterWindow::updatePrealerts(CDuty *pDuty)
                     lpa.paTypes()->at(i).type()->RosterColorG(),
                     lpa.paTypes()->at(i).type()->RosterColorB());
         litem->setBackground(QBrush(lclr));
+        litem->setTextAlignment(Qt::AlignCenter);
         ui->tblPrealerts->setItem(i,0,litem);
     }
-
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
