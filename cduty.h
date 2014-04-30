@@ -38,6 +38,7 @@ class CDuty
 public:
     CDuty();    
     CDuty(int pid);
+    ~CDuty();
 
     QDate Date() const;
     void setDate(const QDate &Date);

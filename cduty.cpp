@@ -42,7 +42,16 @@ CDuty::CDuty(int pid)
     m_Duration2 = QTime::fromString(lqry->value(lqry->record().indexOf("Dura2")).toString(),"hh:mm:ss.zzz");
     m_Typ = new CDutyType(lqry->value(lqry->record().indexOf("TypeID")).toInt());
     m_Kollege = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
+    delete lqry;
 }
+
+CDuty::~CDuty()
+{
+    delete m_Kollege;
+    delete m_Typ;
+}
+
+
 
 QDate CDuty::Date() const
 {
