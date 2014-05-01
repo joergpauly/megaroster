@@ -323,8 +323,6 @@ void CRosterWindow::makeRoster(QDate pDate)
             QTableWidgetItem *item = new QTableWidgetItem();
             item->setText(ditem->Typ()->Mark());
             item->setTextAlignment(Qt::AlignCenter);                        
-            //delete ditem;
-
 
             if(ui->cbShowAlerts->isChecked())
             {                
@@ -353,11 +351,11 @@ void CRosterWindow::makeRoster(QDate pDate)
                 }
             }
 
-
             QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
             item->setBackground(QBrush(lcol));
             item->setData(Qt::UserRole,ditem->id());
-            ui->tbwRoster->setItem(row, col-1, item);            
+            ui->tbwRoster->setItem(row, col-1, item);
+            delete ditem;
         }        
     }
     if(newPlan)
