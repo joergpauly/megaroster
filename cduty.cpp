@@ -47,7 +47,10 @@ CDuty::CDuty(int pid)
 
 CDuty::~CDuty()
 {
-    //delete m_Kollege;
+    if(m_Kollege)
+    {
+        delete m_Kollege;
+    }
     //delete m_Typ;
 }
 
