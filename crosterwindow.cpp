@@ -57,7 +57,9 @@ CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
 
 CRosterWindow::~CRosterWindow()
 {
-    delete ui;     
+    delete ui;
+    delete m_Holidays;
+    delete m_duty;
 }
 
 void CRosterWindow::setSubWnd(QWidget *pSubWnd)
@@ -182,19 +184,19 @@ void CRosterWindow::makeSollH(QDate pDate, int pwdays, int pcol)
 
 void CRosterWindow::makeIstH()
 {
-    CDuty *dty = new CDuty(ui->tbwRoster->item(0,0)->data(Qt::UserRole).toInt());
+    CDuty dty(ui->tbwRoster->item(0,0)->data(Qt::UserRole).toInt());
     int mins;
     int hrs;
-    QDate lDate = dty->Date();
+    QDate lDate = dty.Date();
     for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
     {
         mins = 0;
         for(int col = 0; col < lDate.daysInMonth(); col++)
         {
             int lid = ui->tbwRoster->item(row,col)->data(Qt::UserRole).toInt();
-            dty = new CDuty(lid);
-            mins += dty->Duration().minute() + (dty->Duration().hour() * 60);
-            mins += dty->Duration2().minute() + (dty->Duration2().hour() * 60);
+            dty = CDuty(lid);
+            mins += dty.Duration().minute() + (dty.Duration().hour() * 60);
+            mins += dty.Duration2().minute() + (dty.Duration2().hour() * 60);
         }
         hrs = mins / 60;
         mins = mins-(hrs*60);
@@ -209,10 +211,9 @@ void CRosterWindow::makeIstH()
         litem->setText(ltime);
         litem->setTextAlignment(Qt::AlignRight);
         litem->setData(Qt::UserRole,"IST");
-        ui->tbwRoster->setItem(row, dty->Date().daysInMonth(), litem);
+        ui->tbwRoster->setItem(row, dty.Date().daysInMonth(), litem);
         makeDiff(row);
-    }
-    delete dty;
+    }    
 }
 
 void CRosterWindow::makeIstH(int prow)
@@ -247,8 +248,7 @@ void CRosterWindow::makeIstH(int prow)
     litem->setText(ltime);
     litem->setTextAlignment(Qt::AlignRight);
     litem->setData(Qt::UserRole,"IST");
-    ui->tbwRoster->setItem(prow, dty->Date().daysInMonth(), litem);
-    delete dty;
+    ui->tbwRoster->setItem(prow, dty->Date().daysInMonth(), litem);    
     makeDiff(prow);
 }
 
@@ -323,6 +323,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             QTableWidgetItem *item = new QTableWidgetItem();
             item->setText(ditem->Typ()->Mark());
             item->setTextAlignment(Qt::AlignCenter);                        
+            //delete ditem;
 
 
             if(ui->cbShowAlerts->isChecked())
@@ -500,6 +501,7 @@ void CRosterWindow::on_cmbDutyType_currentIndexChanged(const QString &arg1)
     pal.setColor(QPalette::Button,lclr);
     ui->cmbDutyType->setPalette(pal);
     ui->cmdBlocks->setPalette(pal);
+    delete m_DType;
 }
 
 void CRosterWindow::on_tbwRoster_itemClicked(QTableWidgetItem *item)

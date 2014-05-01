@@ -51,6 +51,7 @@ class CHoliday
 {
 public:
     CHoliday(int pJahr);
+    ~CHoliday();
     bool checkForHoliday(QDate pDate);
 
 private:

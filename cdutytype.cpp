@@ -34,6 +34,7 @@ CDutyType::CDutyType(QString pMark)
     lqry->exec();
     lqry->first();
     readDB(lqry);
+    delete lqry;
 }
 
 CDutyType::CDutyType(int pID)

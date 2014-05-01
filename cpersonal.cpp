@@ -41,6 +41,7 @@ CPersonal::CPersonal(int pID)
     m_Eintritt = QDate::fromString(lqry->value(lqry->record().indexOf("Eintritt")).toString(),"yyyy-MM-dd");
     m_Austritt = QDate::fromString(lqry->value(lqry->record().indexOf("Austritt")).toString(),"yyyy-MM-dd");
     m_SollTag = QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz");
+    delete lqry;
 }
 
 QString CPersonal::Name() const

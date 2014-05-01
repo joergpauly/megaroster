@@ -48,6 +48,11 @@ CHoliday::CHoliday(int pJahr)
     makeHolidayList();
 }
 
+CHoliday::~CHoliday()
+{
+    delete m_holidayList;
+}
+
 bool CHoliday::checkForHoliday(QDate pDate)
 {
     for(int i = 0; i < m_holidayList->count(); i++)
@@ -64,33 +69,28 @@ void CHoliday::makeHolidayList()
 {
     // TODO: ldate auf Stack verschieben
     m_holidayList = new QList<QDate>();
-    QDate *ldate = new QDate(m_osterSonntag.year(),1,1);    
-    m_holidayList->append(*ldate);
-    ldate = new QDate(m_osterSonntag.year(),5,1);
-    m_holidayList->append(*ldate);
-    ldate = new QDate(m_osterSonntag.year(),10,3);
-    m_holidayList->append(*ldate);
-    ldate = new QDate(m_osterSonntag.year(),11,1);
-    m_holidayList->append(*ldate);
-    ldate = new QDate(m_osterSonntag.year(),12,25);
-    m_holidayList->append(*ldate);
-    ldate = new QDate(m_osterSonntag.year(),12,26);
-    m_holidayList->append(*ldate);
-    ldate = new QDate();
-    *ldate = m_osterSonntag.addDays(-2);
-    m_holidayList->append(*ldate);
-    ldate = new QDate();
-    *ldate = m_osterSonntag.addDays(1);
-    m_holidayList->append(*ldate);
-    ldate = new QDate();
-    *ldate = m_osterSonntag.addDays(39);
-    m_holidayList->append(*ldate);
-    ldate = new QDate();
-    *ldate = m_osterSonntag.addDays(50);
-    m_holidayList->append(*ldate);
-    ldate = new QDate();
-    *ldate = m_osterSonntag.addDays(60);
-    m_holidayList->append(*ldate);
+    QDate ldate(m_osterSonntag.year(),1,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),5,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),10,3);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),11,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,25);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,26);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(-2);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(1);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(39);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(50);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(60);
+    m_holidayList->append(ldate);
 }
 
 void CHoliday::makeOsterSonntag(int pJahr)
