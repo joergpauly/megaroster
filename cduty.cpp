@@ -49,7 +49,7 @@ CDuty::~CDuty()
 {
     if(m_Kollege)
     {
-        delete m_Kollege;
+        //delete m_Kollege;
     }
     //delete m_Typ;
 }
