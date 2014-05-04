@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     cprintform.cpp \
     cprealertedit.cpp \
     cprealert.cpp \
-    cprealerttype.cpp
+    cprealerttype.cpp \
+    clogonassign.cpp \
+    crule.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -39,14 +41,17 @@ HEADERS  += cmainwindow.h \
     cprintform.h \
     cprealertedit.h \
     cprealert.h \
-    cprealerttype.h
+    cprealerttype.h \
+    clogonassign.h \
+    crule.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
     cpersonaledit.ui \
     cdutytypeedit.ui \
     cprintform.ui \
-    cprealertedit.ui
+    cprealertedit.ui \
+    clogonassign.ui
 
 OTHER_FILES += \
     mr.sql \

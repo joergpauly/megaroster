@@ -28,6 +28,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QMdiSubWindow>
+#include <QLabel>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -37,6 +38,7 @@
 #include "choliday.h"
 #include "cprintform.h"
 #include "cprealertedit.h"
+#include "clogonassign.h"
 
 namespace Ui {
 class CMainWindow;
@@ -51,22 +53,17 @@ public:
     ~CMainWindow();
     CDatabaseManager* dataBase();
     void setStatusText(QString pText);
+    void setUserID(int pID);
 
 private slots:
     void on_actionProgramm_be_enden_triggered();
     void on_actionBe_arbeiten_triggered();
     void on_cmdEditRoster_clicked();
-
     void on_action_Personal_triggered();
-
     void on_action_Dienst_Arten_triggered();
-
     void on_cmdPersEdit_clicked();
-
     void on_cmdDType_clicked();
-
     void on_actionDruckvorlage_bearbeiten_triggered();
-
     void on_cmdPreAlerts_clicked();
 
 private:
@@ -77,12 +74,14 @@ private:
     CPersonalEdit* m_PersEdit;
     CDutyTypeEdit* m_DTEdit;
     QString m_Username;
+    int m_actualUser;
 
     // Funktionen
     void closeEvent(QCloseEvent* e);
     void openEditableRoster();
     void openPersonalEdit();
     void openDutyTypeEdit();
+    void checkLogon();
 };
 
 #endif // CMAINWINDOW_H
