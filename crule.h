@@ -23,6 +23,9 @@ public:
     void setName(const QString &Name);
 
 private:
+
+
+
     QList<CDutyType> *m_tList;
     int m_ID;
     QString m_Name;

@@ -83,6 +83,13 @@ private:
     CDutyType* m_DType;
     QList<CRule> *m_ruleList;
 
+    class DutyRule
+    {
+    public:
+        CDutyType dty;
+        bool app;
+    };
+
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
     void makeRows(QDate pDate);
