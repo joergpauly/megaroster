@@ -40,6 +40,7 @@
 #include "cprintform.h"
 #include "cprealert.h"
 #include "cprealerttype.h"
+#include "crule.h"
 
 namespace Ui {
 class CRosterWindow;
@@ -59,19 +60,11 @@ private slots:
     void on_dtedMonthChoice_dateChanged(const QDate &date);
     void on_tbwRoster_itemChanged(QTableWidgetItem *item);
     void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
-
-
-
     void on_cmbDutyType_currentIndexChanged(const QString &arg1);
-
     void on_tbwRoster_itemClicked(QTableWidgetItem *item);
-
     void on_tbwRoster_itemSelectionChanged();
-
     void on_cmdPrint_clicked();   
-
     void on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item);
-
     void on_cbShowAlerts_clicked(bool checked);
 
 private:
@@ -88,6 +81,7 @@ private:
     bool m_init;
     int oldRow;
     CDutyType* m_DType;
+    QList<CRule> *m_ruleList;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);

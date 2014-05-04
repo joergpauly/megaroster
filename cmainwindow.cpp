@@ -34,6 +34,10 @@ CMainWindow::CMainWindow(QWidget *parent) :
     {
         m_Username = qgetenv("USERNAME");
     }
+    checkLogon();
+    QLabel *txtUser = new QLabel();
+    txtUser->setText("Anwender: " + CPersonal(m_actualUser).Name() + ", " + CPersonal(m_actualUser).VName());
+    ui->statusBar->addPermanentWidget(txtUser);
 }
 
 CMainWindow::~CMainWindow()
@@ -49,6 +53,11 @@ CDatabaseManager *CMainWindow::dataBase()
 void CMainWindow::setStatusText(QString pText)
 {
     ui->statusBar->showMessage(pText);
+}
+
+void CMainWindow::setUserID(int pID)
+{
+    m_actualUser = pID;
 }
 
 void CMainWindow::on_actionProgramm_be_enden_triggered()
@@ -96,6 +105,24 @@ void CMainWindow::openDutyTypeEdit()
     m_DTEdit = new CDutyTypeEdit(this);
     m_DTEdit->setSubWnd(ui->mdiArea->addSubWindow(m_DTEdit));
     m_DTEdit->show();
+}
+
+void CMainWindow::checkLogon()
+{
+    QSqlQuery lqry;
+    lqry.prepare("SELECT * FROM tblLogon WHERE LogonName = :NAME;");
+    lqry.bindValue(":NAME", m_Username);
+    lqry.exec();
+    lqry.first();
+    if(lqry.isValid())
+    {
+        m_actualUser = lqry.value(lqry.record().indexOf("PID")).toInt();
+    }
+    else
+    {
+        CLogonAssign ldlg(m_Username, this);
+        ldlg.exec();
+    }
 }
 
 
