@@ -446,25 +446,29 @@ bool CRosterWindow::checkRules(QDate pdate)
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
     int lCol = pdate.day() - 1;
-    int lRulesFullfilled = 0;
+    int lRulesFullfilled;
     //TODO: Indizes auf Überlauf prüfen
-    for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
+    for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
     {
-        ui->tbwRoster->setCurrentCell(lrow,lCol);
-        CDutyType ltyp(ui->tbwRoster->currentItem()->text());
-        for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
+        for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
         {
-            for(int lrt = 0; m_ruleList->at(lrule).tList()->count(); lrt++)
+            ui->tbwRoster->setCurrentCell(lrow,lCol);
+            CDutyType ltyp(ui->tbwRoster->currentItem()->text());
+            DutyRule ldr;
+            ldr.dty = ltyp;
+
+            for(int lrt = 0; lrt < m_ruleList->at(lrule).tList()->count(); lrt++)
             {
                 if(ltyp.id() == m_ruleList->at(lrule).tList()->at(lrt).id())
                 {
                     lRulesFullfilled++;
-                }
-                if(lRulesFullfilled == m_ruleList->at(lrule).tList()->count())
-                {
-                    qApp->restoreOverrideCursor();
-                    return true;
-                }
+                    break;
+                }                
+            }
+            if(lRulesFullfilled == m_ruleList->at(lrule).tList()->count())
+            {
+                qApp->restoreOverrideCursor();
+                return true;
             }
         }
     }
