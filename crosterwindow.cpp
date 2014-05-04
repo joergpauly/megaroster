@@ -453,15 +453,13 @@ bool CRosterWindow::checkRules(QDate pdate)
         for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
         {
             ui->tbwRoster->setCurrentCell(lrow,lCol);
-            CDutyType ltyp(ui->tbwRoster->currentItem()->text());
-            DutyRule ldr;
-            ldr.dty = ltyp;
-
+            CDutyType ltyp(ui->tbwRoster->currentItem()->text());           
             for(int lrt = 0; lrt < m_ruleList->at(lrule).tList()->count(); lrt++)
             {
                 if(ltyp.id() == m_ruleList->at(lrule).tList()->at(lrt).id())
                 {
-                    lRulesFullfilled++;
+                    //TODO: Stack <-> Heap
+                    m_ruleList->at(lrule).tList()->at(lrt).setChecked(true);
                     break;
                 }                
             }
@@ -475,6 +473,27 @@ bool CRosterWindow::checkRules(QDate pdate)
     ui->tbwRoster->setCurrentCell(acRow,acCol);
     qApp->restoreOverrideCursor();
     return false;
+}
+
+bool CRosterWindow::checkRuleSet(QList<CDutyType> pList)
+{
+    int lShall = pList.count();
+    int lIs = 0;
+    for(int i = 0; i < lShall; i++)
+    {
+        if(pList.at(i).Checked())
+        {
+            lIs++;
+        }
+    }
+    if(lIs == lShall)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)

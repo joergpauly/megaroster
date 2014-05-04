@@ -79,6 +79,9 @@ public:
     int id() const;
     void setId(int id);
 
+    bool Checked() const;
+    void setChecked(bool Checked);
+
 private:
     int     m_id;
     QString m_Mark;
@@ -94,6 +97,7 @@ private:
     int     m_RosterColorR;
     int     m_RosterColorG;
     int     m_RosterColorB;
+    bool    m_Checked;
 
     void readDB(QSqlQuery* pqry);
 };

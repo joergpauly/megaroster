@@ -35,6 +35,7 @@ CDutyType::CDutyType(QString pMark)
     lqry->first();
     readDB(lqry);
     delete lqry;
+    m_Checked = false;
 }
 
 CDutyType::CDutyType(int pID)
@@ -46,6 +47,7 @@ CDutyType::CDutyType(int pID)
     lqry->first();
     readDB(lqry);
     delete lqry;
+    m_Checked = false;
 }
 
 QString CDutyType::Mark() const
@@ -186,6 +188,16 @@ int CDutyType::id() const
 void CDutyType::setId(int id)
 {
     m_id = id;
+}
+
+bool CDutyType::Checked() const
+{
+    return m_Checked;
+}
+
+void CDutyType::setChecked(bool Checked)
+{
+    m_Checked = Checked;
 }
 
 void CDutyType::readDB(QSqlQuery* pqry)
