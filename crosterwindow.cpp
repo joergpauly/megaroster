@@ -44,6 +44,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
         lqry->next();
     }    
     delete lqry;
+    loadRules();
 }
 
 CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
@@ -423,6 +424,55 @@ void CRosterWindow::updatePrealerts(CDuty *pDuty)
     }
 }
 
+void CRosterWindow::loadRules()
+{
+    QSqlQuery lqry;
+    lqry.exec("SELECT * FROM tblDailyRule;");
+    lqry.first();
+    m_ruleList = new QList<CRule>();
+
+    while(lqry.isValid())
+    {
+        CRule lrule(lqry.value(lqry.record().indexOf("ID")).toInt());
+        m_ruleList->append(lrule);
+        lqry.next();
+    }
+}
+
+bool CRosterWindow::checkRules(QDate pdate)
+{
+    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    int acCol = ui->tbwRoster->currentColumn();
+    int acRow = ui->tbwRoster->currentRow();
+    int lCol = pdate.day() - 1;
+    int lRulesFullfilled = 0;
+    //TODO: Indizes auf Überlauf prüfen
+    for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
+    {
+        ui->tbwRoster->setCurrentCell(lrow,lCol);
+        CDutyType ltyp(ui->tbwRoster->currentItem()->text());
+        for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
+        {
+            for(int lrt = 0; m_ruleList->at(lrule).tList()->count(); lrt++)
+            {
+                if(ltyp.id() == m_ruleList->at(lrule).tList()->at(lrt).id())
+                {
+                    lRulesFullfilled++;
+                }
+                if(lRulesFullfilled == m_ruleList->at(lrule).tList()->count())
+                {
+                    qApp->restoreOverrideCursor();
+                    return true;
+                }
+            }
+        }
+    }
+    ui->tbwRoster->setCurrentCell(acRow,acCol);
+    qApp->restoreOverrideCursor();
+    return false;
+}
+
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
     m_init = true;
@@ -482,8 +532,25 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
     qry.exec();
     updateDetails(dty);
     makeIstH(ui->tbwRoster->currentRow());
+    bool lDayOK = checkRules(dty->Date());
     delete dty;
     delete dtyp;
+    if(!lDayOK)
+    {
+        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
+        QFont fnt = lhdr->font();
+        fnt.setPointSize(18);
+        lhdr->setFont(fnt);
+        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
+    }
+    else
+    {
+        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
+        QFont fnt = lhdr->font();
+        fnt.setPointSize(9);
+        lhdr->setFont(fnt);
+        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
+    }
 }
 
 void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)

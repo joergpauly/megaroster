@@ -95,6 +95,8 @@ private:
     void updateDetails(int prow, int pcol);
     void updateDetails(CDuty* pDuty);
     void updatePrealerts(CDuty* pDuty);
+    void loadRules();
+    bool checkRules(QDate pdate);
 
 };
 
