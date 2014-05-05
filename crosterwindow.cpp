@@ -446,8 +446,7 @@ bool CRosterWindow::checkRules(QDate pdate)
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
     int lCol = pdate.day() - 1;
-    int lRulesFullfilled;
-    //TODO: Indizes auf Überlauf prüfen
+    bool lRulesFullfilled = true;
     for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
     {
         for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
@@ -458,13 +457,22 @@ bool CRosterWindow::checkRules(QDate pdate)
             {
                 if(ltyp.id() == m_ruleList->at(lrule).tList()->at(lrt).id())
                 {
-                    //TODO: Stack <-> Heap
-                    m_ruleList->at(lrule).tList()->at(lrt).setChecked(true);
+                    CDutyType ldtyp = m_ruleList->at(lrule).tList()->at(lrt);
+                    ldtyp.setChecked(true);
+                    m_ruleList->at(lrule).tList()->insert(lrt,ldtyp);
                     break;
                 }                
             }
-            if(lRulesFullfilled == m_ruleList->at(lrule).tList()->count())
+            for(int rchecked = 0; rchecked < m_ruleList->at(lrule).tList()->count(); rchecked++)
             {
+                if(!m_ruleList->at(lrule).tList()->at(rchecked).Checked())
+                {
+                    lRulesFullfilled = false;
+                }
+            }
+            if(lRulesFullfilled)
+            {
+                ui->tbwRoster->setCurrentCell(acRow,acCol);
                 qApp->restoreOverrideCursor();
                 return true;
             }
