@@ -33,6 +33,8 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     m_Prefix = "";
     ui->cbShowAlerts->setChecked(true);
     ui->dtedMonthChoice->setDate(QDate::currentDate());
+    m_Year = QDate::currentDate().year();
+    m_Month = QDate::currentDate().month();
     setTabTitle(m_Prefix, QDate::currentDate());
     QSqlQuery* lqry = new QSqlQuery("SELECT * FROM tblDutyTypes ORDER BY Mark;");
     lqry->exec();
@@ -370,6 +372,14 @@ void CRosterWindow::makeRoster(QDate pDate)
 
 void CRosterWindow::updateDetails(int prow, int pcol)
 {
+    if(prow < 0)
+    {
+        return;
+    }
+    if(pcol < 0)
+    {
+        return;
+    }
     CDuty *dty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
     updateDetails(dty);
     delete dty;
@@ -446,41 +456,58 @@ bool CRosterWindow::checkRules(QDate pdate)
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
     int lCol = pdate.day() - 1;
-    bool lRulesFullfilled = true;
+    bool lRulesFullfilled;
+
     for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
     {
+
         for(int lrow = 0; lrow < ui->tbwRoster->rowCount(); lrow++)
         {
             ui->tbwRoster->setCurrentCell(lrow,lCol);
             CDutyType ltyp(ui->tbwRoster->currentItem()->text());           
+
             for(int lrt = 0; lrt < m_ruleList->at(lrule).tList()->count(); lrt++)
             {
+                CDutyType ldtyp = m_ruleList->at(lrule).tList()->at(lrt);
                 if(ltyp.id() == m_ruleList->at(lrule).tList()->at(lrt).id())
-                {
-                    CDutyType ldtyp = m_ruleList->at(lrule).tList()->at(lrt);
-                    ldtyp.setChecked(true);
-                    m_ruleList->at(lrule).tList()->insert(lrt,ldtyp);
-                    break;
-                }                
-            }
-            for(int rchecked = 0; rchecked < m_ruleList->at(lrule).tList()->count(); rchecked++)
+                {                    
+                    ldtyp.setChecked(true);                    
+                }                                
+                m_ruleList->at(lrule).tList()->replace(lrt, ldtyp);
+            }            
+        }       
+    }
+
+    for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
+    {
+        lRulesFullfilled = true;
+        for(int rchecked = 0; rchecked < m_ruleList->at(lrule).tList()->count(); rchecked++)
+        {
+            if(!m_ruleList->at(lrule).tList()->at(rchecked).Checked())
             {
-                if(!m_ruleList->at(lrule).tList()->at(rchecked).Checked())
-                {
-                    lRulesFullfilled = false;
-                }
-            }
-            if(lRulesFullfilled)
-            {
-                ui->tbwRoster->setCurrentCell(acRow,acCol);
-                qApp->restoreOverrideCursor();
-                return true;
+                lRulesFullfilled = false;
+                break;
             }
         }
+        if(lRulesFullfilled == true)
+        {
+            break;
+        }
     }
+
+    for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
+    {
+        for(int rchecked = 0; rchecked < m_ruleList->at(lrule).tList()->count(); rchecked++)
+        {
+            CDutyType ldtyp = m_ruleList->at(lrule).tList()->at(rchecked);
+            ldtyp.setChecked(false);
+            m_ruleList->at(lrule).tList()->replace(rchecked, ldtyp);
+        }
+    }
+
     ui->tbwRoster->setCurrentCell(acRow,acCol);
     qApp->restoreOverrideCursor();
-    return false;
+    return lRulesFullfilled;
 }
 
 bool CRosterWindow::checkRuleSet(QList<CDutyType> pList)
@@ -570,7 +597,7 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
     {
         QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
         QFont fnt = lhdr->font();
-        fnt.setPointSize(18);
+        fnt.setPointSize(14);
         lhdr->setFont(fnt);
         ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
     }
@@ -682,4 +709,14 @@ void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 {
     qApp->setOverrideCursor(Qt::WaitCursor);
     makeRoster(ui->dtedMonthChoice->date());
+}
+
+void CRosterWindow::on_cmdCheckRoster_clicked()
+{
+
+    for(int day = 1; day <= QDate(m_Year, m_Month, 1).daysInMonth(); day++)
+    {
+        ui->tbwRoster->setCurrentCell(0,day-1);
+        checkRules(QDate(m_Year,m_Month,day));
+    }
 }

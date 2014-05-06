@@ -53,6 +53,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="cmdCheckRoster">
+       <property name="text">
+        <string>&amp;Prüfen</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cmdPrint">
        <property name="text">
         <string>&amp;Drucken</string>
@@ -334,7 +341,7 @@
           <number>0</number>
          </property>
          <attribute name="horizontalHeaderVisible">
-          <bool>true</bool>
+          <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>70</number>
