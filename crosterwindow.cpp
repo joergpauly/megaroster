@@ -367,7 +367,8 @@ void CRosterWindow::makeRoster(QDate pDate)
     }
     delete lqry;
     qApp->restoreOverrideCursor();
-    ((CMainWindow*)m_parent)->setStatusText("");
+    ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
+    on_cmdCheckRoster_clicked();
 }
 
 void CRosterWindow::updateDetails(int prow, int pcol)
@@ -453,6 +454,7 @@ bool CRosterWindow::checkRules(QDate pdate)
 {
     qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
 
+    loadRules();
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
     int lCol = pdate.day() - 1;
@@ -505,6 +507,22 @@ bool CRosterWindow::checkRules(QDate pdate)
         }
     }
 
+    if(!lRulesFullfilled)
+    {
+        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
+        QFont fnt = lhdr->font();
+        fnt.setPointSize(14);
+        lhdr->setFont(fnt);
+        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
+    }
+    else
+    {
+        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
+        QFont fnt = lhdr->font();
+        fnt.setPointSize(9);
+        lhdr->setFont(fnt);
+        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
+    }
     ui->tbwRoster->setCurrentCell(acRow,acCol);
     qApp->restoreOverrideCursor();
     return lRulesFullfilled;
@@ -535,6 +553,8 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
 {
     m_init = true;
     qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+    m_Month = date.month();
+    m_Year = date.year();
     m_Holidays = new CHoliday(date.year());
     m_dbman = ((CMainWindow*)m_parent)->dataBase();
     setTabTitle(m_Prefix, date);
@@ -590,25 +610,9 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
     qry.exec();
     updateDetails(dty);
     makeIstH(ui->tbwRoster->currentRow());
-    bool lDayOK = checkRules(dty->Date());
+    checkRules(dty->Date());
     delete dty;
-    delete dtyp;
-    if(!lDayOK)
-    {
-        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
-        QFont fnt = lhdr->font();
-        fnt.setPointSize(14);
-        lhdr->setFont(fnt);
-        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
-    }
-    else
-    {
-        QTableWidgetItem *lhdr = ui->tbwRoster->horizontalHeaderItem(ui->tbwRoster->currentColumn());
-        QFont fnt = lhdr->font();
-        fnt.setPointSize(9);
-        lhdr->setFont(fnt);
-        ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
-    }
+    delete dtyp;    
 }
 
 void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
@@ -713,10 +717,11 @@ void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 
 void CRosterWindow::on_cmdCheckRoster_clicked()
 {
-
+    ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
     for(int day = 1; day <= QDate(m_Year, m_Month, 1).daysInMonth(); day++)
     {
         ui->tbwRoster->setCurrentCell(0,day-1);
         checkRules(QDate(m_Year,m_Month,day));
     }
+    ((CMainWindow*)m_parent)->setStatusText("");
 }
