@@ -408,9 +408,7 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
 }
 
 void CRosterWindow::updatePrealerts(CDuty *pDuty)
-{
-    //FIXME: Datum im Header wird nicht angezeigt.
-    //TODO: Date-Range SICHER implementieren!
+{    
     if(ui->tbwRoster->selectedItems().count() > 1)
     {
         return;
@@ -687,12 +685,12 @@ void CRosterWindow::on_cmdPrint_clicked()
     dlg->exec();
     QTableWidget *table = new QTableWidget(ui->tbwRoster);
     table->setParent(this);
-    table->setGeometry(0,0,(table->horizontalHeader()->width() + (table->columnCount() * table->verticalHeader()->width())),table->horizontalHeader()->height() * (table->rowCount()+1));
+    table->setGeometry(0,0,(table->horizontalHeader()->width() + (table->columnCount() * table->verticalHeader()->width())) - 50,table->horizontalHeader()->height() * (table->rowCount()));
     QPainter painter;
     painter.begin(prt);    
     double xscale = prt->pageRect().width()/double(ui->tbwRoster->width());
     double yscale = prt->pageRect().height()/double(ui->tbwRoster->height());
-    double scale = qMin(xscale, yscale);
+    double scale = qMin(xscale, yscale) * 0.9;
     painter.translate(prt->paperRect().x() + prt->pageRect().width()/2,
                        prt->paperRect().y() + prt->pageRect().height()/2);
     painter.scale(scale, scale);
