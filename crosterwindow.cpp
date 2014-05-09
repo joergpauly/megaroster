@@ -365,10 +365,7 @@ void CRosterWindow::makeRoster(QDate pDate)
     {
         makeRoster(pDate);
     }
-    delete lqry;
-    qApp->restoreOverrideCursor();
-    ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
-    on_cmdCheckRoster_clicked();
+    delete lqry;   
 }
 
 void CRosterWindow::updateDetails(int prow, int pcol)
