@@ -412,6 +412,8 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
 
 void CRosterWindow::updatePrealerts(CDuty *pDuty)
 {
+    //FIXME: Datum im Header wird nicht angezeigt.
+    //TODO: Date-Range SICHER implementieren!
     if(ui->tbwRoster->selectedItems().count() > 1)
     {
         return;

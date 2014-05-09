@@ -72,6 +72,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTableWidget" name="tbwRoster">
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(124, 124, 124, 255), stop:1 rgba(255, 255, 255, 255));</string>
+       </property>
        <property name="frameShape">
         <enum>QFrame::Panel</enum>
        </property>
@@ -79,7 +82,7 @@
         <enum>QFrame::Plain</enum>
        </property>
        <property name="alternatingRowColors">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -341,7 +344,7 @@
           <number>0</number>
          </property>
          <attribute name="horizontalHeaderVisible">
-          <bool>false</bool>
+          <bool>true</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>70</number>
