@@ -365,6 +365,7 @@ void CRosterWindow::makeRoster(QDate pDate)
     {
         makeRoster(pDate);
     }
+    ((CMainWindow*)m_parent)->setStatusText("Bereit...");
     delete lqry;   
 }
 
@@ -562,7 +563,6 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
     qApp->restoreOverrideCursor();
     m_init = false;
 }
-
 
 void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
 {
