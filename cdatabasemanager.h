@@ -55,6 +55,28 @@ public:
     QList<CDutyType>    *dutyTypeList();
     QList<CDuty>        *dutyList(QDate fromDate, QDate toDate, int PerID = 0);
 
+
 };
+
+class CLogManager : public QObject
+{
+    Q_OBJECT
+
+    struct sctLogEntry
+    {
+        QDateTime       timeStamp;
+        CPersonal       user;
+        CPersonal       personal;
+        CDuty           oldDuty;
+        CDuty           newDuty;
+    };
+public:
+    explicit CLogManager(QObject *parent = 0);
+    CLogManager(sctLogEntry pEntry, QObject *parent = 0);
+    void writeEntry(sctLogEntry pEntry);
+
+};
+
+
 
 #endif // CDATABASEMANAGER_H
