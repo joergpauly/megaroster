@@ -165,3 +165,19 @@ QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID
     return llist;
 }
 
+
+
+CLogManager::CLogManager(QObject *parent)
+{
+
+}
+
+CLogManager::CLogManager(CLogManager::sctLogEntry pEntry, QObject *parent)
+{
+
+}
+
+void CLogManager::writeEntry(CLogManager::sctLogEntry pEntry)
+{
+
+}
