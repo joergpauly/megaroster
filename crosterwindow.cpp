@@ -142,17 +142,17 @@ void CRosterWindow::makeColumns(QDate pDate)
         }
 
         ui->tbwRoster->setHorizontalHeaderItem(i,litem);
-        ui->tbwRoster->setColumnWidth(i,25);
+        ui->tbwRoster->setColumnWidth(i,30);
     }
     QTableWidgetItem* litem = new QTableWidgetItem("Ist-h");
     ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth(),litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth(),50);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth(),55);
     litem = new QTableWidgetItem("Soll-h");
     ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+1,litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+1,50);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+1,55);
     litem = new QTableWidgetItem("Diff.");
     ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+2,litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2,50);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2,55);
     makeSollH(pDate,lwdays,ldays+1);    
 }
 
