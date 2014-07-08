@@ -27,7 +27,11 @@ SOURCES += main.cpp\
     cprealert.cpp \
     cprealerttype.cpp \
     clogonassign.cpp \
-    crule.cpp
+    crule.cpp \
+    cprinttable.cpp \
+    cprinttablecell.cpp \
+    cprinttablerow.cpp \
+    cprinttablecol.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -43,7 +47,11 @@ HEADERS  += cmainwindow.h \
     cprealert.h \
     cprealerttype.h \
     clogonassign.h \
-    crule.h
+    crule.h \
+    cprinttable.h \
+    cprinttablecell.h \
+    cprinttablerow.h \
+    cprinttablecol.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
