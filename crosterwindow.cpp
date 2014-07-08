@@ -682,22 +682,10 @@ void CRosterWindow::on_cmdPrint_clicked()
     QPrinter* prt = new QPrinter();
     prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
-    dlg->exec();
-    QTableWidget *table = new QTableWidget(ui->tbwRoster);
-    table->setParent(this);
-    table->setGeometry(0,0,(table->horizontalHeader()->width() + (table->columnCount() * table->verticalHeader()->width())) - 50,table->horizontalHeader()->height() * (table->rowCount()));
-    QPainter painter;
-    painter.begin(prt);    
-    double xscale = prt->pageRect().width()/double(ui->tbwRoster->width());
-    double yscale = prt->pageRect().height()/double(ui->tbwRoster->height());
-    double scale = qMin(xscale, yscale) * 0.9;
-    painter.translate(prt->paperRect().x() + prt->pageRect().width()/2,
-                       prt->paperRect().y() + prt->pageRect().height()/2);
-    painter.scale(scale, scale);
-    painter.translate(-width()/2, -height()/2);
-
-    ui->tbwRoster->render(&painter);
-    painter.end();
+    dlg->exec();   
+    CPrintForm* frmPrint = new CPrintForm();
+    frmPrint->setTable(ui->tbwRoster);
+    frmPrint->showMaximized();
 }
 
 void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)

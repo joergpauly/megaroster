@@ -2,7 +2,7 @@
 *
 *   This file is part of the MEGA-Series Project.
 *   Copyright (C) 2014 Joerg Pauly
-*   Created 11.04.2014 by joerg
+*   Created 08.07.2014 by joerg
 *   All Rights reserved
 *
 *   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
@@ -20,58 +20,17 @@
 *
 *****************************************************************************************/
 
-#include "cprintform.h"
-#include "ui_cprintform.h"
+#ifndef CPRINTTABLEROW_H
+#define CPRINTTABLEROW_H
 
-CPrintForm::CPrintForm(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CPrintForm)
-{
-    ui->setupUi(this);
-    setGraph();
-}
+#include <QList>
+#include "cprinttablecell.h"
 
-CPrintForm::~CPrintForm()
-{
-    delete ui;
-}
 
-void CPrintForm::setGraph()
+class CPrintTableRow
 {
-    QGraphicsScene *scene = new QGraphicsScene();
-    QString fname = qApp->applicationDirPath();
-    fname.append("/wappen.jpeg");
-    QPixmap *img = new QPixmap(fname);
-    scene->addPixmap(*img);
-    ui->graphicsView->setScene(scene);
-}
+public:
+    CPrintTableRow();
+};
 
-void CPrintForm::setTextTopLeft(QString pTxt)
-{
-    ui->txtLeft->setText(pTxt);
-}
-
-void CPrintForm::setTextTipMid(QString pTxt)
-{
-    ui->txtMid->setText(pTxt);
-}
-
-void CPrintForm::setTextTopRight(QString pTxt)
-{
-    ui->txtRight->setText(pTxt);
-}
-
-void CPrintForm::setTextFooter(QString pTxt)
-{
-    ui->txtFooter->setText(pTxt);
-}
-
-void CPrintForm::setTable(QTableWidget *table)
-{
-    ui->tbwRoster = table;
-}
-
-void CPrintForm::setSubWnd(QMdiSubWindow *pSubWnd)
-{
-    m_SubWnd = pSubWnd;
-}
+#endif // CPRINTTABLEROW_H

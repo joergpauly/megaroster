@@ -29,6 +29,7 @@
 #include <QTableWidgetItem>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QPrintPreviewWidget>
 #include <QPainter>
 
 // Projekt-Header
