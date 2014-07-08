@@ -24,14 +24,40 @@
 #define CPRINTTABLECELL_H
 
 #include <QRect>
+#include <QPoint>
+#include <QFont>
 #include <QColor>
 #include <QString>
+#include <QPainter>
 
 
 class CPrintTableCell
 {
+
+private:
+    QRect   m_Rect;
+    QFont   m_Font;
+    QString m_Text;
+
+
+
 public:
     CPrintTableCell();
+    CPrintTableCell(QPoint pPos, int pWidth = 0, int pHeight = 0, QString pText = "");
+
+
+    void setWidth(int pWidth);
+    void setHeight(int pHeight);
+    void setPosition(QPoint pPos);
+
+    QFont Font() const;
+    void setFont(const QFont &Font);
+    QRect Rect() const;
+    void setRect(const QRect &Rect);
+    QString Text() const;
+    void setText(const QString &Text);
+
+    void draw(QPainter *pPainter);
 };
 
 #endif // CPRINTTABLECELL_H

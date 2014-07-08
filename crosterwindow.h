@@ -42,6 +42,7 @@
 #include "cprealert.h"
 #include "cprealerttype.h"
 #include "crule.h"
+#include "cprinttable.h"
 
 namespace Ui {
 class CRosterWindow;

@@ -22,6 +22,67 @@
 
 #include "cprinttablecell.h"
 
+
 CPrintTableCell::CPrintTableCell()
 {
 }
+
+CPrintTableCell::CPrintTableCell(QPoint pPos, int pWidth, int pHeight, QString pText)
+{
+    m_Rect.setTopLeft(pPos);
+    m_Rect.setWidth(pWidth);
+    m_Rect.setHeight(pHeight);
+    m_Text = pText;
+}
+
+void CPrintTableCell::setWidth(int pWidth)
+{
+    m_Rect.setWidth(pWidth);
+}
+
+void CPrintTableCell::setHeight(int pHeight)
+{
+    m_Rect.setHeight(pHeight);
+}
+
+void CPrintTableCell::setPosition(QPoint pPos)
+{
+    m_Rect.setTopLeft(pPos);
+}
+
+QFont CPrintTableCell::Font() const
+{
+    return m_Font;
+}
+
+void CPrintTableCell::setFont(const QFont &Font)
+{
+    m_Font = Font;
+}
+
+QRect CPrintTableCell::Rect() const
+{
+    return m_Rect;
+}
+
+void CPrintTableCell::setRect(const QRect &Rect)
+{
+    m_Rect = Rect;
+}
+
+QString CPrintTableCell::Text() const
+{
+    return m_Text;
+}
+
+void CPrintTableCell::setText(const QString &Text)
+{
+    m_Text = Text;
+}
+
+void CPrintTableCell::draw(QPainter *pPainter)
+{
+    pPainter->drawRect(m_Rect);
+    pPainter->drawText(m_Rect.topLeft(),m_Text);
+}
+

@@ -683,9 +683,30 @@ void CRosterWindow::on_cmdPrint_clicked()
     prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
     dlg->exec();   
-    CPrintForm* frmPrint = new CPrintForm();
-    frmPrint->setTable(ui->tbwRoster);
-    frmPrint->showMaximized();
+    QPainter* localPainter = new QPainter();
+    localPainter->begin(prt);
+    QPoint lpos(10,10);
+    for(int i = 0; i<ui->tbwRoster->columnCount();i++)
+    {
+        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->horizontalHeader()->width(), ui->tbwRoster->verticalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());
+        cell->draw(localPainter);
+        lpos.setX(lpos.x() + cell->Rect().width());
+    }
+    for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
+    {
+        int lhig;
+        for(int col = 0; col < ui->tbwRoster->columnCount(); col++)
+        {
+            ui->tbwRoster->setCurrentCell(row,col);
+            CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(col),ui->tbwRoster->rowHeight(row),ui->tbwRoster->currentItem()->text());
+            cell->draw(localPainter);
+            lpos.setX(lpos.x() + cell->Rect().width());
+            lhig = cell->Rect().height();
+        }
+        lpos.setY(lpos.y() + lhig);
+        lpos.setX(10);
+    }
+    localPainter->end();
 }
 
 void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
