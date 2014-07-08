@@ -83,6 +83,6 @@ void CPrintTableCell::setText(const QString &Text)
 void CPrintTableCell::draw(QPainter *pPainter)
 {
     pPainter->drawRect(m_Rect);
-    pPainter->drawText(m_Rect.topLeft(),m_Text);
+    pPainter->drawText(m_Rect,Qt::AlignCenter,m_Text);
 }
 
