@@ -686,12 +686,14 @@ void CRosterWindow::on_cmdPrint_clicked()
     QPainter* localPainter = new QPainter();
     localPainter->begin(prt);
     QPoint lpos(10,10);
-    for(int i = 0; i<ui->tbwRoster->columnCount();i++)
+
+    /*for(int i = 0; i<ui->tbwRoster->columnCount();i++)
     {
         CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->horizontalHeader()->width(), ui->tbwRoster->verticalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());
         cell->draw(localPainter);
         lpos.setX(lpos.x() + cell->Rect().width());
-    }
+    }*/
+
     for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
     {
         int lhig;
