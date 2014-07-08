@@ -28,6 +28,8 @@
 #include <QPrinter>
 #include <QPainter>
 
+#include "cprinttablecol.h"
+#include "cprinttablerow.h"
 
 class CPrintTable
 {
