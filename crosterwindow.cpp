@@ -685,28 +685,47 @@ void CRosterWindow::on_cmdPrint_clicked()
     dlg->exec();   
     QPainter* localPainter = new QPainter();
     localPainter->begin(prt);
-    QPoint lpos(10,10);
+    QPoint lpos(10+ui->tbwRoster->verticalHeader()->width(),150);
 
-    /*for(int i = 0; i<ui->tbwRoster->columnCount();i++)
-    {
-        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->horizontalHeader()->width(), ui->tbwRoster->verticalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());
+    for(int i = 0; i<ui->tbwRoster->columnCount();i++)
+    {        
+        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());
+        //cell->setBrush(ui->tbwRoster->verticalHeaderItem(i)->background());
+        cell->setAlign(Qt::AlignCenter);
         cell->draw(localPainter);
         lpos.setX(lpos.x() + cell->Rect().width());
-    }*/
+
+    }
+
+    lpos.setY(lpos.y()+ui->tbwRoster->horizontalHeader()->height());
 
     for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
     {
+        lpos.setX(10);
         int lhig;
+        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->verticalHeader()->width(),ui->tbwRoster->rowHeight(row),ui->tbwRoster->verticalHeaderItem(row)->text());
+        cell->setAlign(Qt::AlignLeft|Qt::AlignVCenter);
+        cell->draw(localPainter);
+        lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
+
         for(int col = 0; col < ui->tbwRoster->columnCount(); col++)
         {
             ui->tbwRoster->setCurrentCell(row,col);
-            CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(col),ui->tbwRoster->rowHeight(row),ui->tbwRoster->currentItem()->text());
+            CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(col)-5,ui->tbwRoster->rowHeight(row),ui->tbwRoster->currentItem()->text());
+            cell->setBrush(ui->tbwRoster->currentItem()->background());
+            if(ui->tbwRoster->columnCount() - col <= 3)
+            {
+                cell->setAlign(Qt::AlignRight|Qt::AlignVCenter);
+            }
+            else
+            {
+                cell->setAlign(Qt::AlignCenter);
+            }
             cell->draw(localPainter);
             lpos.setX(lpos.x() + cell->Rect().width());
             lhig = cell->Rect().height();
         }
-        lpos.setY(lpos.y() + lhig);
-        lpos.setX(10);
+        lpos.setY(lpos.y() + lhig);        
     }
     localPainter->end();
 }
