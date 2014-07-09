@@ -23,6 +23,18 @@
 #include "cprinttablecell.h"
 
 
+
+
+int CPrintTableCell::Align() const
+{
+    return m_Align;
+}
+
+void CPrintTableCell::setAlign(int Align)
+{
+    m_Align = Align;
+}
+
 CPrintTableCell::CPrintTableCell()
 {
 }
@@ -31,8 +43,8 @@ CPrintTableCell::CPrintTableCell(QPoint pPos, int pWidth, int pHeight, QString p
 {
     m_Rect.setTopLeft(pPos);
     m_Rect.setWidth(pWidth);
-    m_Rect.setHeight(pHeight);
-    m_Text = pText;
+    m_Rect.setHeight(pHeight);       
+    m_Text = pText;    
 }
 
 void CPrintTableCell::setWidth(int pWidth)
@@ -50,12 +62,12 @@ void CPrintTableCell::setPosition(QPoint pPos)
     m_Rect.setTopLeft(pPos);
 }
 
-QFont CPrintTableCell::Font() const
+QFont* CPrintTableCell::Font() const
 {
     return m_Font;
 }
 
-void CPrintTableCell::setFont(const QFont &Font)
+void CPrintTableCell::setFont(QFont *Font)
 {
     m_Font = Font;
 }
@@ -81,8 +93,18 @@ void CPrintTableCell::setText(const QString &Text)
 }
 
 void CPrintTableCell::draw(QPainter *pPainter)
-{
+{   
+    pPainter->setBrush(m_Brush);
     pPainter->drawRect(m_Rect);
-    pPainter->drawText(m_Rect,Qt::AlignCenter,m_Text);
+    pPainter->drawText(m_Rect,m_Align,m_Text);
 }
 
+QBrush CPrintTableCell::Brush() const
+{
+    return m_Brush;
+}
+
+void CPrintTableCell::setBrush(const QBrush Brush)
+{
+    m_Brush = Brush;
+}

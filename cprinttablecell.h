@@ -36,9 +36,10 @@ class CPrintTableCell
 
 private:
     QRect   m_Rect;
-    QFont   m_Font;
+    QFont   *m_Font;
     QString m_Text;
-
+    QBrush  m_Brush;
+    int     m_Align;
 
 
 public:
@@ -50,14 +51,18 @@ public:
     void setHeight(int pHeight);
     void setPosition(QPoint pPos);
 
-    QFont Font() const;
-    void setFont(const QFont &Font);
+    QFont *Font() const;
+    void setFont(QFont *Font);
     QRect Rect() const;
     void setRect(const QRect &Rect);
     QString Text() const;
     void setText(const QString &Text);
 
     void draw(QPainter *pPainter);
+    QBrush Brush() const;
+    void setBrush(const QBrush Brush);
+    int Align() const;
+    void setAlign(int Align);
 };
 
 #endif // CPRINTTABLECELL_H
