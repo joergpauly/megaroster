@@ -685,7 +685,22 @@ void CRosterWindow::on_cmdPrint_clicked()
     dlg->exec();   
     QPainter* localPainter = new QPainter();
     localPainter->begin(prt);
-    QPoint lpos(10+ui->tbwRoster->verticalHeader()->width(),150);
+
+    QPoint lpos(10,10);
+    QImage *logo = new QImage(":/gfx/ico/logo.jpg");
+    localPainter->drawImage(lpos,*logo);
+
+    lpos.setX(10 + logo->width() + 80);
+    lpos.setY(50);
+    QFont fnt;
+    fnt.setPointSize(24);
+    QFont oldfnt = localPainter->font();
+    localPainter->setFont(fnt);
+    localPainter->drawText(lpos, "Dienstplan " + ui->dtedMonthChoice->text());
+    localPainter->setFont(oldfnt);
+
+    lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
+    lpos.setY(150);
 
     for(int i = 0; i<ui->tbwRoster->columnCount();i++)
     {        
