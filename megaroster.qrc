@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/gfx/ico">
         <file>mr.bmp</file>
-        <file>identitaet_logo.jpg</file>
+        <file>logo.jpg</file>
     </qresource>
 </RCC>
