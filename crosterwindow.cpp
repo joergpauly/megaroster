@@ -702,10 +702,11 @@ void CRosterWindow::on_cmdPrint_clicked()
     lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
     lpos.setY(150);
 
-    for(int i = 0; i<ui->tbwRoster->columnCount();i++)
+    for(int i = 0; i<ui->tbwRoster->columnCount() - 1; i++)
     {        
-        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());
-        //cell->setBrush(ui->tbwRoster->verticalHeaderItem(i)->background());
+        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());        
+        QBrush brush = ui->tbwRoster->horizontalHeaderItem(i)->background();
+        cell->setBrush(brush);
         cell->setAlign(Qt::AlignCenter);
         cell->draw(localPainter);
         lpos.setX(lpos.x() + cell->Rect().width());
@@ -723,7 +724,7 @@ void CRosterWindow::on_cmdPrint_clicked()
         cell->draw(localPainter);
         lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
 
-        for(int col = 0; col < ui->tbwRoster->columnCount(); col++)
+        for(int col = 0; col < ui->tbwRoster->columnCount() - 1; col++)
         {
             ui->tbwRoster->setCurrentCell(row,col);
             CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(col)-5,ui->tbwRoster->rowHeight(row),ui->tbwRoster->currentItem()->text());
