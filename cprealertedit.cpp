@@ -188,9 +188,9 @@ void CPrealertEdit::reloadTypes()
 }
 
 void CPrealertEdit::on_trvPrealerts_itemClicked(QTreeWidgetItem *item, int column)
-{
-    reloadTypes();
+{    
     ui->datFromDate->setDate(QDate::fromString(item->text(0),"dd.MM.yyyy"));
+    reloadTypes();
 }
 
 void CPrealertEdit::on_cmdKillDuty_clicked()
