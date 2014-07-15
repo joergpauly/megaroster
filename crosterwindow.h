@@ -31,6 +31,8 @@
 #include <QPrinter>
 #include <QPrintPreviewWidget>
 #include <QPainter>
+#include <QXmlStreamReader>
+#include <QStringRef>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
