@@ -679,6 +679,27 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 
 void CRosterWindow::on_cmdPrint_clicked()
 {
+
+    // Test XML Reader
+    QFile *lFile = new QFile("Dienstplanvorlage.sla");
+    lFile->open(QIODevice::ReadOnly);
+    QXmlStreamReader reader(lFile);
+    QString token;
+    QString toktext;
+    while(!reader.atEnd())
+    {
+        QStringRef txtref = reader.text();
+        reader.readNext();
+        token = reader.tokenString();
+        if(txtref != NULL)
+        {
+            toktext = *txtref.string();
+        }
+    }
+
+
+    // Ende Test Xml
+
     QPrinter* prt = new QPrinter();
     prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
@@ -710,7 +731,6 @@ void CRosterWindow::on_cmdPrint_clicked()
         cell->setAlign(Qt::AlignCenter);
         cell->draw(localPainter);
         lpos.setX(lpos.x() + cell->Rect().width());
-
     }
 
     lpos.setY(lpos.y()+ui->tbwRoster->horizontalHeader()->height());
