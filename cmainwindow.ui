@@ -71,14 +71,14 @@
        <number>10</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pgRoster">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>134</width>
+         <width>133</width>
          <height>393</height>
         </rect>
        </property>
@@ -97,6 +97,18 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="cmdEditRoster">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>Soll-Plan
 be&amp;arbeiten</string>
@@ -105,6 +117,18 @@ be&amp;arbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdPreAlerts">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>&amp;Vormerkungen
 bearbeiten</string>
@@ -113,6 +137,18 @@ bearbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdActualRoster">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>&amp;Ist-Plan
 bearbeiten</string>
@@ -121,6 +157,18 @@ bearbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdChangeLog">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>Änderungen
 &amp;einsehen</string>
@@ -135,7 +183,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>100</height>
+         <height>393</height>
         </rect>
        </property>
        <property name="font">
@@ -158,6 +206,18 @@ bearbeiten</string>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPushButton" name="cmdPersEdit">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>Personaldaten
 bearbeiten</string>
@@ -166,6 +226,18 @@ bearbeiten</string>
         </item>
         <item>
          <widget class="QPushButton" name="cmdDType">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>115</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
            <string>Dienst-Arten
 bearbeiten</string>
