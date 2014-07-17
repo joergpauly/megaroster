@@ -373,19 +373,27 @@ void CRosterWindow::updateDetails(int prow, int pcol)
 {
     if(prow < 0)
     {
+        ui->timFrom->setEnabled(false);
+        ui->timFrom2->setEnabled(false);
+        ui->timTo->setEnabled(false);
+        ui->timTo2->setEnabled(false);
         return;
     }
     if(pcol < 0)
     {
         return;
+        ui->timFrom->setEnabled(false);
+        ui->timFrom2->setEnabled(false);
+        ui->timTo->setEnabled(false);
+        ui->timTo2->setEnabled(false);
     }
-    CDuty *dty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
-    updateDetails(dty);
-    delete dty;
+    m_currentDuty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
+    updateDetails(m_currentDuty);
 }
 
 void CRosterWindow::updateDetails(CDuty *pDuty)
 {
+    m_updatingDetails = true;
     QString txt = pDuty->Typ()->Desc();
     ui->txtDutyType->setText(txt);
     QPalette pal = ui->txtDutyType->palette();
@@ -405,7 +413,12 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     }
     QTime ltim(hrs,mins);
     ui->timDura->setTime(ltim);
+    ui->timFrom->setEnabled(true);
+    ui->timFrom2->setEnabled(true);
+    ui->timTo->setEnabled(true);
+    ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
+    m_updatingDetails = false;
 }
 
 void CRosterWindow::updatePrealerts(CDuty *pDuty)
@@ -545,6 +558,43 @@ bool CRosterWindow::checkRuleSet(QList<CDutyType> pList)
     {
         return false;
     }
+}
+
+void CRosterWindow::updateDutyDB()
+{
+    QSqlQuery qry;
+    QTime ltime = QTime::fromString("00:00:00","hh:mm:ss");
+    int secs1 = ui->timFrom->time().secsTo(ui->timTo->time());
+    ltime = ltime.addSecs(secs1);
+    m_currentDuty->setDuration(ltime);
+    ltime = QTime::fromString("00:00:00","hh:mm:ss");
+    int secs2 = ui->timFrom2->time().secsTo(ui->timTo2->time());
+    ltime = ltime.addSecs(secs2);
+    m_currentDuty->setDuration2(ltime);
+    ltime = QTime::fromString("00:00:00","hh:mm:ss");
+    ltime.addSecs(secs1 + secs2);
+    ui->timDura->setTime(ltime);
+    qry.prepare("UPDATE tblDuty SET TypeID = :TID, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
+    int tid = m_currentDuty->Typ()->id();
+    qry.bindValue(":TID", tid);
+    QString tf = m_currentDuty->TimeFrom().toString("hh:mm:ss.zzz");
+    qry.bindValue(":TF", tf);
+    QString tt = m_currentDuty->TimeTo().toString("hh:mm:ss.zzz");
+    qry.bindValue(":TT", tt);
+    QString dur = m_currentDuty->Duration().toString("hh:mm:ss.zzz");
+    qry.bindValue(":Dura", dur);
+    QString tf2 = m_currentDuty->TimeFrom2().toString("hh:mm:ss.zzz");
+    qry.bindValue(":TFF", tf2);
+    QString tt2 = m_currentDuty->TimeTo2().toString("hh:mm:ss.zzz");
+    qry.bindValue(":TTT", tt2);
+    QString dur2 = m_currentDuty->Duration2().toString("hh:mm:ss.zzz");
+    qry.bindValue(":Dura2", dur2);
+    int did = m_currentDuty->id();
+    qry.bindValue(":ID", did);
+    qry.exec();
+    updateDetails(m_currentDuty);
+    makeIstH(ui->tbwRoster->currentRow());
+    checkRules(m_currentDuty->Date());
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
@@ -787,4 +837,40 @@ void CRosterWindow::on_cmdCheckRoster_clicked()
         checkRules(QDate(m_Year,m_Month,day));
     }
     ((CMainWindow*)m_parent)->setStatusText("");
+}
+
+void CRosterWindow::on_timFrom_timeChanged(const QTime &time)
+{
+    if(!m_updatingDetails)
+    {
+        m_currentDuty->setTimeFrom(time);
+        updateDutyDB();
+    }
+}
+
+void CRosterWindow::on_timTo_timeChanged(const QTime &time)
+{
+    if(!m_updatingDetails)
+    {
+        m_currentDuty->setTimeTo(time);
+        updateDutyDB();
+    }
+}
+
+void CRosterWindow::on_timFrom2_timeChanged(const QTime &time)
+{
+    if(!m_updatingDetails)
+    {
+        m_currentDuty->setTimeFrom2(time);
+        updateDutyDB();
+    }
+}
+
+void CRosterWindow::on_timTo2_timeChanged(const QTime &time)
+{
+    if(!m_updatingDetails)
+    {
+        m_currentDuty->setTimeTo2(time);
+        updateDutyDB();
+    }
 }

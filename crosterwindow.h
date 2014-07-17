@@ -73,6 +73,14 @@ private slots:
 
     void on_cmdCheckRoster_clicked();
 
+    void on_timFrom_timeChanged(const QTime &time);
+
+    void on_timTo_timeChanged(const QTime &time);
+
+    void on_timFrom2_timeChanged(const QTime &time);
+
+    void on_timTo2_timeChanged(const QTime &time);
+
 private:
     // Properties
     Ui::CRosterWindow *ui;
@@ -88,6 +96,8 @@ private:
     int oldRow;
     CDutyType* m_DType;
     QList<CRule> *m_ruleList;
+    CDuty *m_currentDuty;
+    bool m_updatingDetails;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);
@@ -104,6 +114,7 @@ private:
     void loadRules();
     bool checkRules(QDate pdate);
     bool checkRuleSet(QList<CDutyType> pList);
+    void updateDutyDB();
 
 };
 
