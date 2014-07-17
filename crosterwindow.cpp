@@ -753,7 +753,7 @@ void CRosterWindow::on_cmdPrint_clicked()
     QPrinter* prt = new QPrinter();
     prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
-    dlg->exec();   
+    dlg->exec();
     QPainter* localPainter = new QPainter();
     localPainter->begin(prt);
 
