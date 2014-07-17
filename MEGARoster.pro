@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     cprinttable.cpp \
     cprinttablecell.cpp \
     cprinttablerow.cpp \
-    cprinttablecol.cpp
+    cprinttablecol.cpp \
+    cprintformeditor.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -51,7 +52,8 @@ HEADERS  += cmainwindow.h \
     cprinttable.h \
     cprinttablecell.h \
     cprinttablerow.h \
-    cprinttablecol.h
+    cprinttablecol.h \
+    cprintformeditor.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
@@ -59,7 +61,8 @@ FORMS    += cmainwindow.ui \
     cdutytypeedit.ui \
     cprintform.ui \
     cprealertedit.ui \
-    clogonassign.ui
+    clogonassign.ui \
+    cprintformeditor.ui
 
 OTHER_FILES += \
     mr.sql \

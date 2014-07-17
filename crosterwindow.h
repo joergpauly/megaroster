@@ -33,6 +33,7 @@
 #include <QPainter>
 #include <QXmlStreamReader>
 #include <QStringRef>
+#include <QImage>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -45,6 +46,7 @@
 #include "cprealerttype.h"
 #include "crule.h"
 #include "cprinttable.h"
+#include "cprintformeditor.h"
 
 namespace Ui {
 class CRosterWindow;
@@ -60,6 +62,7 @@ public:
     ~CRosterWindow();
     void setSubWnd(QWidget* pSubWnd);
 
+
 private slots:
     void on_dtedMonthChoice_dateChanged(const QDate &date);
     void on_tbwRoster_itemChanged(QTableWidgetItem *item);
@@ -70,20 +73,14 @@ private slots:
     void on_cmdPrint_clicked();   
     void on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item);
     void on_cbShowAlerts_clicked(bool checked);
-
     void on_cmdCheckRoster_clicked();
-
     void on_timFrom_timeChanged(const QTime &time);
-
     void on_timTo_timeChanged(const QTime &time);
-
     void on_timFrom2_timeChanged(const QTime &time);
-
     void on_timTo2_timeChanged(const QTime &time);
 
 private:
-    // Properties
-    Ui::CRosterWindow *ui;
+    // Properties    
     QWidget* m_subWnd;
     QString m_Prefix;
     int m_Month;
@@ -98,6 +95,7 @@ private:
     QList<CRule> *m_ruleList;
     CDuty *m_currentDuty;
     bool m_updatingDetails;
+    Ui::CRosterWindow *ui;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);

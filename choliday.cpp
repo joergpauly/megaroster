@@ -66,8 +66,7 @@ bool CHoliday::checkForHoliday(QDate pDate)
 }
 
 void CHoliday::makeHolidayList()
-{
-    // TODO: ldate auf Stack verschieben
+{    
     m_holidayList = new QList<QDate>();
     QDate ldate(m_osterSonntag.year(),1,1);
     m_holidayList->append(ldate);
