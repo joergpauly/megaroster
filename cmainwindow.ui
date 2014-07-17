@@ -71,7 +71,7 @@
        <number>10</number>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pgRoster">
        <property name="geometry">
@@ -89,7 +89,7 @@
         </sizepolicy>
        </property>
        <attribute name="label">
-        <string>Dienst-Planung</string>
+        <string>Planung</string>
        </attribute>
        <attribute name="toolTip">
         <string>Pläne gestalten, ansehen, drucken...</string>
@@ -198,7 +198,7 @@ bearbeiten</string>
         <string>Personal- und Dienst-Arten bearbeiten</string>
        </property>
        <attribute name="label">
-        <string>Grunddaten</string>
+        <string>St.-Daten</string>
        </attribute>
        <attribute name="toolTip">
         <string>Basis-Daten zur Dienstplangestaltung</string>
