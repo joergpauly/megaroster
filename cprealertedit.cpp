@@ -53,6 +53,7 @@ CPrealertEdit::CPrealertEdit(QWidget *parent) :
     }
     m_dtMenu->addActions(*lActions);
     connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
+    selectActualUser();
 }
 
 CPrealertEdit::~CPrealertEdit()
@@ -185,6 +186,19 @@ void CPrealertEdit::reloadTypes()
     m_actAlert = new CPrealert(ui->trvPrealerts->currentItem()->data(0,Qt::UserRole).toInt());
     m_paTypes = m_actAlert->paTypes();
     updateTypes();
+}
+
+void CPrealertEdit::selectActualUser()
+{
+    int lUsrID = ((CMainWindow*)m_parent)->getUserID();
+    for(int i = 0; i < ui->cmbPersonal->count();i++)
+    {
+        ui->cmbPersonal->setCurrentIndex(i);
+        if(ui->cmbPersonal->currentData().toInt() == lUsrID)
+        {
+            break;
+        }
+    }
 }
 
 void CPrealertEdit::on_trvPrealerts_itemClicked(QTreeWidgetItem *item, int column)

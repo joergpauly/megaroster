@@ -27,7 +27,10 @@ CMainWindow::CMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CMainWindow)
 {
+    QSettings *set = new QSettings("MEGA-Serie", "MEGARoster");
     ui->setupUi(this);
+    m_Path = new QDir(set->value("FILEDIR", QVariant(".")).toString());
+
     m_dbman = new CDatabaseManager(this);    
     m_Username = qgetenv("USER");
     if(m_Username.isEmpty())
@@ -38,6 +41,7 @@ CMainWindow::CMainWindow(QWidget *parent) :
     QLabel *txtUser = new QLabel();
     txtUser->setText("Anwender: " + CPersonal(m_actualUser).Name() + ", " + CPersonal(m_actualUser).VName());
     ui->statusBar->addPermanentWidget(txtUser);
+    delete set;
 }
 
 CMainWindow::~CMainWindow()
@@ -58,6 +62,16 @@ void CMainWindow::setStatusText(QString pText)
 void CMainWindow::setUserID(int pID)
 {
     m_actualUser = pID;
+}
+
+int CMainWindow::getUserID()
+{
+    return m_actualUser;
+}
+
+QDir *CMainWindow::path()
+{
+    return m_Path;
 }
 
 void CMainWindow::on_actionProgramm_be_enden_triggered()
@@ -168,4 +182,22 @@ void CMainWindow::on_cmdPreAlerts_clicked()
     CPrealertEdit *pAlert = new CPrealertEdit(this);
     pAlert->setSubWnd(ui->mdiArea->addSubWindow(pAlert));
     pAlert->show();
+}
+
+void CMainWindow::on_actionDaten_Ordner_festlegen_triggered()
+{
+    QFileDialog dlg;
+    QSettings *set = new QSettings("MEGA-Serie", "MEGARoster");
+
+    QDir dir;
+    dir.setPath(set->value("FILEDIR", QVariant(".")).toString());
+    dlg.setFileMode(QFileDialog::DirectoryOnly);
+    dlg.setDirectory(dir);
+    dlg.setWindowTitle("Daten-Ordner festlegen");
+    if(dlg.exec() == QDialog::Accepted)
+    {
+        dir = dlg.directory();
+        set->setValue("FILEDIR", (QVariant)dir.path());
+    }
+    delete set;
 }

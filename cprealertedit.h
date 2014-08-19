@@ -87,6 +87,7 @@ private:
     void updateAlerts();
     void reloadAlerts();
     void reloadTypes();
+    void selectActualUser();
 };
 
 #endif // CPREALERTEDIT_H
