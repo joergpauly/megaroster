@@ -34,7 +34,7 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
      * populated with the table definitions
      */
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    QString dbname = QGuiApplication::applicationDirPath();
+    QString dbname = ((CMainWindow*)parent)->path()->absolutePath();
     dbname.append("/mr.sqlite");
     m_db.setDatabaseName(dbname);
 

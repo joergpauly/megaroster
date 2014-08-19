@@ -136,26 +136,6 @@ bearbeiten</string>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="cmdActualRoster">
-          <property name="minimumSize">
-           <size>
-            <width>115</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>115</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>&amp;Ist-Plan
-bearbeiten</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="cmdChangeLog">
           <property name="minimumSize">
            <size>
@@ -183,7 +163,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>393</height>
+         <height>84</height>
         </rect>
        </property>
        <property name="font">
@@ -300,6 +280,8 @@ bearbeiten</string>
     <addaction name="action_Dienst_Arten"/>
     <addaction name="separator"/>
     <addaction name="actionDruckvorlage_bearbeiten"/>
+    <addaction name="separator"/>
+    <addaction name="actionDaten_Ordner_festlegen"/>
    </widget>
    <addaction name="menu_Dienstplan"/>
    <addaction name="menu_Basis_Daten"/>
@@ -327,7 +309,15 @@ bearbeiten</string>
   </action>
   <action name="actionDruckvorlage_bearbeiten">
    <property name="text">
-    <string>Druckvorlage bearbeiten...</string>
+    <string>Druck&amp;vorlage bearbeiten...</string>
+   </property>
+  </action>
+  <action name="actionDaten_Ordner_festlegen">
+   <property name="text">
+    <string>Daten-&amp;Ordner festlegen...</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In welchem Ordner befindet sich die Daten-Datei?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>

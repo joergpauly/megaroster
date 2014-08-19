@@ -29,6 +29,9 @@
 #include <QMessageBox>
 #include <QMdiSubWindow>
 #include <QLabel>
+#include <QDir>
+#include <QFileDialog>
+#include <QSettings>
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -54,6 +57,9 @@ public:
     CDatabaseManager* dataBase();
     void setStatusText(QString pText);
     void setUserID(int pID);
+    int getUserID();
+    QDir* path();
+
 
 private slots:
     void on_actionProgramm_be_enden_triggered();
@@ -66,6 +72,8 @@ private slots:
     void on_actionDruckvorlage_bearbeiten_triggered();
     void on_cmdPreAlerts_clicked();
 
+    void on_actionDaten_Ordner_festlegen_triggered();
+
 private:
     // Properties
     Ui::CMainWindow *ui;
@@ -75,6 +83,7 @@ private:
     CDutyTypeEdit* m_DTEdit;
     QString m_Username;
     int m_actualUser;
+    QDir *m_Path;
 
     // Funktionen
     void closeEvent(QCloseEvent* e);
