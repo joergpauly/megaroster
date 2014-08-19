@@ -66,9 +66,15 @@ private slots:
 
     void setSelected(QWidget* pold, QWidget* pnew);
 
+    void on_chkEdit_clicked();
+
+    void on_chkAdmin_clicked();
+
 private:
     // Member
     Ui::CPersonalEdit *ui;
+    QObject* m_parent;
+    CPersonal *m_actUsr;
     QMdiSubWindow *m_SubWnd;
     QSqlQuery* m_qry;
     int m_id;

@@ -22,11 +22,14 @@
 
 #include "cpersonaledit.h"
 #include "ui_cpersonaledit.h"
+#include "cmainwindow.h"
 
 CPersonalEdit::CPersonalEdit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CPersonalEdit)
 {
+    m_parent = parent;
+    m_actUsr = new CPersonal(((CMainWindow*)parent)->getUserID());
     ui->setupUi(this);
     connect(qApp,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(setSelected(QWidget*,QWidget*)));
     loadTable();
@@ -55,7 +58,7 @@ void CPersonalEdit::fillPersTable()
 {
     //ui->tblPersonal->clear();
     ui->tblPersonal->setRowCount(0);
-    ui->tblPersonal->setColumnCount(7);
+    ui->tblPersonal->setColumnCount(9);
 
     m_qry->first();
     int i = 0;
@@ -74,6 +77,28 @@ void CPersonalEdit::fillPersTable()
         QTableWidgetItem *lETDat = new QTableWidgetItem(ETdat.toString("dd.MM.yyyy"));
         QDate ATdat = QDate::fromString(m_qry->value(m_qry->record().indexOf("Austritt")).toString(),"yyyy-MM-dd");
         QTableWidgetItem *lATDat = new QTableWidgetItem(ATdat.toString("dd.MM.yyyy"));
+        bool pEdit = m_qry->value(m_qry->record().indexOf("PlanEdit")).toBool();
+        QTableWidgetItem *lEdit = new QTableWidgetItem();
+        lEdit->setFlags(Qt::ItemIsUserCheckable);
+        if(pEdit)
+        {
+            lEdit->setCheckState(Qt::Checked);
+        }
+        else
+        {
+            lEdit->setCheckState(Qt::Unchecked);
+        }
+        bool pAdmin = m_qry->value(m_qry->record().indexOf("Admin")).toBool();
+        QTableWidgetItem *lAdmin = new QTableWidgetItem();
+        lAdmin->setFlags(Qt::ItemIsUserCheckable);
+        if(pAdmin)
+        {
+            lAdmin->setCheckState(Qt::Checked);
+        }
+        else
+        {
+            lAdmin->setCheckState(Qt::Unchecked);
+        }
 
 
         ui->tblPersonal->setItem(i,0,lName);
@@ -83,6 +108,9 @@ void CPersonalEdit::fillPersTable()
         ui->tblPersonal->setItem(i,4,lSollH);
         ui->tblPersonal->setItem(i,5,lETDat);
         ui->tblPersonal->setItem(i,6,lATDat);
+        ui->tblPersonal->setItem(i,7,lEdit);
+        ui->tblPersonal->setItem(i,8,lAdmin);
+
         i++;
         m_qry->next();
     }    
@@ -108,6 +136,12 @@ void CPersonalEdit::fillPersTable()
     hdr = new QTableWidgetItem();
     hdr->setText("Austritt");
     ui->tblPersonal->setHorizontalHeaderItem(6,hdr);
+    hdr = new QTableWidgetItem();
+    hdr->setText("Edit");
+    ui->tblPersonal->setHorizontalHeaderItem(7,hdr);
+    hdr = new QTableWidgetItem();
+    hdr->setText("Admin");
+    ui->tblPersonal->setHorizontalHeaderItem(8,hdr);
 }
 
 void CPersonalEdit::updateUI()
@@ -131,6 +165,26 @@ void CPersonalEdit::updateUI()
     QString ATDat = m_qry->value(m_qry->record().indexOf("Austritt")).toString();
     QDate ATDate = QDate::fromString(ATDat,"yyyy-MM-dd");
     ui->datAustritt->setDate(ATDate);
+    bool lEdit = m_qry->value(m_qry->record().indexOf("PlanEdit")).toBool();
+    if(lEdit)
+    {
+        ui->chkEdit->setCheckState(Qt::Checked);
+    }
+    else
+    {
+        ui->chkEdit->setCheckState(Qt::Unchecked);
+    }
+    bool lAdmin = m_qry->value(m_qry->record().indexOf("Admin")).toBool();
+    if(lAdmin)
+    {
+        ui->chkAdmin->setCheckState(Qt::Checked);
+    }
+    else
+    {
+        ui->chkAdmin->setCheckState(Qt::Unchecked);
+    }
+    ui->chkAdmin->setEnabled(m_actUsr->Admin());
+    ui->chkEdit->setEnabled(m_actUsr->Admin());
 }
 
 void CPersonalEdit::getFromID(int pID)
@@ -146,7 +200,7 @@ void CPersonalEdit::getFromID(int pID)
 void CPersonalEdit::updateRecord(int pID)
 {
     m_qry = new QSqlQuery();
-    m_qry->prepare("UPDATE tblPersonal SET Name = :Name, VName = :VName, PNr = :PNr, GebDat = :GBD, SollTag = :Soll, Eintritt = :ED, Austritt = :AD WHERE ID = :ID");
+    m_qry->prepare("UPDATE tblPersonal SET Name = :Name, VName = :VName, PNr = :PNr, GebDat = :GBD, SollTag = :Soll, Eintritt = :ED, Austritt = :AD, PlanEdit = :PE, Admin = :ADM WHERE ID = :ID");
     m_qry->bindValue(":Name",ui->txtName->text());
     m_qry->bindValue(":VName",ui->txtVName->text());
     m_qry->bindValue(":PNr",ui->txtPersNo->text());
@@ -154,6 +208,22 @@ void CPersonalEdit::updateRecord(int pID)
     m_qry->bindValue(":Soll",ui->timSollTag->time());
     m_qry->bindValue(":ED",ui->datEintritt->date());
     m_qry->bindValue(":AD",ui->datAustritt->date());
+    if(ui->chkEdit->checkState() == Qt::Checked)
+    {
+        m_qry->bindValue(":PE", true);
+    }
+    else
+    {
+        m_qry->bindValue(":PE", false);
+    }
+    if(ui->chkAdmin->checkState() == Qt::Checked)
+    {
+        m_qry->bindValue(":ADM", true);
+    }
+    else
+    {
+        m_qry->bindValue(":ADM", false);
+    }
     m_qry->bindValue(":ID",pID);
     m_qry->exec();
     loadTable();
@@ -260,4 +330,14 @@ void CPersonalEdit::setSelected(QWidget *pold, QWidget *pnew)
         }
     }
 
+}
+
+void CPersonalEdit::on_chkEdit_clicked()
+{
+    updateRecord(m_id);
+}
+
+void CPersonalEdit::on_chkAdmin_clicked()
+{
+    updateRecord(m_id);
 }

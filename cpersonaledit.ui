@@ -227,6 +227,28 @@
          </item>
         </layout>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QCheckBox" name="chkEdit">
+             <property name="text">
+              <string>Editier-Recht</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkAdmin">
+             <property name="text">
+              <string>Admin-Recht</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
       </layout>
      </item>
      <item>
@@ -288,6 +310,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tblPersonal</tabstop>
+  <tabstop>txtName</tabstop>
+  <tabstop>txtVName</tabstop>
+  <tabstop>datGebDat</tabstop>
+  <tabstop>txtPersNo</tabstop>
+  <tabstop>timSollTag</tabstop>
+  <tabstop>datEintritt</tabstop>
+  <tabstop>datAustritt</tabstop>
+  <tabstop>chkEdit</tabstop>
+  <tabstop>chkAdmin</tabstop>
+  <tabstop>cmdNew</tabstop>
+  <tabstop>cmdSave</tabstop>
+  <tabstop>cmdKill</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

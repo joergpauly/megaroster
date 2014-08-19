@@ -41,6 +41,8 @@ CPersonal::CPersonal(int pID)
     m_Eintritt = QDate::fromString(lqry->value(lqry->record().indexOf("Eintritt")).toString(),"yyyy-MM-dd");
     m_Austritt = QDate::fromString(lqry->value(lqry->record().indexOf("Austritt")).toString(),"yyyy-MM-dd");
     m_SollTag = QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz");
+    m_Admin = lqry->value(lqry->record().indexOf("Admin")).toBool();
+    m_Edit = lqry->value(lqry->record().indexOf("PlanEdit")).toBool();
     delete lqry;
 }
 
@@ -122,6 +124,26 @@ QDate CPersonal::Austritt() const
 void CPersonal::setAustritt(const QDate &Austritt)
 {
     m_Austritt = Austritt;
+}
+
+bool CPersonal::Edit() const
+{
+    return m_Edit;
+}
+
+void CPersonal::setEdit(const bool pEd)
+{
+    m_Edit = pEd;
+}
+
+bool CPersonal::Admin() const
+{
+    return m_Admin;
+}
+
+void CPersonal::setAdmin(const bool pAd)
+{
+    m_Admin = pAd;
 }
 
 
