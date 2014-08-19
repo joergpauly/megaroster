@@ -81,21 +81,23 @@ private slots:
 
 private:
     // Properties    
-    QWidget* m_subWnd;
-    QString m_Prefix;
-    int m_Month;
-    int m_Year;
-    QWidget* m_parent;
-    CDatabaseManager* m_dbman;
-    CHoliday* m_Holidays;
-    QList<CDuty>* m_duty;
-    bool m_init;
-    int oldRow;
-    CDutyType* m_DType;
-    QList<CRule> *m_ruleList;
-    CDuty *m_currentDuty;
-    bool m_updatingDetails;
-    Ui::CRosterWindow *ui;
+    QWidget*            m_subWnd;
+    QString             m_Prefix;
+    int                 m_Month;
+    int                 m_Year;
+    QWidget*            m_parent;
+    CDatabaseManager*   m_dbman;
+    CHoliday*           m_Holidays;
+    //QList<CDuty>*       m_duty;
+    bool                m_init;
+    int                 oldRow;
+    CDutyType*          m_DType;
+    QList<CRule>*       m_ruleList;
+    CDuty*              m_currentDuty;
+    bool                m_updatingDetails;
+    CPersonal*          m_actUser;
+    Ui::CRosterWindow*  ui;
+    bool                m_checkingRules;
 
     // Funktionen
     void setTabTitle(QString pPrefix, QDate pDate);

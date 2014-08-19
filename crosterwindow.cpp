@@ -29,6 +29,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     ui(new Ui::CRosterWindow)
 {
     m_parent = parent;
+    m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
     ui->setupUi(this);
     m_Prefix = "";
     ui->cbShowAlerts->setChecked(true);
@@ -46,6 +47,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
         lqry->next();
     }    
     delete lqry;
+    m_checkingRules = false;
     loadRules();
 }
 
@@ -62,7 +64,6 @@ CRosterWindow::~CRosterWindow()
 {
     delete ui;
     delete m_Holidays;
-    delete m_duty;
 }
 
 void CRosterWindow::setSubWnd(QWidget *pSubWnd)
@@ -355,7 +356,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             }
 
             QColor lcol(ditem->Typ()->RosterColorR(),ditem->Typ()->RosterColorG(),ditem->Typ()->RosterColorB());
-            item->setBackground(QBrush(lcol));
+            item->setBackground(QBrush(lcol));                                                 
             item->setData(Qt::UserRole,ditem->id());
             ui->tbwRoster->setItem(row, col-1, item);
             delete ditem;
@@ -419,6 +420,28 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
     m_updatingDetails = false;
+    if(!m_actUser->Edit())
+    {
+        if(pDuty->Date() >= QDate::currentDate())
+        {
+            if(!m_checkingRules)
+            {
+                ui->tbwRoster->setEnabled(false);
+                QMessageBox lbox;
+                lbox.setWindowTitle("Keine Berechtigung!");
+                lbox.setText("Sie sind nicht berechtigt,\ngegenwärtige oder zukünftige\nDienstplan-Einträge zu ändern!");
+                lbox.setStandardButtons(QMessageBox::Ok);
+                lbox.setIcon(QMessageBox::Critical);
+                lbox.exec();
+                ui->dtedMonthChoice->setFocus();
+                ui->tbwRoster->setEnabled(true);
+            }
+        }
+        else
+        {
+            ui->tbwRoster->setEnabled(true);
+        }
+    }
 }
 
 void CRosterWindow::updatePrealerts(CDuty *pDuty)
@@ -462,9 +485,8 @@ void CRosterWindow::loadRules()
 }
 
 bool CRosterWindow::checkRules(QDate pdate)
-{
-    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-
+{    
+    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));    
     loadRules();
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
@@ -535,7 +557,7 @@ bool CRosterWindow::checkRules(QDate pdate)
         ui->tbwRoster->setHorizontalHeaderItem(ui->tbwRoster->currentColumn(), lhdr);
     }
     ui->tbwRoster->setCurrentCell(acRow,acCol);
-    qApp->restoreOverrideCursor();
+    qApp->restoreOverrideCursor();    
     return lRulesFullfilled;
 }
 
@@ -831,12 +853,14 @@ void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 void CRosterWindow::on_cmdCheckRoster_clicked()
 {
     ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
+    m_checkingRules = true;
     for(int day = 1; day <= QDate(m_Year, m_Month, 1).daysInMonth(); day++)
     {
         ui->tbwRoster->setCurrentCell(0,day-1);
         checkRules(QDate(m_Year,m_Month,day));
     }
     ((CMainWindow*)m_parent)->setStatusText("");
+    m_checkingRules = false;
 }
 
 void CRosterWindow::on_timFrom_timeChanged(const QTime &time)
