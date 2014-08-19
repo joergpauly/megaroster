@@ -485,7 +485,8 @@ void CRosterWindow::loadRules()
 }
 
 bool CRosterWindow::checkRules(QDate pdate)
-{    
+{
+    //TODO: Mindesfreizeit und Blocklängen prüfen!
     qApp->setOverrideCursor(QCursor(Qt::WaitCursor));    
     loadRules();
     int acCol = ui->tbwRoster->currentColumn();
