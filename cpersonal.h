@@ -59,6 +59,12 @@ public:
     QDate Austritt() const;
     void setAustritt(const QDate &Austritt);
 
+    bool Edit() const;
+    void setEdit(const bool pEd);
+
+    bool Admin() const;
+    void setAdmin(const bool pAd);
+
 private:
     int m_id;
     QString m_Name;
@@ -68,6 +74,8 @@ private:
     QTime   m_SollTag;
     QDate   m_Eintritt;
     QDate   m_Austritt;
+    bool    m_Edit;
+    bool    m_Admin;
 
 };
 
