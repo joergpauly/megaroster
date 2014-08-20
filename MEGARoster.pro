@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     cprinttablecell.cpp \
     cprinttablerow.cpp \
     cprinttablecol.cpp \
-    cprintformeditor.cpp
+    cprintformeditor.cpp \
+    cdtybasetype.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -53,7 +54,8 @@ HEADERS  += cmainwindow.h \
     cprinttablecell.h \
     cprinttablerow.h \
     cprinttablecol.h \
-    cprintformeditor.h
+    cprintformeditor.h \
+    cdtybasetype.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

@@ -30,6 +30,8 @@
 #include <QSqlRecord>
 #include <QVariant>
 
+#include "cdtybasetype.h"
+
 class CDutyType
 {
 public:
@@ -82,22 +84,26 @@ public:
     bool Checked() const;
     void setChecked(bool Checked);
 
+    CDtyBaseType BaseType() const;
+    void setBaseType(CDtyBaseType BaseType);
+
 private:
-    int     m_id;
-    QString m_Mark;
-    QString m_Desc;
-    QTime   m_TimeFrom;
-    QTime   m_TimeFrom2;
-    QTime   m_TimeTo;
-    QTime   m_TimeTo2;
-    QTime   m_TimeElapsed;
-    QTime   m_TimeElapsed2;
-    QTime   m_MinOffBefore;
-    QTime   m_MinOffAfter;
-    int     m_RosterColorR;
-    int     m_RosterColorG;
-    int     m_RosterColorB;
-    bool    m_Checked;
+    int             m_id;
+    QString         m_Mark;
+    QString         m_Desc;
+    QTime           m_TimeFrom;
+    QTime           m_TimeFrom2;
+    QTime           m_TimeTo;
+    QTime           m_TimeTo2;
+    QTime           m_TimeElapsed;
+    QTime           m_TimeElapsed2;
+    QTime           m_MinOffBefore;
+    QTime           m_MinOffAfter;
+    int             m_RosterColorR;
+    int             m_RosterColorG;
+    int             m_RosterColorB;
+    bool            m_Checked;
+    CDtyBaseType    m_BaseType;
 
     void readDB(QSqlQuery* pqry);
 };

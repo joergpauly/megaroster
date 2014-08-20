@@ -162,6 +162,24 @@ QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID
         llist->append(item);
         lqry->next();
     }
+    delete lqry;
+    return llist;
+}
+
+QList<CDtyBaseType> *CDatabaseManager::dbaseList()
+{
+    QList<CDtyBaseType> *llist = new QList<CDtyBaseType>();
+    QSqlQuery *lqry = new QSqlQuery();
+    lqry->prepare("SELECT * from tblDtyBase ORDER BY Codeletter;");
+    lqry->exec();
+    lqry->first();
+    while(lqry->isValid())
+    {
+        CDtyBaseType* ltype = new CDtyBaseType(lqry->value(lqry->record().indexOf("ID")).toInt());
+        llist->append(*ltype);
+        lqry->next();
+    }
+    delete lqry;
     return llist;
 }
 

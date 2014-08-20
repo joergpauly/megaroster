@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>649</width>
     <height>480</height>
    </rect>
   </property>
@@ -91,6 +91,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="txtDescr"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Basistyp</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cmbBaseType"/>
          </item>
         </layout>
        </item>
@@ -748,6 +758,7 @@
   <tabstop>tblDutytps</tabstop>
   <tabstop>txtMark</tabstop>
   <tabstop>txtDescr</tabstop>
+  <tabstop>cmbBaseType</tabstop>
   <tabstop>timStart</tabstop>
   <tabstop>timEnd</tabstop>
   <tabstop>timStart2</tabstop>
