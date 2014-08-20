@@ -311,8 +311,9 @@ void CRosterWindow::makeRoster(QDate pDate)
             {
                 newPlan = true;
                 CDutyType *dtyp = new CDutyType("--");
-                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, TimeFrom, TimeTo, TimeFrom2, TimeTo2, Dura, Dura2) VALUES (:PID, :DATE, 6, 0, '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000');");
+                lqry->prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, TimeFrom, TimeTo, TimeFrom2, TimeTo2, Dura, Dura2) VALUES (:PID, :DATE, :TID, 0, '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000');");
                 lqry->bindValue(":PID", PerID);
+                lqry->bindValue(":TID", CDutyType("--").id());
                 lqry->bindValue(":DATE", ldate.toString("yyyy-MM-dd"));
                 lqry->exec();
                 QTableWidgetItem *item = new QTableWidgetItem();

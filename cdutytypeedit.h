@@ -31,6 +31,7 @@
 #include <QTableWidgetItem>
 #include <QColorDialog>
 
+#include "cdatabasemanager.h"
 
 namespace Ui {
 class CDutyTypeEdit;
@@ -70,8 +71,11 @@ private slots:
 
     void setSelected(QWidget* pold, QWidget* pnew);
 
+    void on_cmbBaseType_currentIndexChanged(int index);
+
 private:
     // Member
+    QObject *m_parent;
     Ui::CDutyTypeEdit *ui;
     QMdiSubWindow* m_SubWnd;
     QSqlQuery* m_qry;
@@ -82,6 +86,7 @@ private:
     // Funktionen
     void loadTable();
     void fillDTypeTable();
+    void fillDBTcombo();
     void updateUI();
     void updateRecord(int pID);
     void getFromID(int pID);

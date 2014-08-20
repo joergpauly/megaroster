@@ -22,15 +22,18 @@
 
 #include "cdutytypeedit.h"
 #include "ui_cdutytypeedit.h"
+#include "cmainwindow.h"
 
 CDutyTypeEdit::CDutyTypeEdit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CDutyTypeEdit)
 {
+    m_parent = parent;
     ui->setupUi(this);
     connect(qApp,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(setSelected(QWidget*,QWidget*)));
     loadTable();
     fillDTypeTable();
+    fillDBTcombo();
 }
 
 CDutyTypeEdit::~CDutyTypeEdit()
@@ -54,7 +57,7 @@ void CDutyTypeEdit::loadTable()
 void CDutyTypeEdit::fillDTypeTable()
 {
     ui->tblDutytps->setRowCount(0);
-    ui->tblDutytps->setColumnCount(6);;
+    ui->tblDutytps->setColumnCount(7);;
 
     m_qry->first();
     int i = 0;
@@ -72,6 +75,7 @@ void CDutyTypeEdit::fillDTypeTable()
         ui->tblDutytps->setItem(i,0,litem);
         litem = new QTableWidgetItem(m_qry->value(m_qry->record().indexOf("Decr")).toString());
         ui->tblDutytps->setItem(i,1,litem);
+        //TODO: Basistyp
         litem = new QTableWidgetItem();
         QTime ltime = QTime::fromString(m_qry->value(m_qry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz");
         litem->setText(ltime.toString("hh:mm"));
@@ -88,6 +92,11 @@ void CDutyTypeEdit::fillDTypeTable()
         ltime = QTime::fromString(m_qry->value(m_qry->record().indexOf("TimeTo2")).toString(),"hh:mm:ss.zzz");
         litem->setText(ltime.toString("hh:mm"));
         ui->tblDutytps->setItem(i,5,litem);
+        litem = new QTableWidgetItem();
+        int ltyp = m_qry->value(m_qry->record().indexOf("BaseType")).toInt();
+        CDtyBaseType ltp(ltyp);
+        litem->setText(ltp.Desc());
+        ui->tblDutytps->setItem(i,6,litem);
         i++;
         m_qry->next();
     }
@@ -110,6 +119,20 @@ void CDutyTypeEdit::fillDTypeTable()
     hdr = new QTableWidgetItem();
     hdr->setText("2. Dienst-Ende");
     ui->tblDutytps->setHorizontalHeaderItem(5,hdr);
+    hdr = new QTableWidgetItem();
+    hdr->setText("Basis-Typ");
+    ui->tblDutytps->setHorizontalHeaderItem(6,hdr);
+}
+
+void CDutyTypeEdit::fillDBTcombo()
+{
+    CDatabaseManager *dbman = ((CMainWindow*)m_parent)->dataBase();
+    QList<CDtyBaseType> dbtList(*dbman->dbaseList());
+    for(int i = 0; i < dbtList.count(); i++)
+    {
+        ui->cmbBaseType->addItem(dbtList.at(i).CLetter(), dbtList.at(i).id());
+    }
+    delete dbman;
 }
 
 void CDutyTypeEdit::updateUI()
@@ -146,12 +169,21 @@ void CDutyTypeEdit::updateUI()
     QPalette lpal;
     lpal.setColor(QPalette::Button,m_clr);
     ui->cmdColor->setPalette(lpal);
+    CDtyBaseType ldbt(m_qry->value(m_qry->record().indexOf("BaseType")).toInt());
+    for(int i = 0; i < ui->cmbBaseType->count(); i++)
+    {
+        ui->cmbBaseType->setCurrentIndex(i);
+        if(ui->cmbBaseType->currentData().toInt() == ldbt.id())
+        {
+            break;
+        }
+    }
 }
 
 void CDutyTypeEdit::updateRecord(int pID)
 {
     m_qry = new QSqlQuery();
-    m_qry->prepare("UPDATE tblDutyTypes SET Mark = :Mark, Decr = :DECR, TimeFrom = :TF, TimeTo = :TT, TimeElapsed = :TE, TimeFrom2 = :TF2, TimeTo2 = :TT2, TimeElapsed2 = :TE2, MinOffBefore = :MB, MinOffAfter = :MA, ColorR = :CR, ColorG = :CG, ColorB = :CB WHERE ID = :ID;");
+    m_qry->prepare("UPDATE tblDutyTypes SET Mark = :Mark, Decr = :DECR, TimeFrom = :TF, TimeTo = :TT, TimeElapsed = :TE, TimeFrom2 = :TF2, TimeTo2 = :TT2, TimeElapsed2 = :TE2, MinOffBefore = :MB, MinOffAfter = :MA, ColorR = :CR, ColorG = :CG, ColorB = :CB, BaseType = :BT WHERE ID = :ID;");
     m_qry->bindValue(":Mark", ui->txtMark->text());
     m_qry->bindValue(":DECR", ui->txtDescr->text());
     m_qry->bindValue(":TF",ui->timStart->time());
@@ -165,6 +197,7 @@ void CDutyTypeEdit::updateRecord(int pID)
     m_qry->bindValue(":CR",m_clr.red());
     m_qry->bindValue(":CG",m_clr.green());
     m_qry->bindValue(":CB",m_clr.blue());
+    m_qry->bindValue(":BT",ui->cmbBaseType->currentData().toInt());
     m_qry->bindValue(":ID", pID);
     m_qry->exec();
     QString err = m_qry->lastError().text();
@@ -207,7 +240,7 @@ void CDutyTypeEdit::on_cmdColor_clicked()
 void CDutyTypeEdit::on_cmdNew_clicked()
 {
     m_qry = new QSqlQuery();
-    m_qry->prepare("INSERT INTO tblDutyTypes (Mark, Decr, TimeFrom, TimeFrom2, TimeTo, TimeTo2, TimeElapsed, TimeElapsed2, MinOffBefore, MinOffAfter, ColorR, ColorG, ColorB) VALUES ('-', '-', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000','00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', 255, 255, 255);");
+    m_qry->prepare("INSERT INTO tblDutyTypes (Mark, Decr, TimeFrom, TimeFrom2, TimeTo, TimeTo2, TimeElapsed, TimeElapsed2, MinOffBefore, MinOffAfter, ColorR, ColorG, ColorB, BaseType) VALUES ('-', '-', '00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000','00:00:00.000', '00:00:00.000', '00:00:00.000', '00:00:00.000', 255, 255, 255, 0);");
     m_qry->exec();
     m_lastInserted = m_qry->lastInsertId().toInt();
     loadTable();
@@ -279,4 +312,9 @@ void CDutyTypeEdit::setSelected(QWidget *pold, QWidget *pnew)
         }
     }
 
+}
+
+void CDutyTypeEdit::on_cmbBaseType_currentIndexChanged(int index)
+{
+    updateRecord(m_ID);
 }

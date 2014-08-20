@@ -200,6 +200,17 @@ void CDutyType::setChecked(bool Checked)
     m_Checked = Checked;
 }
 
+CDtyBaseType CDutyType::BaseType() const
+{
+    return m_BaseType;
+}
+
+void CDutyType::setBaseType(CDtyBaseType BaseType)
+{
+    m_BaseType = BaseType;
+}
+
+
 void CDutyType::readDB(QSqlQuery* pqry)
 {
     m_id = pqry->value(pqry->record().indexOf("ID")).toInt();
@@ -214,5 +225,6 @@ void CDutyType::readDB(QSqlQuery* pqry)
     m_RosterColorR = pqry->value(pqry->record().indexOf("ColorR")).toInt();
     m_RosterColorG = pqry->value(pqry->record().indexOf("ColorG")).toInt();
     m_RosterColorB = pqry->value(pqry->record().indexOf("ColorB")).toInt();
+    m_BaseType = CDtyBaseType(pqry->value(pqry->record().indexOf("BaseType")).toInt());
 }
 
