@@ -406,6 +406,7 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo->setTime(pDuty->TimeTo());
     ui->timFrom2->setTime(pDuty->TimeFrom2());
     ui->timTo2->setTime(pDuty->TimeTo2());
+    ui->lblName->setText(pDuty->Kollege()->Name() + ", " + pDuty->Kollege()->VName());
     int hrs = pDuty->Duration().hour() + pDuty->Duration2().hour();
     int mins = pDuty->Duration().minute() + pDuty->Duration2().minute();
     if(mins > 59)
@@ -420,6 +421,10 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo->setEnabled(true);
     ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
+    // FIXME: TestDaten
+    int f = checkBaseActual(new CDtyBaseType(1));
+    int s = checkBaseActual(new CDtyBaseType(2));
+    int n = checkBaseActual(new CDtyBaseType(3));
     m_updatingDetails = false;
     if(!m_actUser->Edit())
     {
@@ -619,6 +624,27 @@ void CRosterWindow::updateDutyDB()
     updateDetails(m_currentDuty);
     makeIstH(ui->tbwRoster->currentRow());
     checkRules(m_currentDuty->Date());
+}
+
+int CRosterWindow::checkBaseTarget(CDtyBaseType *pType)
+{
+
+}
+
+int CRosterWindow::checkBaseActual(CDtyBaseType *pType)
+{
+    int lRow = ui->tbwRoster->currentRow();
+    int lCol;
+    int lResult = 0;
+    for(lCol = 0; lCol < ui->dtedMonthChoice->date().daysInMonth(); lCol++ )
+    {
+        CDuty ldty(ui->tbwRoster->currentItem()->data(Qt::UserRole).toInt());
+        if(ldty.Typ()->BaseType().id() == pType->id())
+        {
+            lResult++;
+        }
+    }
+    return lResult;
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)

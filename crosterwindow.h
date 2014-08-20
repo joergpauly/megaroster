@@ -40,6 +40,7 @@
 #include "cpersonal.h"
 #include "cdutytype.h"
 #include "cduty.h"
+#include "cdtybasetype.h"
 #include "choliday.h"
 #include "cprintform.h"
 #include "cprealert.h"
@@ -115,6 +116,9 @@ private:
     bool checkRules(QDate pdate);
     bool checkRuleSet(QList<CDutyType> pList);
     void updateDutyDB();
+    int  checkBaseTarget(CDtyBaseType* pType);
+    int  checkBaseActual(CDtyBaseType* pType);
+
 
 };
 
