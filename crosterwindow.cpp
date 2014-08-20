@@ -421,10 +421,43 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo->setEnabled(true);
     ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
-    // FIXME: TestDaten
-    int f = checkBaseActual(new CDtyBaseType(1));
-    int s = checkBaseActual(new CDtyBaseType(2));
-    int n = checkBaseActual(new CDtyBaseType(3));
+
+
+    QSqlQuery ltqry;
+    ltqry.prepare("SELECT * FROM tblDtyBase WHERE Codeletter <> '--';");
+    ltqry.exec();
+    ltqry.first();
+    ui->tbwActual->setColumnCount(3);
+    ui->tbwActual->setRowCount(ltqry.size());
+    int lactrow = 0;
+
+    while(ltqry.isValid())
+    {
+        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
+        int actdtys = checkBaseActual(new CDtyBaseType(ltid));
+        CDtyBaseType tpbase(ltid);
+        QTableWidgetItem *ltitem = new QTableWidgetItem();
+        ltitem->setText(tpbase.Desc());
+        ui->tbwActual->setItem(lactrow,0,ltitem);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(actdtys));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwActual->setItem(lactrow,1,ltitem);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(0));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwActual->setItem(lactrow,2,ltitem);
+        lactrow++;
+        ltqry.next();
+    }
+
+    QTableWidgetItem* hdr = new QTableWidgetItem("Dienst");
+    ui->tbwActual->setHorizontalHeaderItem(0, hdr);
+    hdr = new QTableWidgetItem("Anzahl");
+    ui->tbwActual->setHorizontalHeaderItem(1, hdr);
+    hdr = new QTableWidgetItem("Differenz");
+    ui->tbwActual->setHorizontalHeaderItem(2, hdr);
+
     m_updatingDetails = false;
     if(!m_actUser->Edit())
     {
@@ -638,7 +671,7 @@ int CRosterWindow::checkBaseActual(CDtyBaseType *pType)
     int lResult = 0;
     for(lCol = 0; lCol < ui->dtedMonthChoice->date().daysInMonth(); lCol++ )
     {
-        CDuty ldty(ui->tbwRoster->currentItem()->data(Qt::UserRole).toInt());
+        CDuty ldty(ui->tbwRoster->item(lRow, lCol)->data(Qt::UserRole).toInt());
         if(ldty.Typ()->BaseType().id() == pType->id())
         {
             lResult++;
