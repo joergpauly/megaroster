@@ -28,6 +28,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CRosterWindow)
 {
+    m_currentDuty = NULL;
     m_parent = parent;
     m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
     ui->setupUi(this);
@@ -395,6 +396,7 @@ void CRosterWindow::updateDetails(int prow, int pcol)
 
 void CRosterWindow::updateDetails(CDuty *pDuty)
 {
+    // Detailfelder berechnen und beschreiben
     m_updatingDetails = true;
     QString txt = pDuty->Typ()->Desc();
     ui->txtDutyType->setText(txt);
@@ -422,41 +424,10 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
 
-
-    QSqlQuery ltqry;
-    ltqry.prepare("SELECT * FROM tblDtyBase WHERE Codeletter <> '--';");
-    ltqry.exec();
-    ltqry.first();
-    ui->tbwActual->setColumnCount(3);
-    ui->tbwActual->setRowCount(ltqry.size());
-    int lactrow = 0;
-
-    while(ltqry.isValid())
+    if(ui->chkRTCheck->checkState() == Qt::Checked)
     {
-        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
-        int actdtys = checkBaseActual(new CDtyBaseType(ltid));
-        CDtyBaseType tpbase(ltid);
-        QTableWidgetItem *ltitem = new QTableWidgetItem();
-        ltitem->setText(tpbase.Desc());
-        ui->tbwActual->setItem(lactrow,0,ltitem);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(actdtys));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwActual->setItem(lactrow,1,ltitem);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(0));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwActual->setItem(lactrow,2,ltitem);
-        lactrow++;
-        ltqry.next();
+        checkBaseTarget(pDuty);
     }
-
-    QTableWidgetItem* hdr = new QTableWidgetItem("Dienst");
-    ui->tbwActual->setHorizontalHeaderItem(0, hdr);
-    hdr = new QTableWidgetItem("Anzahl");
-    ui->tbwActual->setHorizontalHeaderItem(1, hdr);
-    hdr = new QTableWidgetItem("Differenz");
-    ui->tbwActual->setHorizontalHeaderItem(2, hdr);
 
     m_updatingDetails = false;
     if(!m_actUser->Edit())
@@ -659,9 +630,111 @@ void CRosterWindow::updateDutyDB()
     checkRules(m_currentDuty->Date());
 }
 
-int CRosterWindow::checkBaseTarget(CDtyBaseType *pType)
+int CRosterWindow::checkBaseTarget(CDuty *pDuty)
 {
+    /* Ermittlung der Soll-Zahlen:
+     *
+     * 3 Basisdienste X Tage im Monat = lTtlDtys
+     * Anzahl Kollegen X Tage im Monat ./. Abzüge (K|U|L) = lTtlMP
+     * lTtlDtys / lTtlMP = lDtyKey
+     * je Kollegen-Zeile: (int) Tage/Monat ./. Abzüge X lDtyKey / 3 = min; +1 = max
+     */
 
+    QSqlQuery ltqry;
+    ltqry.prepare("SELECT * FROM tblDtyBase WHERE Codeletter <> '--' AND Codeletter <> './.';");
+    ltqry.exec();
+    ltqry.first();
+    int lRws = 0;
+    while(ltqry.isValid())
+    {
+        lRws++;
+        ltqry.next();
+    }
+    double lTtlDtys = pDuty->Date().daysInMonth() * lRws;
+    double lTtlMP = getTotalManPower(pDuty);
+    double lDtyKey = lTtlDtys / lTtlMP;
+    int lSglMP = getSingleManPower(pDuty);
+    int minBD = lSglMP * lDtyKey / lRws;
+    int maxBD = minBD + 1;
+    ui->tbwTarget->clear();
+    ltqry.first();
+    QTableWidgetItem *ltitem;
+
+    for(int i = 0; i < lRws; i++)
+    {
+        ui->tbwTarget->setRowCount(ui->tbwTarget->rowCount()+1);
+        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
+        CDtyBaseType tpbase(ltid);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(tpbase.Desc());
+        ui->tbwTarget->setItem(i, 0, ltitem);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(minBD));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwTarget->setItem(i, 1, ltitem);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(maxBD));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwTarget->setItem(i, 2, ltitem);
+        ltqry.next();
+    }
+
+    ltitem = new QTableWidgetItem("Dienst");
+    ui->tbwTarget->setHorizontalHeaderItem(0, ltitem);
+    ltitem = new QTableWidgetItem("Min");
+    ui->tbwTarget->setHorizontalHeaderItem(1, ltitem);
+    ltitem = new QTableWidgetItem("Max");
+    ui->tbwTarget->setHorizontalHeaderItem(2, ltitem);
+
+    // Ist-Basisdienst-Zahlen ermitteln und auswerfen
+
+    ui->tbwActual->clear();
+    ui->tbwActual->setColumnCount(3);
+    int lactrow = 0;
+    ltqry.first();
+
+    while(ltqry.isValid())
+    {
+        ui->tbwActual->setRowCount(ui->tbwActual->rowCount()+1);
+        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
+        int actdtys = checkBaseActual(new CDtyBaseType(ltid));
+        CDtyBaseType tpbase(ltid);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(tpbase.Desc());
+        ui->tbwActual->setItem(lactrow,0,ltitem);
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(actdtys));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwActual->setItem(lactrow,1,ltitem);
+        ltitem = new QTableWidgetItem();
+        int diff;
+        QColor red(255,0,0);
+        if(actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt() | actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt())
+        {
+            diff = 0;
+        }
+        if(actdtys < ui->tbwTarget->item(lactrow,1)->text().toInt())
+        {
+            ltitem->setForeground(QBrush(red));
+            diff = actdtys - ui->tbwTarget->item(lactrow,1)->text().toInt();
+        }
+        if(actdtys > ui->tbwTarget->item(lactrow,2)->text().toInt())
+        {
+            diff = actdtys - ui->tbwTarget->item(lactrow,2)->text().toInt();
+        }
+        ltitem->setText(QString::number(diff));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwActual->setItem(lactrow,2,ltitem);
+        lactrow++;
+        ltqry.next();
+    }
+
+    QTableWidgetItem* hdr = new QTableWidgetItem("Dienst");
+    ui->tbwActual->setHorizontalHeaderItem(0, hdr);
+    hdr = new QTableWidgetItem("Anzahl");
+    ui->tbwActual->setHorizontalHeaderItem(1, hdr);
+    hdr = new QTableWidgetItem("Differenz");
+    ui->tbwActual->setHorizontalHeaderItem(2, hdr);
 }
 
 int CRosterWindow::checkBaseActual(CDtyBaseType *pType)
@@ -678,6 +751,54 @@ int CRosterWindow::checkBaseActual(CDtyBaseType *pType)
         }
     }
     return lResult;
+}
+
+int CRosterWindow::getTotalManPower(CDuty *pDuty)
+{
+    int lResult = 0;
+    QSqlQuery lqry;
+    QDate fromDate(pDuty->Date().year(), pDuty->Date().month(), 1);
+    QDate toDate(pDuty->Date().year(), pDuty->Date().month(), pDuty->Date().daysInMonth());
+    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD;");
+    lqry.bindValue(":FD", fromDate.toString("yyyy-MM-dd"));
+    lqry.bindValue(":TD", toDate.toString("yyyy-MM-dd"));
+    lqry.exec();
+    lqry.first();
+    while(lqry.isValid())
+    {
+        CDutyType ldty(lqry.value(lqry.record().indexOf("TypeID")).toInt());
+        if(ldty.BaseType().CLetter() != "./.")
+        {
+            lResult++;
+        }
+        lqry.next();
+    }
+    return lResult;
+}
+
+int CRosterWindow::getSingleManPower(CDuty *pDuty)
+{
+    int lResult = 0;
+    QSqlQuery lqry;
+    QDate fromDate(pDuty->Date().year(), pDuty->Date().month(), 1);
+    QDate toDate(pDuty->Date().year(), pDuty->Date().month(), pDuty->Date().daysInMonth());
+    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD AND PersID = :PID;");
+    lqry.bindValue(":FD", fromDate.toString("yyyy-MM-dd"));
+    lqry.bindValue(":TD", toDate.toString("yyyy-MM-dd"));
+    lqry.bindValue(":PID", pDuty->Kollege()->id());
+    lqry.exec();
+    lqry.first();
+    while(lqry.isValid())
+    {
+        CDutyType ldty(lqry.value(lqry.record().indexOf("TypeID")).toInt());
+        if(ldty.BaseType().CLetter() != "./.")
+        {
+            lResult++;
+        }
+        lqry.next();
+    }
+    return lResult;
+
 }
 
 void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
@@ -957,5 +1078,18 @@ void CRosterWindow::on_timTo2_timeChanged(const QTime &time)
     {
         m_currentDuty->setTimeTo2(time);
         updateDutyDB();
+    }
+}
+
+void CRosterWindow::on_chkRTCheck_stateChanged(int arg1)
+{
+    if(arg1 == Qt::Checked & m_currentDuty != NULL)
+    {
+        checkBaseTarget(m_currentDuty);
+    }
+    else
+    {
+        ui->tbwTarget->clear();
+        ui->tbwActual->clear();
     }
 }

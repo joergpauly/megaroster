@@ -80,6 +80,8 @@ private slots:
     void on_timFrom2_timeChanged(const QTime &time);
     void on_timTo2_timeChanged(const QTime &time);
 
+    void on_chkRTCheck_stateChanged(int arg1);
+
 private:
     // Properties    
     QWidget*            m_subWnd;
@@ -116,8 +118,10 @@ private:
     bool checkRules(QDate pdate);
     bool checkRuleSet(QList<CDutyType> pList);
     void updateDutyDB();
-    int  checkBaseTarget(CDtyBaseType* pType);
+    int  checkBaseTarget(CDuty *pDuty);
     int  checkBaseActual(CDtyBaseType* pType);
+    int  getTotalManPower(CDuty *pDuty);
+    int  getSingleManPower(CDuty *pDuty);
 
 
 };
