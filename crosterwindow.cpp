@@ -645,11 +645,13 @@ int CRosterWindow::checkBaseTarget(CDuty *pDuty)
     ltqry.exec();
     ltqry.first();
     int lRws = 0;
+
     while(ltqry.isValid())
     {
         lRws++;
         ltqry.next();
     }
+
     double lTtlDtys = pDuty->Date().daysInMonth() * lRws;
     double lTtlMP = getTotalManPower(pDuty);
     double lDtyKey = lTtlDtys / lTtlMP;
@@ -657,6 +659,7 @@ int CRosterWindow::checkBaseTarget(CDuty *pDuty)
     int minBD = lSglMP * lDtyKey / lRws;
     int maxBD = minBD + 1;
     ui->tbwTarget->clear();
+    ui->tbwTarget->setRowCount(0);
     ltqry.first();
     QTableWidgetItem *ltitem;
 
@@ -688,8 +691,11 @@ int CRosterWindow::checkBaseTarget(CDuty *pDuty)
 
     // Ist-Basisdienst-Zahlen ermitteln und auswerfen
 
+    QSqlQuery lamqry; // Kumulierte Summe aktueller Monat
+    QSqlQuery lpmqry; // Kumulierte Summe Vormonat
     ui->tbwActual->clear();
-    ui->tbwActual->setColumnCount(3);
+    ui->tbwActual->setColumnCount(4);
+    ui->tbwActual->setRowCount(0);
     int lactrow = 0;
     ltqry.first();
 
@@ -709,22 +715,86 @@ int CRosterWindow::checkBaseTarget(CDuty *pDuty)
         ltitem = new QTableWidgetItem();
         int diff;
         QColor red(255,0,0);
+
         if(actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt() | actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt())
         {
             diff = 0;
         }
+
         if(actdtys < ui->tbwTarget->item(lactrow,1)->text().toInt())
         {
             ltitem->setForeground(QBrush(red));
             diff = actdtys - ui->tbwTarget->item(lactrow,1)->text().toInt();
         }
+
         if(actdtys > ui->tbwTarget->item(lactrow,2)->text().toInt())
         {
             diff = actdtys - ui->tbwTarget->item(lactrow,2)->text().toInt();
         }
+
         ltitem->setText(QString::number(diff));
         ltitem->setTextAlignment(Qt::AlignCenter);
         ui->tbwActual->setItem(lactrow,2,ltitem);
+
+        //Kumulierte Summen speichern
+        lamqry.prepare("SELECT * FROM tblDtyAccDiff WHERE TypID = :TID AND Month = :M AND Year = :Y AND PerID = :PID;");
+        lamqry.bindValue(":TID", ltid);
+        lamqry.bindValue(":Y", pDuty->Date().year());
+        lamqry.bindValue(":M", pDuty->Date().month());
+        lamqry.bindValue(":PID", pDuty->Kollege()->id());
+        lamqry.exec();
+        lamqry.first();
+        int lAccSumID;
+        int lpSum = 0;
+
+        if(lamqry.isValid())
+        {
+            lAccSumID = lamqry.value(lamqry.record().indexOf("ID")).toInt();
+        }
+        else
+        {
+            lamqry.prepare("INSERT INTO tblDtyAccDiff (TypID, Month, Year, PerID) VALUES (:TID, :M, :Y, :PID);");
+            lamqry.bindValue(":TID", ltid);
+            lamqry.bindValue(":Y", pDuty->Date().year());
+            lamqry.bindValue(":M", pDuty->Date().month());
+            lamqry.bindValue(":PID", pDuty->Kollege()->id());
+            lamqry.exec();
+            lAccSumID = lamqry.lastInsertId().toInt();
+        }
+
+        int lpYear = pDuty->Date().year();
+        int lpMonth = pDuty->Date().month() - 1;
+
+        if(lpMonth == 0)
+        {
+            lpMonth = 12;
+            lpYear--;
+        }
+
+        lpmqry.prepare("SELECT * FROM tblDtyAccDiff WHERE TypID = :TID AND Month = :M AND Year = :Y AND PerID = :PID;");
+        lpmqry.bindValue(":TID", ltid);
+        lpmqry.bindValue(":Y", lpYear);
+        lpmqry.bindValue(":M", lpMonth);
+        lpmqry.bindValue(":PID", pDuty->Kollege()->id());
+        lpmqry.exec();
+        lpmqry.first();
+        QString err = lpmqry.lastError().text();
+        if(lpmqry.isValid())
+        {
+            lpSum = lpmqry.value(lpmqry.record().indexOf("Diff")).toInt();
+        }
+
+        lpSum += diff;
+        lamqry.prepare("UPDATE tblDtyAccDiff SET Diff = :D WHERE ID = :ID;");
+        lamqry.bindValue(":D", lpSum);
+        lamqry.bindValue(":ID", lAccSumID);
+        lamqry.exec();
+
+        ltitem = new QTableWidgetItem();
+        ltitem->setText(QString::number(lpSum));
+        ltitem->setTextAlignment(Qt::AlignCenter);
+        ui->tbwActual->setItem(lactrow,3,ltitem);
+
         lactrow++;
         ltqry.next();
     }
@@ -733,8 +803,10 @@ int CRosterWindow::checkBaseTarget(CDuty *pDuty)
     ui->tbwActual->setHorizontalHeaderItem(0, hdr);
     hdr = new QTableWidgetItem("Anzahl");
     ui->tbwActual->setHorizontalHeaderItem(1, hdr);
-    hdr = new QTableWidgetItem("Differenz");
+    hdr = new QTableWidgetItem("Diff.");
     ui->tbwActual->setHorizontalHeaderItem(2, hdr);
+    hdr = new QTableWidgetItem("Kum.Df.");
+    ui->tbwActual->setHorizontalHeaderItem(3, hdr);
 }
 
 int CRosterWindow::checkBaseActual(CDtyBaseType *pType)

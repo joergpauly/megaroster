@@ -94,10 +94,10 @@
         <number>25</number>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>18</number>
+        <number>25</number>
        </attribute>
        <attribute name="verticalHeaderMinimumSectionSize">
-        <number>18</number>
+        <number>25</number>
        </attribute>
        <row/>
        <row/>
@@ -224,16 +224,16 @@
           <number>3</number>
          </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>70</number>
+          <number>50</number>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderDefaultSectionSize">
-          <number>13</number>
+          <number>16</number>
          </attribute>
          <attribute name="verticalHeaderMinimumSectionSize">
-          <number>13</number>
+          <number>16</number>
          </attribute>
          <column/>
          <column/>
@@ -295,16 +295,16 @@
           <number>3</number>
          </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>70</number>
+          <number>50</number>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderDefaultSectionSize">
-          <number>13</number>
+          <number>16</number>
          </attribute>
          <attribute name="verticalHeaderMinimumSectionSize">
-          <number>13</number>
+          <number>16</number>
          </attribute>
          <column/>
          <column/>
