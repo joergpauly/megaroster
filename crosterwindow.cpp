@@ -144,7 +144,7 @@ void CRosterWindow::makeColumns(QDate pDate)
         }
 
         ui->tbwRoster->setHorizontalHeaderItem(i,litem);
-        ui->tbwRoster->setColumnWidth(i,30);
+        ui->tbwRoster->setColumnWidth(i,27);
     }
     QTableWidgetItem* litem = new QTableWidgetItem("Ist-h");
     ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth(),litem);
@@ -901,7 +901,14 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
         return;
     }
     CDuty *dty = new CDuty(item->data(Qt::UserRole).toInt());
+    CLogManager logman;
+    CLogManager::sctLogEntry entry;
+    entry.affDuty = *dty;
     CDutyType *dtyp = new CDutyType(item->text().toUpper());
+    entry.newDuty = *dtyp;
+    entry.user = CPersonal(((CMainWindow*)m_parent)->getUserID());
+    entry.timeStamp = QDateTime::currentDateTime();
+    logman.writeEntry(entry);
     item->setText(dtyp->Mark());
     dty->setTyp(*dtyp);
     dty->setTimeFrom(dtyp->TimeFrom());
@@ -1107,6 +1114,8 @@ void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 void CRosterWindow::on_cmdCheckRoster_clicked()
 {
     ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
+    Qt::CheckState lCheckState = ui->chkRTCheck->checkState();
+    ui->chkRTCheck->setCheckState(Qt::Unchecked);
     m_checkingRules = true;
     for(int day = 1; day <= QDate(m_Year, m_Month, 1).daysInMonth(); day++)
     {
@@ -1114,6 +1123,7 @@ void CRosterWindow::on_cmdCheckRoster_clicked()
         checkRules(QDate(m_Year,m_Month,day));
     }
     ((CMainWindow*)m_parent)->setStatusText("");
+    ui->chkRTCheck->setCheckState(lCheckState);
     m_checkingRules = false;
 }
 
@@ -1163,5 +1173,13 @@ void CRosterWindow::on_chkRTCheck_stateChanged(int arg1)
     {
         ui->tbwTarget->clear();
         ui->tbwActual->clear();
+    }
+}
+
+void CRosterWindow::on_cmdBlocks_toggled(bool checked)
+{
+    if(checked)
+    {
+        ui->chkRTCheck->setCheckState(Qt::Unchecked);
     }
 }

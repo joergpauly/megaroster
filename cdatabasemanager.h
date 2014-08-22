@@ -63,15 +63,16 @@ class CLogManager : public QObject
 {
     Q_OBJECT
 
+public:
     struct sctLogEntry
     {
         QDateTime       timeStamp;
         CPersonal       user;
-        CPersonal       personal;
-        CDuty           oldDuty;
-        CDuty           newDuty;
+        CDuty           affDuty;
+        CDutyType       oldDuty;
+        CDutyType       newDuty;
     };
-public:
+
     explicit CLogManager(QObject *parent = 0);
     CLogManager(sctLogEntry pEntry, QObject *parent = 0);
     void writeEntry(sctLogEntry pEntry);
