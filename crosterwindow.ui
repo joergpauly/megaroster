@@ -91,7 +91,10 @@
         <number>34</number>
        </property>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>25</number>
+        <number>20</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>20</number>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
         <number>25</number>

@@ -82,6 +82,8 @@ private slots:
 
     void on_chkRTCheck_stateChanged(int arg1);
 
+    void on_cmdBlocks_toggled(bool checked);
+
 private:
     // Properties    
     QWidget*            m_subWnd;

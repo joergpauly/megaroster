@@ -197,5 +197,14 @@ CLogManager::CLogManager(CLogManager::sctLogEntry pEntry, QObject *parent)
 
 void CLogManager::writeEntry(CLogManager::sctLogEntry pEntry)
 {
-
+    QSqlQuery lqry;
+    lqry.prepare("INSERT INTO tblLogbook (PID, DtID, OldDTID, NewDTID, DDateTime) VALUES (:PID, :DTID, :ODT, :NDT, :DAT);");
+    lqry.bindValue(":PID", pEntry.user.id());
+    lqry.bindValue(":DTID", pEntry.affDuty.id());
+    lqry.bindValue(":ODT", pEntry.oldDuty.id());
+    lqry.bindValue(":NDT", pEntry.newDuty.id());
+    lqry.bindValue(":DAT", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    lqry.exec();
+    QString err = lqry.lastError().text();
+    lqry.first();
 }
