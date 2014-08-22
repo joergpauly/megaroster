@@ -22,6 +22,12 @@
 #ifndef CROSTER_H
 #define CROSTER_H
 
+#include <QList>
+#include <QString>
+#include "cduty.h"
+#include "cdutytype.h"
+#include "cpersonal.h"
+
 class CRoster
 {
 public:
