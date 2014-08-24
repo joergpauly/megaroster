@@ -32,6 +32,17 @@ class CRoster
 {
 public:
     CRoster();
+    CRoster(QDate* pDate);
+    ~CRoster();
+
+    QList<CDuty*>* dutyRow(int pPerID);
+    CDuty* singleDuty(int pPerID, QDate pDate);
+
+private:
+    QList<CDuty*>           *m_PersDuties;
+    QList<QList<CDuty*> >   *m_DutyRows;
+
+
 };
 
 #endif // CROSTER_H
