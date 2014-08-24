@@ -65,12 +65,12 @@ public:
 
 
 private slots:
-    void on_dtedMonthChoice_dateChanged(const QDate &date);
-    void on_tbwRoster_itemChanged(QTableWidgetItem *item);
-    void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void on_dtedMonthChoice_dateChanged(const QDate &date);    
     void on_cmbDutyType_currentIndexChanged(const QString &arg1);
     void on_tbwRoster_itemClicked(QTableWidgetItem *item);
     void on_tbwRoster_itemSelectionChanged();
+    void on_tbwRoster_itemChanged(QTableWidgetItem *item);
+    void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
     void on_cmdPrint_clicked();   
     void on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item);
     void on_cbShowAlerts_clicked(bool checked);
@@ -79,9 +79,7 @@ private slots:
     void on_timTo_timeChanged(const QTime &time);
     void on_timFrom2_timeChanged(const QTime &time);
     void on_timTo2_timeChanged(const QTime &time);
-
     void on_chkRTCheck_stateChanged(int arg1);
-
     void on_cmdBlocks_toggled(bool checked);
 
 private:
@@ -95,6 +93,7 @@ private:
     CHoliday*           m_Holidays;
     //QList<CDuty>*       m_duty;
     bool                m_init;
+    bool                m_edit;
     int                 oldRow;
     CDutyType*          m_DType;
     QList<CRule>*       m_ruleList;
@@ -120,11 +119,12 @@ private:
     bool checkRules(QDate pdate);
     bool checkRuleSet(QList<CDutyType> pList);
     void updateDutyDB();
-    int  checkBaseTarget(CDuty *pDuty);
+    void checkBaseTarget(CDuty *pDuty);
     int  checkBaseActual(CDtyBaseType* pType);
     int  getTotalManPower(CDuty *pDuty);
     int  getSingleManPower(CDuty *pDuty);
-
+    void saveFromTable(int row, int col);
+    void saveFromTable(QTableWidgetItem *item);
 
 };
 

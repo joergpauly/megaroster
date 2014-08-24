@@ -28,6 +28,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CRosterWindow)
 {
+    m_edit = false;
     m_currentDuty = NULL;
     m_parent = parent;
     m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
@@ -630,7 +631,7 @@ void CRosterWindow::updateDutyDB()
     checkRules(m_currentDuty->Date());
 }
 
-int CRosterWindow::checkBaseTarget(CDuty *pDuty)
+void CRosterWindow::checkBaseTarget(CDuty *pDuty)
 {
     /* Ermittlung der Soll-Zahlen:
      *
@@ -873,33 +874,25 @@ int CRosterWindow::getSingleManPower(CDuty *pDuty)
 
 }
 
-void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
+void CRosterWindow::saveFromTable(int row, int col)
 {
-    m_init = true;
-    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-    m_Month = date.month();
-    m_Year = date.year();
-    m_Holidays = new CHoliday(date.year());
-    m_dbman = ((CMainWindow*)m_parent)->dataBase();
-    setTabTitle(m_Prefix, date);
-    makeRows(date);
-    makeColumns(date);    
-    makeRoster(date);
-    makeIstH();
-    qApp->restoreOverrideCursor();
-    m_init = false;
+    QTableWidgetItem *item = ui->tbwRoster->item(row, col);
+    saveFromTable(item);
 }
 
-void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
+void CRosterWindow::saveFromTable(QTableWidgetItem *item)
 {
     if(m_init)
-    {        
+    {
         return;
     }
+
     if(item->data(Qt::UserRole).toInt() == 0)
     {
         return;
     }
+
+    m_edit = true;
     CDuty *dty = new CDuty(item->data(Qt::UserRole).toInt());
     CLogManager logman;
     CLogManager::sctLogEntry entry;
@@ -942,12 +935,48 @@ void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
     makeIstH(ui->tbwRoster->currentRow());
     checkRules(dty->Date());
     delete dty;
-    delete dtyp;    
+    delete dtyp;
+    m_edit = false;
+}
+
+void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
+{
+    m_init = true;
+    qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+    m_Month = date.month();
+    m_Year = date.year();
+    m_Holidays = new CHoliday(date.year());
+    m_dbman = ((CMainWindow*)m_parent)->dataBase();
+    setTabTitle(m_Prefix, date);
+    makeRows(date);
+    makeColumns(date);    
+    makeRoster(date);
+    makeIstH();
+    qApp->restoreOverrideCursor();
+    m_init = false;
+}
+
+void CRosterWindow::on_tbwRoster_itemChanged(QTableWidgetItem *item)
+{    
+    if(m_init)
+    {
+        return;
+    }
+    if((item->column() <= ui->tbwRoster->columnCount() -3)
+            & (item->data(Qt::UserRole).toInt() != 0)
+            & !m_edit)
+    {
+        saveFromTable(item);
+    }
 }
 
 void CRosterWindow::on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-    updateDetails(currentRow, currentColumn);
+    if(currentColumn >= ui->tbwRoster->columnCount() -3)
+    {
+        return;
+    }
+    updateDetails(currentRow, currentColumn);    
 }
 
 void CRosterWindow::on_cmbDutyType_currentIndexChanged(const QString &arg1)

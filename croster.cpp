@@ -24,3 +24,23 @@
 CRoster::CRoster()
 {
 }
+
+CRoster::CRoster(QDate *pDate)
+{
+
+}
+
+CRoster::~CRoster()
+{
+
+}
+
+QList<CDuty *> *CRoster::dutyRow(int pPerID)
+{
+
+}
+
+CDuty *CRoster::singleDuty(int pPerID, QDate pDate)
+{
+
+}
