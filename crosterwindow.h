@@ -97,6 +97,7 @@ private:
     int                 oldRow;
     CDutyType*          m_DType;
     QList<CRule>*       m_ruleList;
+    CDuty               m_previousDuty;
     CDuty*              m_currentDuty;
     bool                m_updatingDetails;
     CPersonal*          m_actUser;
