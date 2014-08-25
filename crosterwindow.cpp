@@ -29,7 +29,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     ui(new Ui::CRosterWindow)
 {
     m_edit = false;
-    m_currentDuty = NULL;
+    m_currentDuty = NULL;    
     m_parent = parent;
     m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
     ui->setupUi(this);
@@ -392,6 +392,7 @@ void CRosterWindow::updateDetails(int prow, int pcol)
         ui->timTo2->setEnabled(false);
     }
     m_currentDuty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
+    m_previousDuty = *m_currentDuty;
     updateDetails(m_currentDuty);
 }
 
@@ -399,6 +400,7 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
 {
     // Detailfelder berechnen und beschreiben
     m_updatingDetails = true;
+
     QString txt = pDuty->Typ()->Desc();
     ui->txtDutyType->setText(txt);
     QPalette pal = ui->txtDutyType->palette();
@@ -898,6 +900,7 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *item)
     CLogManager::sctLogEntry entry;
     entry.affDuty = *dty;
     CDutyType *dtyp = new CDutyType(item->text().toUpper());
+    entry.oldDuty = *m_previousDuty.Typ();
     entry.newDuty = *dtyp;
     entry.user = CPersonal(((CMainWindow*)m_parent)->getUserID());
     entry.timeStamp = QDateTime::currentDateTime();
@@ -934,6 +937,7 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *item)
     updateDetails(dty);
     makeIstH(ui->tbwRoster->currentRow());
     checkRules(dty->Date());
+    m_previousDuty = *dty;
     delete dty;
     delete dtyp;
     m_edit = false;
