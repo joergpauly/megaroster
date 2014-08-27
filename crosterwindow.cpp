@@ -58,8 +58,7 @@ CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
     ui(new Ui::CRosterWindow)
 {
     m_Month = pMonth;
-    m_Year = pYear;
-    CRosterWindow(parent);
+    m_Year = pYear;    
 }
 
 CRosterWindow::~CRosterWindow()
