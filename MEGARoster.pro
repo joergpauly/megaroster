@@ -70,7 +70,8 @@ FORMS    += cmainwindow.ui \
 
 OTHER_FILES += \
     mr.sql \
-    mr.bmp
+    mr.bmp \
+    mr-data.sql
 
 RESOURCES += \
     megaroster.qrc
