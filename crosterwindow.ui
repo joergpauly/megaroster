@@ -17,6 +17,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QPushButton" name="cmdPreviousMonth">
+       <property name="toolTip">
+        <string>Vorherigen Monat öffnen</string>
+       </property>
+       <property name="text">
+        <string>&lt;--</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Dienst-Monat / -Jahr</string>
@@ -63,6 +73,16 @@
       <widget class="QPushButton" name="cmdPrint">
        <property name="text">
         <string>&amp;Drucken</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdNextMonth">
+       <property name="toolTip">
+        <string>Folgemonat öffnen</string>
+       </property>
+       <property name="text">
+        <string>--&gt;</string>
        </property>
       </widget>
      </item>
@@ -557,6 +577,8 @@
   <tabstop>cbShowAlerts</tabstop>
   <tabstop>cmdCheckRoster</tabstop>
   <tabstop>cmdPrint</tabstop>
+  <tabstop>cmdPreviousMonth</tabstop>
+  <tabstop>cmdNextMonth</tabstop>
  </tabstops>
  <resources/>
  <connections/>

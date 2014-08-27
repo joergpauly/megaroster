@@ -57,8 +57,30 @@ CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
     QWidget(parent),
     ui(new Ui::CRosterWindow)
 {
+    QDate lDate(pYear, pMonth, 1);
     m_Month = pMonth;
-    m_Year = pYear;    
+    m_Year = pYear;
+    m_edit = false;
+    m_currentDuty = NULL;
+    m_parent = parent;
+    m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
+    ui->setupUi(this);
+    m_Prefix = "";
+    ui->cbShowAlerts->setChecked(true);
+    ui->dtedMonthChoice->setDate(lDate);
+    setTabTitle(m_Prefix, lDate);
+    QSqlQuery* lqry = new QSqlQuery("SELECT * FROM tblDutyTypes ORDER BY Mark;");
+    lqry->exec();
+    lqry->first();
+    ui->cmbDutyType->clear();
+    while(lqry->isValid())
+    {
+        ui->cmbDutyType->addItem(lqry->value(lqry->record().indexOf("Mark")).toString(),QVariant(lqry->value(lqry->record().indexOf("ID")).toInt()));
+        lqry->next();
+    }
+    delete lqry;
+    m_checkingRules = false;
+    loadRules();
 }
 
 CRosterWindow::~CRosterWindow()
@@ -1214,4 +1236,36 @@ void CRosterWindow::on_cmdBlocks_toggled(bool checked)
     {
         ui->chkRTCheck->setCheckState(Qt::Unchecked);
     }
+}
+
+void CRosterWindow::on_cmdNextMonth_clicked()
+{
+    int lYear = ui->dtedMonthChoice->date().year();
+    int lMonth = ui->dtedMonthChoice->date().month();
+    if(lMonth == 12)
+    {
+        lYear++;
+        lMonth = 1;
+    }
+    else
+    {
+        lMonth++;
+    }
+    ((CMainWindow*)m_parent)->openMonth(lMonth, lYear, false, this);
+}
+
+void CRosterWindow::on_cmdPreviousMonth_clicked()
+{
+    int lYear = ui->dtedMonthChoice->date().year();
+    int lMonth = ui->dtedMonthChoice->date().month();
+    if(lMonth == 1)
+    {
+        lYear--;
+        lMonth = 12;
+    }
+    else
+    {
+        lMonth--;
+    }
+    ((CMainWindow*)m_parent)->openMonth(lMonth, lYear, true, this);
 }

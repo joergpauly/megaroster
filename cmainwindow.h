@@ -59,6 +59,7 @@ public:
     void setUserID(int pID);
     int getUserID();
     QDir* path();
+    void openMonth(int pMonth, int pYear, bool pLeft, CRosterWindow *pCalling);
 
 
 private slots:
