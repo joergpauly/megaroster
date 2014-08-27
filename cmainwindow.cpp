@@ -74,6 +74,17 @@ QDir *CMainWindow::path()
     return m_Path;
 }
 
+void CMainWindow::openMonth(int pMonth, int pYear, bool pLeft, CRosterWindow *pCalling)
+{
+    m_Roster = new CRosterWindow(this, pMonth, pYear);
+    m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
+    if(pLeft)
+    {
+        ui->mdiArea->setTabOrder(m_Roster, pCalling);
+    }
+    m_Roster->show();
+}
+
 void CMainWindow::on_actionProgramm_be_enden_triggered()
 {
     this->close();
