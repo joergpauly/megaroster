@@ -23,6 +23,7 @@
 
 CRoster::CRoster()
 {
+
 }
 
 CRoster::CRoster(QDate *pDate)
