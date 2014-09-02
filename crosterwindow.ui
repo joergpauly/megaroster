@@ -364,6 +364,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QCheckBox" name="chkReq">
+           <property name="text">
+            <string>Angefordert</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -567,14 +574,15 @@
   <tabstop>tbwTarget</tabstop>
   <tabstop>tbwActual</tabstop>
   <tabstop>txtDutyType</tabstop>
+  <tabstop>chkReq</tabstop>
   <tabstop>timFrom</tabstop>
   <tabstop>timTo</tabstop>
   <tabstop>timFrom2</tabstop>
   <tabstop>timTo2</tabstop>
   <tabstop>cmdBlocks</tabstop>
   <tabstop>cmbDutyType</tabstop>
-  <tabstop>tblPrealerts</tabstop>
   <tabstop>cbShowAlerts</tabstop>
+  <tabstop>tblPrealerts</tabstop>
   <tabstop>cmdCheckRoster</tabstop>
   <tabstop>cmdPrint</tabstop>
   <tabstop>cmdPreviousMonth</tabstop>

@@ -422,12 +422,13 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     // Detailfelder berechnen und beschreiben
     m_updatingDetails = true;
 
-    QString txt = pDuty->Typ()->Desc();
-    ui->txtDutyType->setText(txt);
+    QString txt = pDuty->Typ()->Desc();    
+    ui->txtDutyType->setText(txt);    
     QPalette pal = ui->txtDutyType->palette();
     QColor lclr(pDuty->Typ()->RosterColorR(),pDuty->Typ()->RosterColorG(),pDuty->Typ()->RosterColorB());
     pal.setColor(QPalette::Base,lclr);
     ui->txtDutyType->setPalette(pal);
+    ui->chkReq->setChecked(pDuty->Request());
     ui->timFrom->setTime(pDuty->TimeFrom());
     ui->timTo->setTime(pDuty->TimeTo());
     ui->timFrom2->setTime(pDuty->TimeFrom2());
@@ -435,11 +436,13 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->lblName->setText(pDuty->Kollege()->Name() + ", " + pDuty->Kollege()->VName());
     int hrs = pDuty->Duration().hour() + pDuty->Duration2().hour();
     int mins = pDuty->Duration().minute() + pDuty->Duration2().minute();
+
     if(mins > 59)
     {
         hrs +=1;
         mins-=60;
     }
+
     QTime ltim(hrs,mins);
     ui->timDura->setTime(ltim);
     ui->timFrom->setEnabled(true);
@@ -454,6 +457,7 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     }
 
     m_updatingDetails = false;
+
     if(!m_actUser->Edit())
     {
         if(pDuty->Date() >= QDate::currentDate())
@@ -631,9 +635,10 @@ void CRosterWindow::updateDutyDB()
     ltime = QTime::fromString("00:00:00","hh:mm:ss");
     ltime.addSecs(secs1 + secs2);
     ui->timDura->setTime(ltime);
-    qry.prepare("UPDATE tblDuty SET TypeID = :TID, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
+    qry.prepare("UPDATE tblDuty SET TypeID = :TID, Status = :RQ, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
     int tid = m_currentDuty->Typ()->id();
     qry.bindValue(":TID", tid);
+    qry.bindValue(":RQ", m_currentDuty->Request());
     QString tf = m_currentDuty->TimeFrom().toString("hh:mm:ss.zzz");
     qry.bindValue(":TF", tf);
     QString tt = m_currentDuty->TimeTo().toString("hh:mm:ss.zzz");
@@ -740,7 +745,7 @@ void CRosterWindow::checkBaseTarget(CDuty *pDuty)
         int diff;
         QColor red(255,0,0);
 
-        if(actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt() | actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt())
+        if((actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt()) | (actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt()))
         {
             diff = 0;
         }
@@ -878,11 +883,11 @@ int CRosterWindow::getSingleManPower(CDuty *pDuty)
     QSqlQuery lqry;
     QDate fromDate(pDuty->Date().year(), pDuty->Date().month(), 1);
     QDate toDate(pDuty->Date().year(), pDuty->Date().month(), pDuty->Date().daysInMonth());
-    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD AND PersID = :PID;");
+    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD AND PersID = :PID AND Status = 0;");
     lqry.bindValue(":FD", fromDate.toString("yyyy-MM-dd"));
     lqry.bindValue(":TD", toDate.toString("yyyy-MM-dd"));
     lqry.bindValue(":PID", pDuty->Kollege()->id());
-    lqry.exec();
+    lqry.exec();    
     lqry.first();
     while(lqry.isValid())
     {
@@ -1157,6 +1162,7 @@ void CRosterWindow::on_tblPrealerts_itemDoubleClicked(QTableWidgetItem *item)
 {
     CDutyType ltyp(item->data(Qt::UserRole).toInt());
     ui->tbwRoster->currentItem()->setText(ltyp.Mark());
+    on_chkReq_clicked(true);
 }
 
 void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
@@ -1219,7 +1225,7 @@ void CRosterWindow::on_timTo2_timeChanged(const QTime &time)
 
 void CRosterWindow::on_chkRTCheck_stateChanged(int arg1)
 {
-    if(arg1 == Qt::Checked & m_currentDuty != NULL)
+    if((arg1 == Qt::Checked) & (m_currentDuty != NULL))
     {
         checkBaseTarget(m_currentDuty);
     }
@@ -1268,4 +1274,10 @@ void CRosterWindow::on_cmdPreviousMonth_clicked()
         lMonth--;
     }
     ((CMainWindow*)m_parent)->openMonth(lMonth, lYear, true, this);
+}
+
+void CRosterWindow::on_chkReq_clicked(bool checked)
+{
+    m_currentDuty->setRequest(checked);
+    updateDutyDB();
 }
