@@ -70,11 +70,15 @@ public:
     QTime Duration2() const;
     void setDuration2(const QTime &Duration2);
 
+    bool Request() const;
+    void setRequest(bool Request);
+
 private:
     int         m_id;
     QDate       m_Date;
     CPersonal   *m_Kollege;
     CDutyType   *m_Typ;
+    bool        m_Request;
     QTime       m_TimeFrom;
     QTime       m_TimeTo;
     QTime       m_Duration;

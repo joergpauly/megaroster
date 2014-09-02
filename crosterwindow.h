@@ -86,6 +86,8 @@ private slots:
 
     void on_cmdPreviousMonth_clicked();
 
+    void on_chkReq_clicked(bool checked);
+
 private:
     // Properties    
     QWidget*            m_subWnd;

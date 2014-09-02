@@ -33,6 +33,7 @@ CDuty::CDuty(int pid)
     lqry->exec();
     lqry->first();    
     m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
+    m_Request = lqry->value(lqry->record().indexOf("Status")).toBool();
     m_Date = QDate::fromString(lqry->value(lqry->record().indexOf("DDate")).toString(),"yyyy-MM-dd");
     m_TimeFrom = QTime::fromString(lqry->value(lqry->record().indexOf("TimeFrom")).toString(),"hh:mm:ss.zzz");
     m_TimeTo = QTime::fromString(lqry->value(lqry->record().indexOf("TimeTo")).toString(),"hh:mm:ss.zzz");
@@ -47,11 +48,7 @@ CDuty::CDuty(int pid)
 
 CDuty::~CDuty()
 {
-    if(m_Kollege)
-    {
-        //delete m_Kollege;
-    }
-    //delete m_Typ;
+
 }
 
 
@@ -157,6 +154,17 @@ void CDuty::setDuration2(const QTime &Duration2)
 {
     m_Duration2 = Duration2;
 }
+
+bool CDuty::Request() const
+{
+    return m_Request;
+}
+
+void CDuty::setRequest(bool Request)
+{
+    m_Request = Request;
+}
+
 
 
 
