@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     cpersonaledit.cpp \
     cdutytypeedit.cpp \
     choliday.cpp \
-    cprintform.cpp \
     cprealertedit.cpp \
     cprealert.cpp \
     cprealerttype.cpp \
@@ -32,7 +31,6 @@ SOURCES += main.cpp\
     cprinttablecell.cpp \
     cprinttablerow.cpp \
     cprinttablecol.cpp \
-    cprintformeditor.cpp \
     cdtybasetype.cpp \
     croster.cpp
 
@@ -45,7 +43,6 @@ HEADERS  += cmainwindow.h \
     cpersonaledit.h \
     cdutytypeedit.h \
     choliday.h \
-    cprintform.h \
     cprealertedit.h \
     cprealert.h \
     cprealerttype.h \
@@ -55,7 +52,6 @@ HEADERS  += cmainwindow.h \
     cprinttablecell.h \
     cprinttablerow.h \
     cprinttablecol.h \
-    cprintformeditor.h \
     cdtybasetype.h \
     croster.h
 
@@ -63,7 +59,6 @@ FORMS    += cmainwindow.ui \
     crosterwindow.ui \
     cpersonaledit.ui \
     cdutytypeedit.ui \
-    cprintform.ui \
     cprealertedit.ui \
     clogonassign.ui \
     cprintformeditor.ui
