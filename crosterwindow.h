@@ -47,7 +47,6 @@
 #include "cprealerttype.h"
 #include "crule.h"
 #include "cprinttable.h"
-#include "cprintformeditor.h"
 
 namespace Ui {
 class CRosterWindow;
