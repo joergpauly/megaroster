@@ -182,10 +182,7 @@ void CMainWindow::on_cmdDType_clicked()
 }
 
 void CMainWindow::on_actionDruckvorlage_bearbeiten_triggered()
-{
-    CPrintForm *pForm = new CPrintForm(this);
-    pForm->setSubWnd(ui->mdiArea->addSubWindow(pForm));
-    pForm->show();
+{    
 }
 
 void CMainWindow::on_cmdPreAlerts_clicked()
