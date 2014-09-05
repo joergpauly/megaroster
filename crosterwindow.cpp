@@ -1072,8 +1072,9 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 void CRosterWindow::on_cmdPrint_clicked()
 {
 
+
     // Test XML Reader
-    QFile *lFile = new QFile("Dienstplanvorlage.sla");
+    QFile *lFile = new QFile("./DP-Vorlage.sla");
     lFile->open(QIODevice::ReadOnly);
     QXmlStreamReader reader(lFile);
     QString token;
@@ -1085,7 +1086,7 @@ void CRosterWindow::on_cmdPrint_clicked()
         token = reader.tokenString();
         if(txtref != NULL)
         {
-            toktext = *txtref.string();
+            toktext = *txtref.string();            
         }
     }
 
