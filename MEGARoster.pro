@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     cprinttablecol.cpp \
     cdtybasetype.cpp \
     croster.cpp \
-    cprintform.cpp
+    cprintform.cpp \
+    clogbookview.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -55,14 +56,16 @@ HEADERS  += cmainwindow.h \
     cprinttablecol.h \
     cdtybasetype.h \
     croster.h \
-    cprintform.h
+    cprintform.h \
+    clogbookview.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
     cpersonaledit.ui \
     cdutytypeedit.ui \
     cprealertedit.ui \
-    clogonassign.ui
+    clogonassign.ui \
+    clogbookview.ui
 
 OTHER_FILES += \
     mr.sql \
