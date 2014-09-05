@@ -209,3 +209,10 @@ void CMainWindow::on_actionDaten_Ordner_festlegen_triggered()
     }
     delete set;
 }
+
+void CMainWindow::on_cmdChangeLog_clicked()
+{
+    CLogbookView *pLogView = new CLogbookView(this);
+    pLogView->setSubWnd(ui->mdiArea->addSubWindow(pLogView));
+    pLogView->show();
+}
