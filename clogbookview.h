@@ -22,7 +22,14 @@
 #ifndef CLOGBOOKVIEW_H
 #define CLOGBOOKVIEW_H
 
+#include <QMdiSubWindow>
 #include <QWidget>
+
+#include "cdatabasemanager.h"
+#include "cpersonal.h"
+#include "cduty.h"
+#include "cdutytype.h"
+
 
 namespace Ui {
 class CLogbookView;
@@ -35,9 +42,16 @@ class CLogbookView : public QWidget
 public:
     explicit CLogbookView(QWidget *parent = 0);
     ~CLogbookView();
+    void setSubWnd(QMdiSubWindow* pSubWnd);
+
+private slots:
+    void on_datFrom_editingFinished();
+    void on_datTo_editingFinished();
 
 private:
     Ui::CLogbookView *ui;
+    void loadLog();
+    QMdiSubWindow* m_SubWnd;
 };
 
 #endif // CLOGBOOKVIEW_H

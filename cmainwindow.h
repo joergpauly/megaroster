@@ -42,6 +42,7 @@
 #include "cprintform.h"
 #include "cprealertedit.h"
 #include "clogonassign.h"
+#include "clogbookview.h"
 
 namespace Ui {
 class CMainWindow;
@@ -74,6 +75,8 @@ private slots:
     void on_cmdPreAlerts_clicked();
 
     void on_actionDaten_Ordner_festlegen_triggered();
+
+    void on_cmdChangeLog_clicked();
 
 private:
     // Properties
