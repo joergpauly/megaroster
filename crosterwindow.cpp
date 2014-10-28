@@ -1073,7 +1073,7 @@ void CRosterWindow::on_cmdPrint_clicked()
 {
 
 
-    // Test XML Reader
+    /* Test XML Reader
     QFile *lFile = new QFile("./DP-Vorlage.sla");
     lFile->open(QIODevice::ReadOnly);
     QXmlStreamReader reader(lFile);
@@ -1091,7 +1091,7 @@ void CRosterWindow::on_cmdPrint_clicked()
     }
 
 
-    // Ende Test Xml
+    // Ende Test Xml */
 
     QPrinter* prt = new QPrinter();
     prt->setOrientation(QPrinter::Landscape);
