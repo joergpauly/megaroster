@@ -48,6 +48,7 @@
 #include "crule.h"
 #include "cprinttable.h"
 
+
 namespace Ui {
 class CRosterWindow;
 }

@@ -34,8 +34,7 @@ SOURCES += main.cpp\
     cdtybasetype.cpp \
     croster.cpp \
     cprintform.cpp \
-    clogbookview.cpp \
-    cprintroster.cpp
+    clogbookview.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -58,8 +57,7 @@ HEADERS  += cmainwindow.h \
     cdtybasetype.h \
     croster.h \
     cprintform.h \
-    clogbookview.h \
-    cprintroster.h
+    clogbookview.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
