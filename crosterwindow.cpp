@@ -1070,9 +1070,7 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 }
 
 void CRosterWindow::on_cmdPrint_clicked()
-{
-
-
+{    
     /* Test XML Reader
     QFile *lFile = new QFile("./DP-Vorlage.sla");
     lFile->open(QIODevice::ReadOnly);
@@ -1110,7 +1108,7 @@ void CRosterWindow::on_cmdPrint_clicked()
     fnt.setPointSize(24);
     QFont oldfnt = localPainter->font();
     localPainter->setFont(fnt);
-    localPainter->drawText(lpos, "Dienstplan " + ui->dtedMonthChoice->text());
+    localPainter->drawText(lpos, "Dienstplan " + QDate::longMonthName(ui->dtedMonthChoice->date().month()) + " " + QString::number(ui->dtedMonthChoice->date().year()));
     localPainter->setFont(oldfnt);
 
     lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
