@@ -25,7 +25,14 @@
 #ifndef CSINGLEPREALERTEDIT_H
 #define CSINGLEPREALERTEDIT_H
 
+// Qt-Header
 #include <QDialog>
+#include <QMenu>
+#include <QMessageBox>
+
+// Projekt-Header
+#include "cprealert.h"
+
 
 namespace Ui {
 class CSinglePrealertEdit;
@@ -36,11 +43,32 @@ class CSinglePrealertEdit : public QDialog
     Q_OBJECT
 
 public:
-    explicit CSinglePrealertEdit(QWidget *parent = 0);
+    explicit CSinglePrealertEdit(CPersonal *pPers, bool pExists = false, QWidget *parent = 0);
+    explicit CSinglePrealertEdit(CPrealert *pPreAlert, QWidget *parent = 0);
     ~CSinglePrealertEdit();
+
+private slots:
+    void on_dtMenu(QAction*pAction);
+
+    void on_cmdNewDuty_clicked();
+
+    void on_dteTo_editingFinished();
 
 private:
     Ui::CSinglePrealertEdit *ui;
+    CDatabaseManager *m_db;
+    QMenu *m_dtMenu;
+    QList<CPrealert> *m_Prealerts;
+    QList<CPrealertType> *m_paTypes;
+    QList<CDutyType> *m_DutyTypes;
+    QList<CPersonal> *m_PersList;
+    CPersonal *m_actPers;
+    CPrealert* m_actAlert;
+    bool m_newAlert;
+
+
+    void updateTypes();
+    QList<CPrealert> *setupNewPrealerts();
 };
 
 #endif // CSINGLEPREALERTEDIT_H
