@@ -25,7 +25,7 @@
 #include "csingleprealertedit.h"
 #include "ui_csingleprealertedit.h"
 
-CSinglePrealertEdit::CSinglePrealertEdit(CPersonal *pPers, bool pExists, QWidget *parent) :
+CSinglePrealertEdit::CSinglePrealertEdit(CPersonal *pPers, QDate pDate, bool pExists, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CSinglePrealertEdit)
 {
@@ -44,6 +44,8 @@ CSinglePrealertEdit::CSinglePrealertEdit(CPersonal *pPers, bool pExists, QWidget
     else
     {
         m_newAlert = true;
+        ui->dteFrom->setDate(pDate);
+        ui->dteTo->setDate(pDate);
     }
 
     m_dtMenu = new QMenu("Dienstart auswählen", ui->trvDutyTypes);
@@ -64,7 +66,7 @@ CSinglePrealertEdit::CSinglePrealertEdit(CPrealert *pPreAlert, QWidget *parent) 
     QDialog(parent)
 {
     m_actAlert = pPreAlert;
-    CSinglePrealertEdit(pPreAlert->Pers(), true, parent);
+    CSinglePrealertEdit(pPreAlert->Pers(), pPreAlert->Date(), true, parent);
 }
 
 CSinglePrealertEdit::~CSinglePrealertEdit()
@@ -120,7 +122,17 @@ void CSinglePrealertEdit::updateTypes()
 
 QList<CPrealert> *CSinglePrealertEdit::setupNewPrealerts()
 {
+    QList<CPrealert> *lPre = new QList<CPrealert>();
+    for(QDate i = ui->dteFrom->date(); i == ui->dteTo->date(); i.addDays(1))
+    {
+        CPrealert * lAlert = new CPrealert();
+        lAlert->setDate(i);
+        lAlert->setPers(m_actPers);
+        lPre = new QList<CPrealert>();
+        lPre->append(*lAlert);
+    }
 
+    return lPre;
 }
 
 void CSinglePrealertEdit::on_dteTo_editingFinished()
@@ -150,14 +162,6 @@ void CSinglePrealertEdit::on_dteTo_editingFinished()
 
     if(ui->dteFrom->date() < ui->dteTo->date())
     {
-        for(QDate i = ui->dteFrom->date(); i == ui->dteTo->date(); i.addDays(1))
-        {
-            CPrealert * lAlert = new CPrealert();
-            lAlert->setDate(i);
-            lAlert->setPers(m_actPers);
-            m_Prealerts = new QList<CPrealert>();
-            m_Prealerts->append(*lAlert);
-        }
-        ui->cmdNewDuty->setFocus();
+        m_Prealerts = setupNewPrealerts();
     }
 }

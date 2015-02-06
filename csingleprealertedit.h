@@ -43,7 +43,7 @@ class CSinglePrealertEdit : public QDialog
     Q_OBJECT
 
 public:
-    explicit CSinglePrealertEdit(CPersonal *pPers, bool pExists = false, QWidget *parent = 0);
+    explicit CSinglePrealertEdit(CPersonal *pPers, QDate pDate = QDate::currentDate(), bool pExists = false, QWidget *parent = 0);
     explicit CSinglePrealertEdit(CPrealert *pPreAlert, QWidget *parent = 0);
     ~CSinglePrealertEdit();
 

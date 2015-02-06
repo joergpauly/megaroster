@@ -105,7 +105,7 @@ void CPrealertEdit::on_cmdNewDuty_clicked()
 
 void CPrealertEdit::on_cmdNew_clicked()
 {
-    CSinglePrealertEdit *lPrealert = new CSinglePrealertEdit(m_actPers);
+    CSinglePrealertEdit *lPrealert = new CSinglePrealertEdit(m_actPers, ui->datFromDate->date());
     lPrealert->exec();
     reloadAlerts();
     /*
