@@ -105,6 +105,10 @@ void CPrealertEdit::on_cmdNewDuty_clicked()
 
 void CPrealertEdit::on_cmdNew_clicked()
 {
+    CSinglePrealertEdit *lPrealert = new CSinglePrealertEdit(m_actPers);
+    lPrealert->exec();
+    reloadAlerts();
+    /*
     QSqlQuery lqry;
     lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
     lqry.bindValue(":Date", ui->datFromDate->date().toString("yyyy-MM-dd"));
@@ -121,6 +125,7 @@ void CPrealertEdit::on_cmdNew_clicked()
         ltqry.exec();
     }    
     reloadTypes();
+    */
 }
 
 void CPrealertEdit::updateTypes()

@@ -40,6 +40,7 @@
 #include "cdatabasemanager.h"
 #include "cprealert.h"
 #include "cprealerttype.h"
+#include "csingleprealertedit.h"
 
 namespace Ui {
 class CPrealertEdit;
