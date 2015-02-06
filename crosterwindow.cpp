@@ -396,6 +396,7 @@ void CRosterWindow::makeRoster(QDate pDate)
 
 void CRosterWindow::updateDetails(int prow, int pcol)
 {
+    // Anhand der Zelle CDuty-Objekt bilden und updaten
     if(prow < 0)
     {
         ui->timFrom->setEnabled(false);
