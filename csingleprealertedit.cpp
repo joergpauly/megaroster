@@ -29,6 +29,7 @@ CSinglePrealertEdit::CSinglePrealertEdit(CPersonal *pPers, QDate pDate, bool pEx
     QDialog(parent),
     ui(new Ui::CSinglePrealertEdit)
 {
+    m_paTypes = new QList<CPrealertType>();
     ui->setupUi(this);
     m_actPers = pPers;
     this->setWindowTitle(QString("Vormerkung für %1, %2").arg(m_actPers->Name()).arg(m_actPers->VName()));
@@ -123,6 +124,7 @@ void CSinglePrealertEdit::updateTypes()
 QList<CPrealert> *CSinglePrealertEdit::setupNewPrealerts()
 {
     QList<CPrealert> *lPre = new QList<CPrealert>();
+
     for(QDate i = ui->dteFrom->date(); i == ui->dteTo->date(); i.addDays(1))
     {
         CPrealert * lAlert = new CPrealert();
@@ -164,4 +166,31 @@ void CSinglePrealertEdit::on_dteTo_editingFinished()
     {
         m_Prealerts = setupNewPrealerts();
     }
+}
+
+void CSinglePrealertEdit::on_buttonBox_rejected()
+{
+    this->close();
+}
+
+void CSinglePrealertEdit::on_buttonBox_accepted()
+{
+    for(int j = 0; j < m_Prealerts->count(); j++)
+    {
+        QSqlQuery lqry;
+        lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
+        lqry.bindValue(":Date", m_Prealerts->at(j).Date().toString("yyyy-MM-dd"));
+        lqry.bindValue(":PID", m_actPers->id());
+        lqry.exec();
+        int ppid = lqry.lastInsertId().toInt();
+        for(int i = 0; i < m_paTypes->count(); i++)
+        {
+            QSqlQuery ltqry;
+            ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
+            ltqry.bindValue(":PAID", ppid);
+            ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
+            ltqry.exec();
+        }
+    }
+    close();
 }

@@ -54,6 +54,10 @@ private slots:
 
     void on_dteTo_editingFinished();
 
+    void on_buttonBox_rejected();
+
+    void on_buttonBox_accepted();
+
 private:
     Ui::CSinglePrealertEdit *ui;
     CDatabaseManager *m_db;
