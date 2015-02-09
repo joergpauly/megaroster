@@ -48,6 +48,7 @@ CPrealert::CPrealert(int pID)
     lqry->exec();
     lqry->first();
     m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
+    m_Date = lqry->value(lqry->record().indexOf("DDate")).toDate();
     m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
     m_paTypes = getTypes(pID);
 }
