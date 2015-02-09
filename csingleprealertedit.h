@@ -58,6 +58,8 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_cmdDelete_clicked();
+
 private:
     Ui::CSinglePrealertEdit *ui;
     CDatabaseManager *m_db;
