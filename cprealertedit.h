@@ -71,6 +71,8 @@ private slots:
 
     void on_calDate_clicked(const QDate &date);
 
+    void on_trvPrealerts_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
 private:
     Ui::CPrealertEdit *ui;
     QWidget *m_parent;

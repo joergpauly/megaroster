@@ -52,7 +52,7 @@ CPrealertEdit::CPrealertEdit(QWidget *parent) :
         lActions->append(lact);
     }
     m_dtMenu->addActions(*lActions);
-    connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
+    //connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
     selectActualUser();
 }
 
@@ -108,24 +108,6 @@ void CPrealertEdit::on_cmdNew_clicked()
     CSinglePrealertEdit *lPrealert = new CSinglePrealertEdit(m_actPers, ui->datFromDate->date());
     lPrealert->exec();
     reloadAlerts();
-    /*
-    QSqlQuery lqry;
-    lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
-    lqry.bindValue(":Date", ui->datFromDate->date().toString("yyyy-MM-dd"));
-    lqry.bindValue(":PID", m_actPers->id());
-    lqry.exec();
-    reloadAlerts();
-    int ppid = lqry.lastInsertId().toInt();
-    for(int i = 0; i < m_paTypes->count(); i++)
-    {
-        QSqlQuery ltqry;
-        ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
-        ltqry.bindValue(":PAID", ppid);
-        ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
-        ltqry.exec();
-    }    
-    reloadTypes();
-    */
 }
 
 void CPrealertEdit::updateTypes()
@@ -245,16 +227,27 @@ void CPrealertEdit::on_cmdKill_clicked()
 void CPrealertEdit::on_datFromDate_dateChanged(const QDate &date)
 {
     ui->calDate->setSelectedDate(date);
+    /*
     m_actAlert->setDate(date);
     QSqlQuery lqry;
     lqry.prepare("UPDATE tblPrealert SET DDate = :DD WHERE ID = :ID;");
     lqry.bindValue(":DD", m_actAlert->Date().toString("yyyy-MM-dd"));
     lqry.bindValue(":ID", m_actAlert->id());
     lqry.exec();
+    */
     reloadAlerts();
 }
 
 void CPrealertEdit::on_calDate_clicked(const QDate &date)
 {
     ui->datFromDate->setDate(date);
+}
+
+void CPrealertEdit::on_trvPrealerts_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    int lID = item->data(0,Qt::UserRole).toInt();
+    CPrealert *lAlert = new CPrealert(lID);
+    CSinglePrealertEdit* lSingleEdit = new CSinglePrealertEdit(lAlert, this);
+    lSingleEdit->exec();
+    reloadAlerts();
 }
