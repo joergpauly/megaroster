@@ -69,7 +69,8 @@ private:
     QList<CDutyType> *m_DutyTypes;
     QList<CPersonal> *m_PersList;
     CPersonal *m_actPers;
-    CPrealert* m_actAlert;
+    CPrealert *m_actAlert;
+    int m_actAlID;
     bool m_newAlert;
 
 

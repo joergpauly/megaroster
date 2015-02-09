@@ -67,7 +67,9 @@ CSinglePrealertEdit::CSinglePrealertEdit(CPrealert *pPreAlert, QWidget *parent) 
     QDialog(parent),
     ui(new Ui::CSinglePrealertEdit)
 {
-    m_actAlert = pPreAlert;
+    m_actAlert = new CPrealert();
+    *m_actAlert = *pPreAlert;
+    m_actAlID = pPreAlert->id();
     m_paTypes = m_actAlert->paTypes();
     ui->setupUi(this);
     m_actPers = pPreAlert->Pers();
@@ -108,11 +110,11 @@ void CSinglePrealertEdit::on_dtMenu(QAction *pAction)
 
     if(m_actAlert)
     {
-        int pID = m_actAlert->id();
+        int pID = m_actAlID;
         ltype.setPid(pID);
         QSqlQuery lqry;
         lqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PID, :TID);");
-        lqry.bindValue(":PID", m_actAlert->id());
+        lqry.bindValue(":PID", m_actAlID);
         lqry.bindValue(":TID", dtyp->id());
         lqry.exec();
     }
@@ -235,6 +237,7 @@ void CSinglePrealertEdit::on_cmdDelete_clicked()
         lqry.prepare("DELETE FROM tblPATypes WHERE ID = :ID;");
         lqry.bindValue(":ID", pid);
         lqry.exec();
+        ui->trvDutyTypes->removeItemWidget(ui->trvDutyTypes->currentItem(),0);
     }
     updateTypes();
 }
