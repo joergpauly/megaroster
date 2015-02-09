@@ -64,11 +64,36 @@ CSinglePrealertEdit::CSinglePrealertEdit(CPersonal *pPers, QDate pDate, bool pEx
 }
 
 CSinglePrealertEdit::CSinglePrealertEdit(CPrealert *pPreAlert, QWidget *parent) :
-    QDialog(parent)
+    QDialog(parent),
+    ui(new Ui::CSinglePrealertEdit)
 {
     m_actAlert = pPreAlert;
-    CSinglePrealertEdit(pPreAlert->Pers(), pPreAlert->Date(), true, parent);
+    m_paTypes = m_actAlert->paTypes();
+    ui->setupUi(this);
+    m_actPers = pPreAlert->Pers();
+    this->setWindowTitle(QString("Vormerkung für %1, %2").arg(m_actPers->Name()).arg(m_actPers->VName()));
+    m_DutyTypes= m_db->dutyTypeList();
+
+    ui->dteFrom->setDate(m_actAlert->Date());
+    ui->dteTo->setDate(m_actAlert->Date());
+    ui->dteTo->setReadOnly(true);
+    updateTypes();
+    m_newAlert = false;
+
+    m_dtMenu = new QMenu("Dienstart auswählen", ui->trvDutyTypes);
+    QList<QAction*> *lActions = new QList<QAction*>();
+
+    for(int dt = 0; dt < m_DutyTypes->count(); dt++)
+    {
+        QAction *lact = new QAction(m_DutyTypes->at(dt).Desc(), m_dtMenu);
+        lact->setData(QVariant(m_DutyTypes->at(dt).id()));
+        lActions->append(lact);
+    }
+
+    m_dtMenu->addActions(*lActions);
+    connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
 }
+
 
 CSinglePrealertEdit::~CSinglePrealertEdit()
 {
@@ -98,6 +123,7 @@ void CSinglePrealertEdit::on_dtMenu(QAction *pAction)
 
 void CSinglePrealertEdit::on_cmdNewDuty_clicked()
 {
+    on_dteTo_editingFinished();
     m_dtMenu->exec(QCursor::pos());
 }
 
@@ -118,19 +144,17 @@ void CSinglePrealertEdit::updateTypes()
         }
 
     }
-
 }
 
 QList<CPrealert> *CSinglePrealertEdit::setupNewPrealerts()
 {
     QList<CPrealert> *lPre = new QList<CPrealert>();
 
-    for(QDate i = ui->dteFrom->date(); i == ui->dteTo->date(); i.addDays(1))
+    for(QDate i = ui->dteFrom->date(); i <= ui->dteTo->date(); i = i.addDays(1))
     {
         CPrealert * lAlert = new CPrealert();
         lAlert->setDate(i);
-        lAlert->setPers(m_actPers);
-        lPre = new QList<CPrealert>();
+        lAlert->setPers(m_actPers);        
         lPre->append(*lAlert);
     }
 
@@ -175,22 +199,42 @@ void CSinglePrealertEdit::on_buttonBox_rejected()
 
 void CSinglePrealertEdit::on_buttonBox_accepted()
 {
-    for(int j = 0; j < m_Prealerts->count(); j++)
+    if(m_newAlert)
     {
-        QSqlQuery lqry;
-        lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
-        lqry.bindValue(":Date", m_Prealerts->at(j).Date().toString("yyyy-MM-dd"));
-        lqry.bindValue(":PID", m_actPers->id());
-        lqry.exec();
-        int ppid = lqry.lastInsertId().toInt();
-        for(int i = 0; i < m_paTypes->count(); i++)
+        for(int j = 0; j < m_Prealerts->count(); j++)
         {
-            QSqlQuery ltqry;
-            ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
-            ltqry.bindValue(":PAID", ppid);
-            ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
-            ltqry.exec();
+            QSqlQuery lqry;
+            lqry.prepare("INSERT INTO tblPrealert (DDate, PersID) VALUES (:Date, :PID);");
+            lqry.bindValue(":Date", m_Prealerts->at(j).Date().toString("yyyy-MM-dd"));
+            lqry.bindValue(":PID", m_actPers->id());
+            lqry.exec();
+            int ppid = lqry.lastInsertId().toInt();
+            for(int i = 0; i < m_paTypes->count(); i++)
+            {
+                QSqlQuery ltqry;
+                ltqry.prepare("INSERT INTO tblPATypes (PAID, TypeID) VALUES (:PAID, :TID);");
+                ltqry.bindValue(":PAID", ppid);
+                ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
+                ltqry.exec();
+            }
         }
     }
+    else
+    {
+
+    }
     close();
+}
+
+void CSinglePrealertEdit::on_cmdDelete_clicked()
+{
+    if(ui->trvDutyTypes->currentItem())
+    {
+        int pid = ui->trvDutyTypes->currentItem()->data(0, Qt::UserRole).toInt();
+        QSqlQuery lqry;
+        lqry.prepare("DELETE FROM tblPATypes WHERE ID = :ID;");
+        lqry.bindValue(":ID", pid);
+        lqry.exec();
+    }
+    updateTypes();
 }
