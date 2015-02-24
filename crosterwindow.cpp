@@ -1035,36 +1035,44 @@ void CRosterWindow::on_tbwRoster_itemClicked(QTableWidgetItem *item)
 
 void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 {
+
     if(ui->cmdBlocks->isChecked())
     {
         QList<QTableWidgetItem *> *llist = new QList<QTableWidgetItem *>(ui->tbwRoster->selectedItems());
+
         if(llist->count() == 1)
         {
             return;
         }
+
         for(int i = 0; i < llist->count(); i++)
         {
             llist->at(i)->setText(ui->cmbDutyType->currentText());
         }
+
     }
 
     ui->tblPrealerts->clear();
     QList<QTableWidgetItem*> llist = ui->tbwRoster->selectedItems();
     ui->tblPrealerts->setColumnCount(llist.count());
+
     for(int j = 0; j < llist.count(); j++)
     {
         CDuty *dty = new CDuty(llist.at(j)->data(Qt::UserRole).toInt());
         QTableWidgetItem *lhdr = new QTableWidgetItem(dty->Date().toString("dd.MM.yy"));
         ui->tblPrealerts->setHorizontalHeaderItem(j,lhdr);
         CPrealert lpa(dty->Kollege()->id(),dty->Date());
+
         if(lpa.Date() != dty->Date())
         {
             return;
         }
+
         if(ui->tblPrealerts->rowCount() < lpa.paTypes()->count())
         {
             ui->tblPrealerts->setRowCount(lpa.paTypes()->count());
         }
+
         for(int k = 0; k < lpa.paTypes()->count(); k++)
         {
             QTableWidgetItem *litem = new QTableWidgetItem(lpa.paTypes()->at(k).type()->Mark());
@@ -1075,6 +1083,7 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
             litem->setBackground(QBrush(lclr));
             ui->tblPrealerts->setItem(k,j,litem);
         }
+
     }
 }
 
