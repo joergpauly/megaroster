@@ -492,6 +492,10 @@ void CRosterWindow::updatePrealerts(CDuty *pDuty)
     ui->tblPrealerts->clear();
     ui->tblPrealerts->setColumnCount(1);
     CPrealert lpa(pDuty->Kollege()->id(), pDuty->Date());
+    if(!lpa.paTypes())
+    {
+        return;
+    }
     ui->tblPrealerts->setRowCount(lpa.paTypes()->count());
     QTableWidgetItem *lhdr = new QTableWidgetItem(pDuty->Date().toString("dd.MM.yy"));
     ui->tblPrealerts->setHorizontalHeaderItem(0,lhdr);
@@ -1053,6 +1057,10 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
         QTableWidgetItem *lhdr = new QTableWidgetItem(dty->Date().toString("dd.MM.yy"));
         ui->tblPrealerts->setHorizontalHeaderItem(j,lhdr);
         CPrealert lpa(dty->Kollege()->id(),dty->Date());
+        if(lpa.Date() != dty->Date())
+        {
+            return;
+        }
         if(ui->tblPrealerts->rowCount() < lpa.paTypes()->count())
         {
             ui->tblPrealerts->setRowCount(lpa.paTypes()->count());
