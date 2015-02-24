@@ -35,8 +35,11 @@ CPrealert::CPrealert(int pPID, QDate pDate)
     lqry->bindValue(":DAT", pDate.toString("yyyy-MM-dd"));
     lqry->exec();
     lqry->first();
-    m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
-    m_paTypes = getTypes(lqry->value(lqry->record().indexOf("ID")).toInt());
+    if(lqry->isValid())
+    {
+        m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
+        m_paTypes = getTypes(lqry->value(lqry->record().indexOf("ID")).toInt());
+    }
 }
 
 CPrealert::CPrealert(int pID)
