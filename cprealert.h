@@ -54,8 +54,12 @@ public:
     int id() const;
     void setId(int id);
 
+    bool valid() const;
+    void setValid(bool valid);
+
 private:
     int m_id;
+    bool m_valid;
     CPersonal *m_Pers;
     QList<CPrealertType> *m_paTypes;
     QDate m_Date;

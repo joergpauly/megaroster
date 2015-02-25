@@ -29,31 +29,40 @@ CPrealert::CPrealert()
 CPrealert::CPrealert(int pPID, QDate pDate)
 {
     // Alert aus DB holen
+    m_valid = false;
     QSqlQuery *lqry = new QSqlQuery();
     lqry->prepare("SELECT * FROM tblPrealert WHERE PersID = :PID AND DDate = :DAT;");
     lqry->bindValue(":PID", pPID);
     lqry->bindValue(":DAT", pDate.toString("yyyy-MM-dd"));
     lqry->exec();
     lqry->first();
+
     if(lqry->isValid())
     {
         m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
         m_paTypes = getTypes(lqry->value(lqry->record().indexOf("ID")).toInt());
+        m_valid = true;
     }
 }
 
 CPrealert::CPrealert(int pID)
 {
+    m_valid = false;
     // Alert aus DB holen
     QSqlQuery *lqry = new QSqlQuery();
     lqry->prepare("SELECT * FROM tblPrealert WHERE ID = :ID;");
     lqry->bindValue(":ID", pID);
     lqry->exec();
     lqry->first();
-    m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
-    m_Date = lqry->value(lqry->record().indexOf("DDate")).toDate();
-    m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
-    m_paTypes = getTypes(pID);
+
+    if(lqry->isValid())
+    {
+        m_id = lqry->value(lqry->record().indexOf("ID")).toInt();
+        m_Date = lqry->value(lqry->record().indexOf("DDate")).toDate();
+        m_Pers = new CPersonal(lqry->value(lqry->record().indexOf("PersID")).toInt());
+        m_paTypes = getTypes(pID);
+        m_valid = true;
+    }
 }
 
 CPersonal *CPrealert::Pers() const
@@ -95,6 +104,17 @@ void CPrealert::setId(int id)
 {
     m_id = id;
 }
+
+bool CPrealert::valid() const
+{
+    return m_valid;
+}
+
+void CPrealert::setValid(bool valid)
+{
+    m_valid = valid;
+}
+
 
 QList<CPrealertType> *CPrealert::getTypes(int id)
 {

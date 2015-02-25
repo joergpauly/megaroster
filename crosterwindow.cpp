@@ -1063,7 +1063,7 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
         ui->tblPrealerts->setHorizontalHeaderItem(j,lhdr);
         CPrealert lpa(dty->Kollege()->id(),dty->Date());
 
-        if(lpa.Date() != dty->Date())
+        if(!lpa.valid())
         {
             return;
         }
