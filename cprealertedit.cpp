@@ -37,20 +37,24 @@ CPrealertEdit::CPrealertEdit(QWidget *parent) :
     m_db = ((CMainWindow*)m_parent)->dataBase();
     m_DutyTypes = m_db->dutyTypeList();
     m_PersList = m_db->personalList(QDate::currentDate(),QDate::currentDate());
+
     for(int i = 0; i < m_PersList->count(); i++)
     {
         QString lFullName = m_PersList->at(i).Name() + ", " + m_PersList->at(i).VName();
         ui->cmbPersonal->addItem(lFullName, QVariant(m_PersList->at(i).id()));
     }
+
     ui->datFromDate->setDate(QDate::currentDate());
     m_dtMenu = new QMenu("Dienstart auswählen", ui->trvDutyTypes);
     QList<QAction*> *lActions = new QList<QAction*>();
+
     for(int dt = 0; dt < m_DutyTypes->count(); dt++)
     {
         QAction *lact = new QAction(m_DutyTypes->at(dt).Desc(), m_dtMenu);
         lact->setData(QVariant(m_DutyTypes->at(dt).id()));
         lActions->append(lact);
     }
+
     m_dtMenu->addActions(*lActions);
     //connect(m_dtMenu, SIGNAL(triggered(QAction*)),SLOT(on_dtMenu(QAction*)));
     selectActualUser();
@@ -79,6 +83,7 @@ void CPrealertEdit::on_dtMenu(QAction *pAction)
     CDutyType *dtyp = new CDutyType(pAction->data().toInt());
     CPrealertType ltype;
     ltype.setType(dtyp);
+
     if(m_actAlert)
     {
         int pID = m_actAlert->id();
@@ -89,6 +94,7 @@ void CPrealertEdit::on_dtMenu(QAction *pAction)
         lqry.bindValue(":TID", dtyp->id());
         lqry.exec();
     }
+
     m_paTypes->append(ltype);
     updateTypes();
 }
@@ -115,6 +121,7 @@ void CPrealertEdit::updateTypes()
     if(m_paTypes)
     {
         ui->trvDutyTypes->clear();
+
         for(int i = 0; i < m_paTypes->count(); i++)
         {
             QTreeWidgetItem* litem = new QTreeWidgetItem();
@@ -124,6 +131,7 @@ void CPrealertEdit::updateTypes()
             litem->setData(0, Qt::UserRole, QVariant(m_paTypes->at(i).id()));
             ui->trvDutyTypes->addTopLevelItem(litem);
         }
+
     }
 }
 
@@ -132,6 +140,7 @@ void CPrealertEdit::updateAlerts()
     if(m_alerts)
     {
         ui->trvPrealerts->clear();
+
         for(int i = 0; i < m_alerts->count(); i++)
         {
             QTreeWidgetItem *litem = new QTreeWidgetItem();
@@ -139,6 +148,7 @@ void CPrealertEdit::updateAlerts()
             litem->setData(0,Qt::UserRole,m_alerts->at(i).id());
             ui->trvPrealerts->addTopLevelItem(litem);
         }
+
     }
 }
 
@@ -151,6 +161,7 @@ void CPrealertEdit::reloadAlerts()
     lqry.exec();
     lqry.first();
     QString err = lqry.lastError().text();
+
     while(lqry.isValid())
     {
         CPrealert *lAlert = new CPrealert();
@@ -161,15 +172,18 @@ void CPrealertEdit::reloadAlerts()
         lqry.next();
         delete lAlert;
     }
+
     updateAlerts();
 }
 
 void CPrealertEdit::reloadTypes()
 {
+
     if(!ui->trvPrealerts->currentItem())
     {
         return;
     }
+
     m_actAlert = new CPrealert(ui->trvPrealerts->currentItem()->data(0,Qt::UserRole).toInt());
     m_paTypes = m_actAlert->paTypes();
     updateTypes();
@@ -178,13 +192,16 @@ void CPrealertEdit::reloadTypes()
 void CPrealertEdit::selectActualUser()
 {
     int lUsrID = ((CMainWindow*)m_parent)->getUserID();
+
     for(int i = 0; i < ui->cmbPersonal->count();i++)
     {
         ui->cmbPersonal->setCurrentIndex(i);
+
         if(ui->cmbPersonal->currentData().toInt() == lUsrID)
         {
             break;
         }
+
     }
 }
 
@@ -199,13 +216,17 @@ void CPrealertEdit::on_cmdKillDuty_clicked()
     QSqlQuery lqry;
     lqry.prepare("DELETE FROM tblPATypes WHERE ID = :ID;");
     lqry.bindValue(":ID",m_tid);
+
     for(int i = 0; i < m_paTypes->count(); i++)
     {
+
         if(m_paTypes->at(i).id() == m_tid)
         {
             m_paTypes->removeAt(i);
         }
+
     }
+
     lqry.exec();
     updateTypes();
 }

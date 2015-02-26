@@ -83,6 +83,7 @@ void CLogbookView::loadLog()
     ui->tbwLogbook->setHorizontalHeaderItem(4, litem);
     litem = new QTableWidgetItem("Neu");
     ui->tbwLogbook->setHorizontalHeaderItem(5, litem);
+
     while(lqry.isValid())
     {
         ui->tbwLogbook->setRowCount(ui->tbwLogbook->rowCount() + 1);
@@ -104,4 +105,5 @@ void CLogbookView::loadLog()
         ui->tbwLogbook->setItem(ui->tbwLogbook->rowCount() - 1, 5, litem);
         lqry.next();
     }
+
 }

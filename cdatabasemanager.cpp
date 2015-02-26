@@ -41,6 +41,7 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
     // Let's check if the file exists
     QFile dbfile(dbname);
     bool dbmiss = false;
+
     if (!dbfile.open(QFile::ReadOnly))
     {
         // file isn't there; set a flag to create it
@@ -66,14 +67,17 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
         sqlname.append("/mr.sql");
         QFile sqlfile(sqlname);
         sqlfile.open(QFile::ReadOnly);
+
         while (!sqlfile.atEnd())
         {
             QString sql = sqlfile.readLine();
             QSqlQuery qry(sql);
             qry.exec();
         }
+
         sqlfile.close();
     }
+
 }
 
 QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
@@ -86,6 +90,7 @@ QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
     QString err = lqry->lastError().text();
     lqry->first();
     QList<CPersonal>* llist = new QList<CPersonal>();
+
     while (lqry->isValid())
     {
         CPersonal item;
@@ -97,6 +102,7 @@ QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
         llist->append(item);
         lqry->next();
     }
+
     delete lqry;
     return llist;
 }
@@ -107,6 +113,7 @@ QList<CDutyType> *CDatabaseManager::dutyTypeList()
     QSqlQuery* lqry = new QSqlQuery();
     lqry->exec("SELECT * FROM tblDutyTypes ORDER BY Mark;");
     lqry->first();
+
     while(lqry->isValid())
     {
         CDutyType item;
@@ -127,6 +134,7 @@ QList<CDutyType> *CDatabaseManager::dutyTypeList()
         llist->append(item);
         lqry->next();
     }
+
     return llist;
 }
 
@@ -134,6 +142,7 @@ QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID
 {
     QList<CDuty> *llist = new QList<CDuty>();
     QSqlQuery* lqry = new QSqlQuery();
+
     if(PerID > 0)
     {
         lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO AND PersID = :PID ORDER BY DDate;");
@@ -143,11 +152,13 @@ QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID
     {
         lqry->prepare("SELECT * FROM tblDuty WHERE DDate >= :FROM AND DDate <= :TO ORDER BY DDate;");
     }
+
     lqry->bindValue(":FROM", fromDate.toString("yyyy-MM-dd"));
     lqry->bindValue(":TO",toDate.toString("yyyy-MM-dd"));    
 
     lqry->exec();
     lqry->first();
+
     while(lqry->isValid())
     {
         CDuty item;
@@ -162,6 +173,7 @@ QList<CDuty> *CDatabaseManager::dutyList(QDate fromDate, QDate toDate, int PerID
         llist->append(item);
         lqry->next();
     }
+
     delete lqry;
     return llist;
 }
@@ -173,12 +185,14 @@ QList<CDtyBaseType> *CDatabaseManager::dbaseList()
     lqry->prepare("SELECT * from tblDtyBase ORDER BY Codeletter;");
     lqry->exec();
     lqry->first();
+
     while(lqry->isValid())
     {
         CDtyBaseType* ltype = new CDtyBaseType(lqry->value(lqry->record().indexOf("ID")).toInt());
         llist->append(*ltype);
         lqry->next();
     }
+
     delete lqry;
     return llist;
 }

@@ -128,10 +128,12 @@ void CDutyTypeEdit::fillDBTcombo()
 {
     CDatabaseManager *dbman = ((CMainWindow*)m_parent)->dataBase();
     QList<CDtyBaseType> dbtList(*dbman->dbaseList());
+
     for(int i = 0; i < dbtList.count(); i++)
     {
         ui->cmbBaseType->addItem(dbtList.at(i).CLetter(), dbtList.at(i).id());
     }
+
     delete dbman;
 }
 
@@ -170,14 +172,18 @@ void CDutyTypeEdit::updateUI()
     lpal.setColor(QPalette::Button,m_clr);
     ui->cmdColor->setPalette(lpal);
     CDtyBaseType ldbt(m_qry->value(m_qry->record().indexOf("BaseType")).toInt());
+
     for(int i = 0; i < ui->cmbBaseType->count(); i++)
     {
         ui->cmbBaseType->setCurrentIndex(i);
+
         if(ui->cmbBaseType->currentData().toInt() == ldbt.id())
         {
             break;
         }
+
     }
+
 }
 
 void CDutyTypeEdit::updateRecord(int pID)
@@ -306,10 +312,12 @@ void CDutyTypeEdit::setSelected(QWidget *pold, QWidget *pnew)
 {
     if(pnew)
     {
+
         if(pnew->objectName().left(3) == "txt")
         {
             ((QLineEdit*)pnew)->selectAll();
         }
+
     }
 
 }

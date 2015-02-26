@@ -203,6 +203,7 @@ void CSinglePrealertEdit::on_buttonBox_accepted()
 {
     if(m_newAlert)
     {
+
         for(int j = 0; j < m_Prealerts->count(); j++)
         {
             QSqlQuery lqry;
@@ -211,6 +212,7 @@ void CSinglePrealertEdit::on_buttonBox_accepted()
             lqry.bindValue(":PID", m_actPers->id());
             lqry.exec();
             int ppid = lqry.lastInsertId().toInt();
+
             for(int i = 0; i < m_paTypes->count(); i++)
             {
                 QSqlQuery ltqry;
@@ -219,17 +221,21 @@ void CSinglePrealertEdit::on_buttonBox_accepted()
                 ltqry.bindValue(":TID", m_paTypes->at(i).type()->id());
                 ltqry.exec();
             }
+
         }
+
     }
     else
     {
 
     }
+
     close();
 }
 
 void CSinglePrealertEdit::on_cmdDelete_clicked()
 {
+
     if(ui->trvDutyTypes->currentItem())
     {
         int pid = ui->trvDutyTypes->currentItem()->data(0, Qt::UserRole).toInt();
@@ -239,5 +245,6 @@ void CSinglePrealertEdit::on_cmdDelete_clicked()
         lqry.exec();
         ui->trvDutyTypes->removeItemWidget(ui->trvDutyTypes->currentItem(),0);
     }
+
     updateTypes();
 }

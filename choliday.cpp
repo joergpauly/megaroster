@@ -55,13 +55,17 @@ CHoliday::~CHoliday()
 
 bool CHoliday::checkForHoliday(QDate pDate)
 {
+
     for(int i = 0; i < m_holidayList->count(); i++)
     {
+
         if(m_holidayList->at(i) == pDate)
         {
             return true;
         }
+
     }
+
     return false;
 }
 

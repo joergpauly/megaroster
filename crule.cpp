@@ -14,12 +14,14 @@ CRule::CRule(int pID)
     lqry.exec();
     lqry.first();
     m_tList = new QList<CDutyType>();
+
     while(lqry.isValid())
     {
         CDutyType ltyp(lqry.value(lqry.record().indexOf("DTID")).toInt());
         m_tList->append(ltyp);
         lqry.next();
     }
+
 }
 
 QList<CDutyType> *CRule::tList() const
