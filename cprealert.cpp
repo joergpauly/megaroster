@@ -43,6 +43,7 @@ CPrealert::CPrealert(int pPID, QDate pDate)
         m_paTypes = getTypes(lqry->value(lqry->record().indexOf("ID")).toInt());
         m_valid = true;
     }
+
 }
 
 CPrealert::CPrealert(int pID)
@@ -63,6 +64,7 @@ CPrealert::CPrealert(int pID)
         m_paTypes = getTypes(pID);
         m_valid = true;
     }
+
 }
 
 CPersonal *CPrealert::Pers() const
@@ -124,6 +126,7 @@ QList<CPrealertType> *CPrealert::getTypes(int id)
     lqry->exec();
     lqry->first();
     QList<CPrealertType> *lLst = new QList<CPrealertType>();
+
     while(lqry->isValid())
     {
         CPrealertType type;
@@ -135,6 +138,7 @@ QList<CPrealertType> *CPrealert::getTypes(int id)
         lLst->append(type);
         lqry->next();
     }
+
     delete lqry;
     return lLst;
 }

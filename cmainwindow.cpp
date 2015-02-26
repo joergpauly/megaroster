@@ -33,10 +33,12 @@ CMainWindow::CMainWindow(QWidget *parent) :
 
     m_dbman = new CDatabaseManager(this);    
     m_Username = qgetenv("USER");
+
     if(m_Username.isEmpty())
     {
         m_Username = qgetenv("USERNAME");
     }
+
     checkLogon();
     QLabel *txtUser = new QLabel();
     txtUser->setText("Anwender: " + CPersonal(m_actualUser).Name() + ", " + CPersonal(m_actualUser).VName());
@@ -78,10 +80,12 @@ void CMainWindow::openMonth(int pMonth, int pYear, bool pLeft, CRosterWindow *pC
 {
     m_Roster = new CRosterWindow(this, pMonth, pYear);
     m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
+
     if(pLeft)
     {
         ui->mdiArea->setTabOrder(m_Roster, pCalling);
     }
+
     m_Roster->show();
 }
 
@@ -101,6 +105,7 @@ void CMainWindow::closeEvent(QCloseEvent *e)
     lQuitDlg.setButtonText(QMessageBox::Yes,"Be&enden");
     lQuitDlg.setButtonText(QMessageBox::No, "&Nicht beenden");
     lQuitDlg.setIcon(QMessageBox::Question);
+
     if(lQuitDlg.exec() == QMessageBox::Yes)
     {
         e->accept();
@@ -109,6 +114,7 @@ void CMainWindow::closeEvent(QCloseEvent *e)
     {
         e->ignore();
     }
+
 }
 
 void CMainWindow::openEditableRoster()
@@ -139,6 +145,7 @@ void CMainWindow::checkLogon()
     lqry.bindValue(":NAME", m_Username);
     lqry.exec();
     lqry.first();
+
     if(lqry.isValid())
     {
         m_actualUser = lqry.value(lqry.record().indexOf("PID")).toInt();
@@ -148,6 +155,7 @@ void CMainWindow::checkLogon()
         CLogonAssign ldlg(m_Username, this);
         ldlg.exec();
     }
+
 }
 
 
@@ -202,11 +210,13 @@ void CMainWindow::on_actionDaten_Ordner_festlegen_triggered()
     dlg.setFileMode(QFileDialog::DirectoryOnly);
     dlg.setDirectory(dir);
     dlg.setWindowTitle("Daten-Ordner festlegen");
+
     if(dlg.exec() == QDialog::Accepted)
     {
         dir = dlg.directory();
         set->setValue("FILEDIR", (QVariant)dir.path());
     }
+
     delete set;
 }
 

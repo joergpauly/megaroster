@@ -21,11 +21,13 @@ void CLogonAssign::setupPersCombo()
 {
     m_db = ((CMainWindow*)m_parent)->dataBase();
     m_PersList = m_db->personalList(QDate::currentDate(),QDate::currentDate());
+
     for(int i = 0; i < m_PersList->count(); i++)
     {
         QString lFullName = m_PersList->at(i).Name() + ", " + m_PersList->at(i).VName();
         ui->cmbUsers->addItem(lFullName, QVariant(m_PersList->at(i).id()));
     }
+
 }
 
 void CLogonAssign::on_buttonBox_accepted()
