@@ -71,7 +71,7 @@
        <number>10</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pgRoster">
        <property name="geometry">
@@ -163,7 +163,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>84</height>
+         <height>393</height>
         </rect>
        </property>
        <property name="font">
@@ -224,6 +224,14 @@ bearbeiten</string>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="cmdBranches">
+          <property name="text">
+           <string>Dienststellen
+bearbeiten</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -276,6 +284,7 @@ bearbeiten</string>
     <property name="title">
      <string>&amp;Basis-Daten</string>
     </property>
+    <addaction name="actionDienst_stellen_bearbeiten"/>
     <addaction name="action_Personal"/>
     <addaction name="action_Dienst_Arten"/>
     <addaction name="separator"/>
@@ -318,6 +327,11 @@ bearbeiten</string>
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In welchem Ordner befindet sich die Daten-Datei?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionDienst_stellen_bearbeiten">
+   <property name="text">
+    <string>Dienst&amp;stellen bearbeiten...</string>
    </property>
   </action>
  </widget>

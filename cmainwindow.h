@@ -39,10 +39,10 @@
 #include "cpersonaledit.h"
 #include "cdutytypeedit.h"
 #include "choliday.h"
-#include "cprintform.h"
 #include "cprealertedit.h"
 #include "clogonassign.h"
 #include "clogbookview.h"
+#include "cbranchedit.h"
 
 namespace Ui {
 class CMainWindow;
@@ -73,10 +73,11 @@ private slots:
     void on_cmdDType_clicked();
     void on_actionDruckvorlage_bearbeiten_triggered();
     void on_cmdPreAlerts_clicked();
-
     void on_actionDaten_Ordner_festlegen_triggered();
-
     void on_cmdChangeLog_clicked();
+    void on_actionDienst_stellen_bearbeiten_triggered();
+
+    void on_cmdBranches_clicked();
 
 private:
     // Properties
@@ -85,6 +86,7 @@ private:
     CRosterWindow* m_Roster;
     CPersonalEdit* m_PersEdit;
     CDutyTypeEdit* m_DTEdit;
+    CBranchEdit* m_BranchEdit;
     QString m_Username;
     int m_actualUser;
     QDir *m_Path;
@@ -94,6 +96,7 @@ private:
     void openEditableRoster();
     void openPersonalEdit();
     void openDutyTypeEdit();
+    void openBranchEdit();
     void checkLogon();
 };
 

@@ -34,7 +34,9 @@ SOURCES += main.cpp\
     cdtybasetype.cpp \
     croster.cpp \
     clogbookview.cpp \
-    csingleprealertedit.cpp
+    csingleprealertedit.cpp \
+    cbranchedit.cpp \
+    cbranch.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -57,7 +59,9 @@ HEADERS  += cmainwindow.h \
     cdtybasetype.h \
     croster.h \
     clogbookview.h \
-    csingleprealertedit.h
+    csingleprealertedit.h \
+    cbranchedit.h \
+    cbranch.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
@@ -66,7 +70,8 @@ FORMS    += cmainwindow.ui \
     cprealertedit.ui \
     clogonassign.ui \
     clogbookview.ui \
-    csingleprealertedit.ui
+    csingleprealertedit.ui \
+    cbranchedit.ui
 
 OTHER_FILES += \
     mr.sql \
