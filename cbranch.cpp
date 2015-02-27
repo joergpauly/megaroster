@@ -74,21 +74,21 @@ CBranch::~CBranch()
 
 }
 
-void CBranch::saveToDB()
+bool CBranch::saveToDB()
 {
     QSqlQuery lqry;
-    lqry.prepare("UPDATE tblBranches SET Name1 = :Name1, Name2 = :Name2, Name3 = :Name3, Adress1 = :Addr1, Adress2 = :Addr2, Adress3 = :Addr3, Adress4 = :Addr4, Adress5 = :Addr5, Hours = :Hrs WHERE ID = :ID;");
-    lqry.bindValue(":Name1", m_Name1);
-    lqry.bindValue(":Name2", m_Name2);
-    lqry.bindValue(":Name3", m_Name3);
-    lqry.bindValue(":Addr1", m_Adress1);
-    lqry.bindValue(":Addr2", m_Adress2);
-    lqry.bindValue(":Addr3", m_Adress3);
-    lqry.bindValue(":Addr4", m_Adress4);
-    lqry.bindValue(":Addr5", m_Adress5);
-    lqry.bindValue(":Hrs", m_Hours);
+    lqry.prepare("UPDATE tblBranches SET Name1 = :N1, Name2 = :N2, Name3 = :N3, Adress1 = :A1, Adress2 = :A2, Adress3 = :A3, Adress4 = :A4, Adress5 = :A5, Hours = :HX WHERE ID = :ID;");
+    lqry.bindValue(":N1", m_Name1);
+    lqry.bindValue(":N2", m_Name2);
+    lqry.bindValue(":N3", m_Name3);
+    lqry.bindValue(":A1", m_Adress1);
+    lqry.bindValue(":A2", m_Adress2);
+    lqry.bindValue(":A3", m_Adress3);
+    lqry.bindValue(":A4", m_Adress4);
+    lqry.bindValue(":A5", m_Adress5);
+    lqry.bindValue(":HX", m_Hours);
     lqry.bindValue(":ID", m_ID);
-    lqry.exec();
+    return lqry.exec();
 }
 
 int CBranch::ID() const

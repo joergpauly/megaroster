@@ -38,7 +38,7 @@ public:
     CBranch(int pID);
     ~CBranch();
 
-    void saveToDB();
+    bool saveToDB();
 
     int ID() const;
     void setID(int ID);
