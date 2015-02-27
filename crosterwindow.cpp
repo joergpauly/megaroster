@@ -1156,27 +1156,7 @@ void CRosterWindow::on_tbwRoster_itemSelectionChanged()
 }
 
 void CRosterWindow::on_cmdPrint_clicked()
-{    
-    /* Test XML Reader
-    QFile *lFile = new QFile("./DP-Vorlage.sla");
-    lFile->open(QIODevice::ReadOnly);
-    QXmlStreamReader reader(lFile);
-    QString token;
-    QString toktext;
-    while(!reader.atEnd())
-    {
-        QStringRef txtref = reader.text();
-        reader.readNext();
-        token = reader.tokenString();
-        if(txtref != NULL)
-        {
-            toktext = *txtref.string();            
-        }
-    }
-
-
-    // Ende Test Xml */
-
+{
     QPrinter* prt = new QPrinter();
     prt->setOrientation(QPrinter::Landscape);
     QPrintDialog* dlg = new QPrintDialog(prt, this);
