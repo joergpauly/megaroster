@@ -24,6 +24,5 @@
 CPrintForm::CPrintForm(QObject *parent) :
     QObject(parent)
 {
-    QFile lFile("/home/joerg/Projekte/MEGARoster/dp-Vorlage.rft");
-    QTextDocument *lDoc = new QTextDocument(this);
+
 }
