@@ -138,6 +138,13 @@ void CMainWindow::openDutyTypeEdit()
     m_DTEdit->show();
 }
 
+void CMainWindow::openBranchEdit()
+{
+    m_BranchEdit = new CBranchEdit(this);
+    m_BranchEdit->setSubWnd(ui->mdiArea->addSubWindow(m_BranchEdit));
+    m_BranchEdit->show();
+}
+
 void CMainWindow::checkLogon()
 {
     QSqlQuery lqry;
@@ -225,4 +232,14 @@ void CMainWindow::on_cmdChangeLog_clicked()
     CLogbookView *pLogView = new CLogbookView(this);
     pLogView->setSubWnd(ui->mdiArea->addSubWindow(pLogView));
     pLogView->show();
+}
+
+void CMainWindow::on_actionDienst_stellen_bearbeiten_triggered()
+{
+    openBranchEdit();
+}
+
+void CMainWindow::on_cmdBranches_clicked()
+{
+    openBranchEdit();
 }
