@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     cprinttablecol.cpp \
     cdtybasetype.cpp \
     croster.cpp \
-    cprintform.cpp \
     clogbookview.cpp \
     csingleprealertedit.cpp
 
@@ -57,7 +56,6 @@ HEADERS  += cmainwindow.h \
     cprinttablecol.h \
     cdtybasetype.h \
     croster.h \
-    cprintform.h \
     clogbookview.h \
     csingleprealertedit.h
 
