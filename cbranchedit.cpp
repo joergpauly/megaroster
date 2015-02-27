@@ -40,6 +40,7 @@ CBranchEdit::CBranchEdit(QWidget *parent) :
     {
         m_actBranch = new CBranch();
     }
+
 }
 
 CBranchEdit::~CBranchEdit()
@@ -119,7 +120,7 @@ void CBranchEdit::on_cmdClose_clicked()
 
 void CBranchEdit::saveToDB()
 {    
-    m_actBranch->setID(ui->txtID->text().toInt());
+    //m_actBranch->setID(ui->txtID->text().toInt());
     m_actBranch->setName1(ui->txtName1->text());
     m_actBranch->setName2(ui->txtName2->text());
     m_actBranch->setName3(ui->txtName3->text());
@@ -129,7 +130,15 @@ void CBranchEdit::saveToDB()
     m_actBranch->setAdress4(ui->txtAdress4->text());
     m_actBranch->setAdress5(ui->txtAdress5->text());
     m_actBranch->setHours(ui->txtHours->text());
-    m_actBranch->saveToDB();
+    if(!m_actBranch->saveToDB())
+    {
+        QMessageBox lmsg;
+        lmsg.setWindowTitle("Fehler!");
+        lmsg.setText("Fehler beim Speichern in der Datenbank!");
+        lmsg.setIcon( QMessageBox::Critical);
+        lmsg.setStandardButtons(QMessageBox::Ok);
+        lmsg.exec();
+    }
     setupBranchList();
 }
 

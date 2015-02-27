@@ -28,6 +28,7 @@
 // System-Header
 #include <QDialog>
 #include <QMdiSubWindow>
+#include <QMessageBox>
 
 // Projekt-Header
 #include "cbranch.h"
