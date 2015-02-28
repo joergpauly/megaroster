@@ -146,7 +146,7 @@ void CBranchEdit::setupUiFields()
 {
     if(m_actBranch->Valid())
     {
-        ui->txtID->setText(QString(m_actBranch->ID()));
+        ui->txtID->setText(QString::number(m_actBranch->ID()));
         ui->txtName1->setText(m_actBranch->Name1());
         ui->txtName2->setText(m_actBranch->Name2());
         ui->txtName3->setText(m_actBranch->Name3());
