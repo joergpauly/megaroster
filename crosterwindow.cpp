@@ -804,7 +804,7 @@ void CRosterWindow::checkBaseTarget(CDuty *pDuty)
         ltitem->setTextAlignment(Qt::AlignCenter);
         ui->tbwActual->setItem(lactrow,1,ltitem);
         ltitem = new QTableWidgetItem();
-        int diff;
+        int diff = 0;
         QColor red(255,0,0);
 
         if((actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt()) | (actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt()))
