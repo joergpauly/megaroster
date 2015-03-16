@@ -80,11 +80,8 @@ private slots:
     void on_timTo2_timeChanged(const QTime &time);
     void on_chkRTCheck_stateChanged(int arg1);
     void on_cmdBlocks_toggled(bool checked);
-
     void on_cmdNextMonth_clicked();
-
     void on_cmdPreviousMonth_clicked();
-
     void on_chkReq_clicked(bool checked);
 
 private:
