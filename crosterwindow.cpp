@@ -415,7 +415,7 @@ void CRosterWindow::makeRoster(QDate pDate)
             item->setData(Qt::UserRole,ditem->id());
             ui->tbwRoster->setItem(row, col-1, item);
             delete ditem;
-        }        
+        }
     }
 
     if(newPlan)
@@ -424,6 +424,7 @@ void CRosterWindow::makeRoster(QDate pDate)
     }
 
     ((CMainWindow*)m_parent)->setStatusText("Bereit...");
+    qApp->restoreOverrideCursor();
     delete lqry;   
 }
 
