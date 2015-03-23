@@ -71,8 +71,11 @@ public:
     void setDuration2(const QTime &Duration2);
 
     bool Request() const;
-    void setRequest(bool Request);
+    void setRequest(bool Request);        
 
+    int saVeDB();
+    void update2Db(QSqlQuery lqry);
+    void insert2Db(QSqlQuery lqry);
 private:
     int         m_id;
     QDate       m_Date;

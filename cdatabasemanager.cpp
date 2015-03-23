@@ -22,7 +22,7 @@
 
 #include "cdatabasemanager.h"
 #include "cmainwindow.h"
-#include <QGuiApplication>
+#include <QApplication>
 
 CDatabaseManager::CDatabaseManager(QObject *parent) :
     QObject(parent)
@@ -63,7 +63,7 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
     if (dbmiss)
     {
         // opening the db created a plain file; now let's create the tables
-        QString sqlname = QGuiApplication::applicationDirPath();
+        QString sqlname = QApplication::applicationDirPath();
         sqlname.append("/mr.sql");
         QFile sqlfile(sqlname);
         sqlfile.open(QFile::ReadOnly);

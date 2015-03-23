@@ -51,7 +51,69 @@ CDuty::~CDuty()
 
 }
 
+void CDuty::update2Db(QSqlQuery lqry)
+{
+    lqry.prepare("UPDATE tblDuty SET PersID = :PID, TypeID = :TID, DDate = :DDt, Status = :RQ, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
+    lqry.bindValue(":PID", m_Kollege->id());
+    int tid = m_Typ->id();
+    lqry.bindValue(":TID", tid);
+    lqry.bindValue(":DDt", m_Date.toString("yyy-MM-dd"));
+    lqry.bindValue(":RQ", m_Request);
+    QString tf = m_TimeFrom.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":TF", tf);
+    QString tt = m_TimeTo.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":TT", tt);
+    QString dur = m_Duration.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":Dura", dur);
+    QString tf2 = m_TimeFrom2.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":TFF", tf2);
+    QString tt2 = m_TimeTo2.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":TTT", tt2);
+    QString dur2 = m_Duration2.toString("hh:mm:ss.zzz");
+    lqry.bindValue(":Dura2", dur2);
+    lqry.bindValue(":ID", m_id);
+    lqry.exec();
+}
 
+void CDuty::insert2Db(QSqlQuery lqry)
+{
+    lqry.prepare("INSERT INTO tblDuty (PersID, DDate, TypeID, Status, TimeFrom, TimeTo, TimeFrom2, TimeTo2, Dura, Dura2) VALUES (:PID, :DATE, :TID, :RQ, :TF, :TT, :TF2, :TT2, :DUR, :DUR2);");
+    lqry.bindValue(":PID", m_Kollege->id());
+    lqry.bindValue(":DATE", m_Date.toString("yyy-MM-dd"));
+    lqry.bindValue(":TID", m_Typ->id());
+    lqry.bindValue(":RQ", m_Request);
+    lqry.bindValue(":TF", m_TimeFrom.toString("hh:mm:ss.zzz"));
+    lqry.bindValue(":TT", m_TimeTo.toString("hh:mm:ss.zzz"));
+    lqry.bindValue(":TF2", m_TimeFrom2.toString("hh:mm:ss.zzz"));
+    lqry.bindValue(":TT2", m_TimeTo2.toString("hh:mm:ss.zzz"));
+    lqry.bindValue(":DUR", m_Duration.toString("hh:mm:ss.zzz"));
+    lqry.bindValue(":DUR2", m_Duration2.toString("hh:mm:ss.zzz"));
+    lqry.exec();
+    m_id = lqry.lastInsertId().toInt();
+}
+
+int CDuty::saVeDB()
+{
+    //Check if there's a record with that ID
+    QSqlQuery lqry;
+    lqry.prepare("SELECT * FORM tblDuty WHERE ID = :ID;");
+    lqry.bindValue(":ID", m_id);
+    lqry.exec();
+    lqry.first();
+
+    if(lqry.isValid())
+    {
+        //Record is there; update it.
+        update2Db(lqry);
+    }
+    else
+    {
+        //New Record
+        insert2Db(lqry);
+    }
+
+    return m_id;
+}
 
 QDate CDuty::Date() const
 {
