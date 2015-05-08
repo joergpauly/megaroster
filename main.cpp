@@ -21,13 +21,13 @@
 *****************************************************************************************/
 
 #include "cmainwindow.h"
-#include <QGuiApplication>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication a(argc, argv);
+    QApplication a(argc, argv);
     CMainWindow w;
-    w.show();
+    w.showMaximized();
 
     return a.exec();
 }
