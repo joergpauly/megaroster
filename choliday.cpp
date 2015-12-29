@@ -87,6 +87,8 @@ void CHoliday::makeHolidayList()
     m_holidayList->append(ldate);
     ldate = QDate(m_osterSonntag.year(),12,26);
     m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,31);
+    m_holidayList->append(ldate);
     ldate = m_osterSonntag.addDays(-48);
     m_holidayList->append(ldate);
     ldate = m_osterSonntag.addDays(-2);
