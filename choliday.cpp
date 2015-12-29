@@ -29,6 +29,7 @@
         25,12,jahr, "1.Weihnachtsfeiertag"
         26,12,jahr, "2.Weihnachtsfeiertag"
         // von Ostern abhängige Feiertage
+        Ostern-48   "Rosenmontag"
         Ostern-7,   "Palmsonntag"
         Ostern-2,   "Karfreitag"
         Ostern-1,   "Karsamstag"
@@ -80,9 +81,13 @@ void CHoliday::makeHolidayList()
     m_holidayList->append(ldate);
     ldate = QDate(m_osterSonntag.year(),11,1);
     m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,24);
+    m_holidayList->append(ldate);
     ldate = QDate(m_osterSonntag.year(),12,25);
     m_holidayList->append(ldate);
     ldate = QDate(m_osterSonntag.year(),12,26);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(-48);
     m_holidayList->append(ldate);
     ldate = m_osterSonntag.addDays(-2);
     m_holidayList->append(ldate);
