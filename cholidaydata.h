@@ -1,8 +1,9 @@
 /****************************************************************************************
 *
+*   File: cholidaydata.h    Class: CHolidayData
 *   This file is part of the MEGA-Series Project.
 *   Copyright (C) 2014 Joerg Pauly
-*   Created 04.04.2014 by joerg
+*   Created 30.12.2015 by joerg
 *   All Rights reserved
 *
 *   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
@@ -19,50 +20,35 @@
 *   Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 *****************************************************************************************/
+#ifndef CHOLIDAYDATA_H
+#define CHOLIDAYDATA_H
 
-/* Liste aller Feiertage
-        1,1,jahr,   "Neujahr"
-        15,8,jahr,  "Mariä Himmelfahrt"
-        1,11,jahr,  "Allerheiligen"
-        8,12,jahr,  "Maria Empfängnis"
-        24,12,jahr, "Heilig Abend"
-        25,12,jahr, "1.Weihnachtsfeiertag"
-        26,12,jahr, "2.Weihnachtsfeiertag"
-        31.12.jahr, "Sylvester"
-        // von Ostern abhängige Feiertage
-        Ostern-7,   "Palmsonntag"
-        Ostern-2,   "Karfreitag"
-        Ostern-1,   "Karsamstag"
-        Ostern,     "Ostersonntag"
-        Ostern+1,   "Ostermontag"
-        Ostern+39,  "Christi Himmelfahrt"
-        Ostern+49,  "Pfingstsonntag"
-        Ostern+50,  "Pfingstmontag"
-        Ostern+60,  "Fronleichnam"
-*/
+#include <QString>
 
-
-#ifndef CHOLIDAY_H
-#define CHOLIDAY_H
-
-#include <QDate>
-#include <QList>
-
-#include "cholidaydata.h"
-
-class CHoliday
+class CHolidayData
 {
 public:
-    CHoliday(int pJahr);
-    ~CHoliday();
-    bool checkForHoliday(QDate pDate);
+    CHolidayData();
+    CHolidayData(int pDay, int pMonth, bool pMovable, QString pDescription);
+
+    int Day() const;
+    void setDay(int Day);
+
+    int Month() const;
+    void setMonth(int Month);
+
+    bool Movable() const;
+    void setMovable(bool Movable);
+
+    QString Description() const;
+    void setDescription(const QString &Description);
 
 private:
-    QDate m_osterSonntag;
-    QList<QDate>* m_holidayList;
-    void makeHolidayList();
-    void makeOsterSonntag(int pJahr);
+    int      m_Day;
+    int      m_Month;
+    bool     m_Movable;
+    QString  m_Description;
 
 };
 
-#endif // CHOLIDAY_H
+#endif // CHOLIDAYDATA_H
