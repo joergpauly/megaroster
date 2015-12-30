@@ -28,6 +28,7 @@
         24,12,jahr, "Heilig Abend"
         25,12,jahr, "1.Weihnachtsfeiertag"
         26,12,jahr, "2.Weihnachtsfeiertag"
+        31.12.jahr, "Sylvester"
         // von Ostern abhängige Feiertage
         Ostern-7,   "Palmsonntag"
         Ostern-2,   "Karfreitag"

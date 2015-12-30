@@ -36,9 +36,7 @@ SOURCES += main.cpp\
     clogbookview.cpp \
     csingleprealertedit.cpp \
     cbranchedit.cpp \
-    cbranch.cpp \
-    cholidayedit.cpp \
-    cholidaydata.cpp
+    cbranch.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -63,9 +61,7 @@ HEADERS  += cmainwindow.h \
     clogbookview.h \
     csingleprealertedit.h \
     cbranchedit.h \
-    cbranch.h \
-    cholidayedit.h \
-    cholidaydata.h
+    cbranch.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
@@ -75,8 +71,7 @@ FORMS    += cmainwindow.ui \
     clogonassign.ui \
     clogbookview.ui \
     csingleprealertedit.ui \
-    cbranchedit.ui \
-    cholidayedit.ui
+    cbranchedit.ui
 
 OTHER_FILES += \
     mr.sql \
