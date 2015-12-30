@@ -48,6 +48,7 @@
 #include <QDate>
 #include <QList>
 
+#include "cdatabasemanager.h"
 #include "cholidaydata.h"
 
 class CHoliday

@@ -70,6 +70,7 @@ bool CHoliday::checkForHoliday(QDate pDate)
     return false;
 }
 
+//TODO: Feiertagsliste aus Datenbank laden.
 void CHoliday::makeHolidayList()
 {    
     m_holidayList = new QList<QDate>();
