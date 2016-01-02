@@ -1,9 +1,9 @@
 /****************************************************************************************
 *
-*   File: cholidayedit.h    Class: CHolidayEdit
+*   File: cholidaylist.h    Class: CHolidayList
 *   This file is part of the MEGA-Series Project.
-*   Copyright (C) 2015 Joerg Pauly
-*   Created 30.12.2015 by joerg
+*   Copyright (C) 2016 Joerg Pauly
+*   Created 02.01.2016 by joerg
 *   All Rights reserved
 *
 *   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
@@ -20,46 +20,24 @@
 *   Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 *****************************************************************************************/
-#ifndef CHOLIDAYEDIT_H
-#define CHOLIDAYEDIT_H
+#ifndef CHOLIDAYLIST_H
+#define CHOLIDAYLIST_H
 
 //System-Header
-#include <QDialog>
-#include <QMdiSubWindow>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QVariant>
 
 //Projekt-Header
-#include "cholidaylist.h"
+#include "cholidaydata.h"
 
-
-namespace Ui
+class CHolidayList : public QList<CHolidayData>
 {
-    class CHolidayEdit;
-}
-
-class CHolidayEdit : public QDialog
-{
-    Q_OBJECT
-private:
-    QMdiSubWindow *m_SubWnd;
-    CHolidayList *m_HolidayList;
-    bool m_init;
 public:
-    explicit CHolidayEdit(QWidget *parent = 0);
-    ~CHolidayEdit();
-
-    void setSubWnd(QMdiSubWindow *pSubWnd);
-
-private slots:
-    void on_tblHolidays_cellClicked(int row, int column);
-
-    void on_cmdNew_clicked();
-
-    void on_tblHolidays_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    CHolidayList();
 
 private:
-    Ui::CHolidayEdit *ui;
-    void getFromList();
-    void saveToDb(int previousRow);
+    void loadListFromDb();
 };
 
-#endif // CHOLIDAYEDIT_H
+#endif // CHOLIDAYLIST_H

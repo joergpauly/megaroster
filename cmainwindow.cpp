@@ -145,6 +145,13 @@ void CMainWindow::openBranchEdit()
     m_BranchEdit->show();
 }
 
+void CMainWindow::openHolidayEdit()
+{
+    m_HolidayEdit = new CHolidayEdit(this);
+    m_HolidayEdit->setSubWnd(ui->mdiArea->addSubWindow(m_HolidayEdit));
+    m_HolidayEdit->show();
+}
+
 void CMainWindow::checkLogon()
 {
     QSqlQuery lqry;
@@ -242,4 +249,14 @@ void CMainWindow::on_actionDienst_stellen_bearbeiten_triggered()
 void CMainWindow::on_cmdBranches_clicked()
 {
     openBranchEdit();
+}
+
+void CMainWindow::on_cmdHolidayEdit_clicked()
+{
+    openHolidayEdit();
+}
+
+void CMainWindow::on_action_Feiertagsliste_bearbeiten_triggered()
+{
+    openHolidayEdit();
 }

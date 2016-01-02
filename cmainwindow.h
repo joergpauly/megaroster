@@ -43,6 +43,7 @@
 #include "clogonassign.h"
 #include "clogbookview.h"
 #include "cbranchedit.h"
+#include "cholidayedit.h"
 
 namespace Ui {
 class CMainWindow;
@@ -76,8 +77,9 @@ private slots:
     void on_actionDaten_Ordner_festlegen_triggered();
     void on_cmdChangeLog_clicked();
     void on_actionDienst_stellen_bearbeiten_triggered();
-
     void on_cmdBranches_clicked();
+    void on_cmdHolidayEdit_clicked();
+    void on_action_Feiertagsliste_bearbeiten_triggered();
 
 private:
     // Properties
@@ -87,6 +89,7 @@ private:
     CPersonalEdit* m_PersEdit;
     CDutyTypeEdit* m_DTEdit;
     CBranchEdit* m_BranchEdit;
+    CHolidayEdit* m_HolidayEdit;
     QString m_Username;
     int m_actualUser;
     QDir *m_Path;
@@ -97,6 +100,7 @@ private:
     void openPersonalEdit();
     void openDutyTypeEdit();
     void openBranchEdit();
+    void openHolidayEdit();
     void checkLogon();
 };
 

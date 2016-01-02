@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     cbranchedit.cpp \
     cbranch.cpp \
     cholidaydata.cpp \
-    cholidayedit.cpp
+    cholidayedit.cpp \
+    cholidaylist.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -65,7 +66,8 @@ HEADERS  += cmainwindow.h \
     cbranchedit.h \
     cbranch.h \
     cholidaydata.h \
-    cholidayedit.h
+    cholidayedit.h \
+    cholidaylist.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

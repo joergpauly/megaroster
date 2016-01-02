@@ -1,9 +1,9 @@
 /****************************************************************************************
 *
-*   File: cholidayedit.h    Class: CHolidayEdit
+*   File: cholidaylist.cpp    Class: CHolidayList
 *   This file is part of the MEGA-Series Project.
-*   Copyright (C) 2015 Joerg Pauly
-*   Created 30.12.2015 by joerg
+*   Copyright (C) 2016 Joerg Pauly
+*   Created 02.01.2016 by joerg
 *   All Rights reserved
 *
 *   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
@@ -20,46 +20,28 @@
 *   Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 *****************************************************************************************/
-#ifndef CHOLIDAYEDIT_H
-#define CHOLIDAYEDIT_H
-
-//System-Header
-#include <QDialog>
-#include <QMdiSubWindow>
-
-//Projekt-Header
 #include "cholidaylist.h"
 
-
-namespace Ui
+CHolidayList::CHolidayList()
 {
-    class CHolidayEdit;
+    loadListFromDb();
 }
 
-class CHolidayEdit : public QDialog
+void CHolidayList::loadListFromDb()
 {
-    Q_OBJECT
-private:
-    QMdiSubWindow *m_SubWnd;
-    CHolidayList *m_HolidayList;
-    bool m_init;
-public:
-    explicit CHolidayEdit(QWidget *parent = 0);
-    ~CHolidayEdit();
-
-    void setSubWnd(QMdiSubWindow *pSubWnd);
-
-private slots:
-    void on_tblHolidays_cellClicked(int row, int column);
-
-    void on_cmdNew_clicked();
-
-    void on_tblHolidays_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
-
-private:
-    Ui::CHolidayEdit *ui;
-    void getFromList();
-    void saveToDb(int previousRow);
-};
-
-#endif // CHOLIDAYEDIT_H
+    QSqlQuery lqry;
+    lqry.prepare("SELECT * FROM tblHolidays ORDER BY mvbl, iMonth, iDay ASC;");
+    lqry.exec();
+    lqry.first();
+    while(lqry.isValid())
+    {
+        CHolidayData lHd;
+        lHd.setID(lqry.value(lqry.record().indexOf("ID")).toInt());
+        lHd.setDay(lqry.value(lqry.record().indexOf("iDay")).toInt());
+        lHd.setMonth(lqry.value(lqry.record().indexOf("iMonth")).toInt());
+        lHd.setDescription(lqry.value(lqry.record().indexOf("Descr")).toString());
+        lHd.setMovable(lqry.value(lqry.record().indexOf("mvbl")).toBool());
+        this->append(lHd);
+        lqry.next();
+    }
+}

@@ -33,8 +33,9 @@
 // Projekt-Header
 #include "cbranch.h"
 
-namespace Ui {
-class CBranchEdit;
+namespace Ui
+{
+    class CBranchEdit;
 }
 
 class CBranchEdit : public QDialog
@@ -49,29 +50,17 @@ public:
 
 private slots:
     void on_txtName1_editingFinished();
-
     void on_txtName2_editingFinished();
-
     void on_txtName3_editingFinished();
-
     void on_txtAdress1_editingFinished();
-
     void on_txtAdress2_editingFinished();
-
     void on_txtAdress3_editingFinished();
-
     void on_txtAdress4_editingFinished();
-
     void on_txtAdress5_editingFinished();
-
     void on_txtHours_editingFinished();
-
     void on_cmdNew_clicked();
-
     void on_cmdDelete_clicked();
-
     void on_cmdClose_clicked();
-
     void on_tbvBranches_cellClicked(int row, int column);
 
 private:

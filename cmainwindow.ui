@@ -79,7 +79,7 @@
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>393</height>
+         <height>385</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -163,7 +163,7 @@ bearbeiten</string>
          <x>0</x>
          <y>0</y>
          <width>133</width>
-         <height>393</height>
+         <height>385</height>
         </rect>
        </property>
        <property name="font">
@@ -232,6 +232,14 @@ bearbeiten</string>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="cmdHolidayEdit">
+          <property name="text">
+           <string>Feiertagsliste
+bearbeiten</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -269,7 +277,7 @@ bearbeiten</string>
      <x>0</x>
      <y>0</y>
      <width>645</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Dienstplan">
@@ -287,6 +295,7 @@ bearbeiten</string>
     <addaction name="actionDienst_stellen_bearbeiten"/>
     <addaction name="action_Personal"/>
     <addaction name="action_Dienst_Arten"/>
+    <addaction name="action_Feiertagsliste_bearbeiten"/>
     <addaction name="separator"/>
     <addaction name="actionDruckvorlage_bearbeiten"/>
     <addaction name="separator"/>
@@ -332,6 +341,11 @@ bearbeiten</string>
   <action name="actionDienst_stellen_bearbeiten">
    <property name="text">
     <string>Dienst&amp;stellen bearbeiten...</string>
+   </property>
+  </action>
+  <action name="action_Feiertagsliste_bearbeiten">
+   <property name="text">
+    <string>&amp;Feiertagsliste bearbeiten...</string>
    </property>
   </action>
  </widget>

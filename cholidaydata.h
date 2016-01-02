@@ -29,7 +29,7 @@ class CHolidayData
 {
 public:
     CHolidayData();
-    CHolidayData(int pDay, int pMonth, bool pMovable, QString pDescription);
+    CHolidayData(int pID, int pDay, int pMonth, bool pMovable, QString pDescription);
 
     int Day() const;
     void setDay(int Day);
@@ -43,7 +43,11 @@ public:
     QString Description() const;
     void setDescription(const QString &Description);
 
+    int ID() const;
+    void setID(int ID);
+
 private:
+    int      m_ID;
     int      m_Day;
     int      m_Month;
     bool     m_Movable;

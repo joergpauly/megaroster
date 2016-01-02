@@ -27,8 +27,9 @@ CHolidayData::CHolidayData()
 
 }
 
-CHolidayData::CHolidayData(int pDay, int pMonth, bool pMovable, QString pDescription)
+CHolidayData::CHolidayData(int pID, int pDay, int pMonth, bool pMovable, QString pDescription)
 {
+    m_ID =pID;
     m_Day = pDay;
     m_Month = pMonth;
     m_Movable = pMovable;
@@ -77,4 +78,14 @@ QString CHolidayData::Description() const
 void CHolidayData::setDescription(const QString &Description)
 {
     m_Description = Description;
+}
+
+int CHolidayData::ID() const
+{
+    return m_ID;
+}
+
+void CHolidayData::setID(int ID)
+{
+    m_ID = ID;
 }
