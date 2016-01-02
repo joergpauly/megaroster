@@ -148,3 +148,24 @@ void CHolidayEdit::on_tblHolidays_currentCellChanged(int currentRow, int current
     }
     saveToDb(previousRow);
 }
+
+void CHolidayEdit::on_cmdKill_clicked()
+{
+    int row = ui->tblHolidays->currentRow();
+    int lID = ui->tblHolidays->item(row, 0)->data(Qt::UserRole).toInt();
+
+    QMessageBox lDlg(this);
+    lDlg.setWindowTitle("Feiertag löschen");
+    lDlg.setText("Wollen Sie diesen Feiertag wirklich löschen?");
+    lDlg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    lDlg.setDefaultButton(QMessageBox::No);
+    lDlg.setIcon(QMessageBox::Question);
+    if(lDlg.exec() == QMessageBox::Yes)
+    {
+        QSqlQuery lqry;
+        lqry.prepare("DELETE FROM tblHolidays WHERE ID = :ID;");
+        lqry.bindValue(":ID", lID);
+        lqry.exec();
+        ui->tblHolidays->removeRow(row);
+    }
+}

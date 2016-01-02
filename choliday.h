@@ -49,7 +49,7 @@
 #include <QList>
 
 #include "cdatabasemanager.h"
-#include "cholidaydata.h"
+#include "cholidaylist.h"
 
 class CHoliday
 {

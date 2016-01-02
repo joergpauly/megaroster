@@ -26,6 +26,7 @@
 //System-Header
 #include <QDialog>
 #include <QMdiSubWindow>
+#include <QMessageBox>
 
 //Projekt-Header
 #include "cholidaylist.h"
@@ -43,6 +44,7 @@ private:
     QMdiSubWindow *m_SubWnd;
     CHolidayList *m_HolidayList;
     bool m_init;
+
 public:
     explicit CHolidayEdit(QWidget *parent = 0);
     ~CHolidayEdit();
@@ -51,10 +53,9 @@ public:
 
 private slots:
     void on_tblHolidays_cellClicked(int row, int column);
-
     void on_cmdNew_clicked();
-
     void on_tblHolidays_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void on_cmdKill_clicked();
 
 private:
     Ui::CHolidayEdit *ui;
