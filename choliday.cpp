@@ -74,6 +74,38 @@ bool CHoliday::checkForHoliday(QDate pDate)
 void CHoliday::makeHolidayList()
 {    
     m_holidayList = new QList<QDate>();
+<<<<<<< .mine
+<<<<<<< .working
+<<<<<<< .working
+    QDate ldate(m_osterSonntag.year(),1,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),5,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),10,3);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),11,1);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,24);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,25);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,26);
+    m_holidayList->append(ldate);
+    ldate = QDate(m_osterSonntag.year(),12,31);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(-48);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(-2);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(1);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(39);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(50);
+    m_holidayList->append(ldate);
+    ldate = m_osterSonntag.addDays(60);
+    m_holidayList->append(ldate);
+=======
     CHolidayList *lLst = new CHolidayList();
     QDate *lDate;
 
@@ -89,6 +121,41 @@ void CHoliday::makeHolidayList()
         }
         m_holidayList->append(*lDate);
     }
+>>>>>>> .r156
+=======
+    CHolidayList *lLst = new CHolidayList();
+    QDate *lDate;
+
+    for(int i = 0; i < lLst->count(); i++)
+    {
+        if(!lLst->at(i).Movable())
+        {
+            lDate = new QDate(m_osterSonntag.year(), lLst->at(i).Month(), lLst->at(i).Day());
+        }
+        else
+        {
+            *lDate = m_osterSonntag.addDays(lLst->at(i).Day());
+        }
+        m_holidayList->append(*lDate);
+    }
+>>>>>>> .merge-right.r155
+=======
+    CHolidayList *lLst = new CHolidayList();
+    QDate *lDate;
+
+    for(int i = 0; i < lLst->count(); i++)
+    {
+        if(!lLst->at(i).Movable())
+        {
+            lDate = new QDate(m_osterSonntag.year(), lLst->at(i).Month(), lLst->at(i).Day());
+        }
+        else
+        {
+            *lDate = m_osterSonntag.addDays(lLst->at(i).Day());
+        }
+        m_holidayList->append(*lDate);
+    }
+>>>>>>> .merge-right.r155
 }
 
 void CHoliday::makeOsterSonntag(int pJahr)
