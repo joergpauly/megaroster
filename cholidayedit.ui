@@ -78,14 +78,14 @@
      <item>
       <widget class="QPushButton" name="cmdNew">
        <property name="text">
-        <string>Neu</string>
+        <string>&amp;Neu</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cmdKill">
        <property name="text">
-        <string>Löschen</string>
+        <string>Lös&amp;chen</string>
        </property>
       </widget>
      </item>
