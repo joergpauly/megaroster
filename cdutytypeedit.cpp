@@ -34,6 +34,7 @@ CDutyTypeEdit::CDutyTypeEdit(QWidget *parent) :
     loadTable();
     fillDTypeTable();
     fillDBTcombo();
+    fillDefDutyCombo();
 }
 
 CDutyTypeEdit::~CDutyTypeEdit()
@@ -135,6 +136,21 @@ void CDutyTypeEdit::fillDBTcombo()
     }
 
     delete dbman;
+}
+
+void CDutyTypeEdit::fillDefDutyCombo()
+{
+    QSettings *set = new QSettings("MEGA-Serie", "MEGARoster");
+    QList<CDutyType> *lDtList = new QList<CDutyType>();
+    CDatabaseManager *dbman = ((CMainWindow*)m_parent)->dataBase();
+    lDtList = dbman->dutyTypeList();
+
+    for(int i = 0; i < lDtList->count(); i++)
+    {
+        ui->cmbDefDutyType->addItem(lDtList->at(i).Mark(), lDtList->at(i).id());
+    }
+
+    ui->cmbDefDutyType->setCurrentIndex(ui->cmbDefDutyType->findData(set->value("DefDtyType",0).toInt()));
 }
 
 void CDutyTypeEdit::updateUI()
@@ -325,4 +341,10 @@ void CDutyTypeEdit::setSelected(QWidget *pold, QWidget *pnew)
 void CDutyTypeEdit::on_cmbBaseType_currentIndexChanged(int index)
 {
     updateRecord(m_ID);
+}
+
+void CDutyTypeEdit::on_cmbDefDutyType_currentIndexChanged(int index)
+{
+    QSettings *set = new QSettings("MEGA-Serie", "MEGARoster");
+    set->setValue("DefDtyType", ui->cmbDefDutyType->itemData(index));
 }
