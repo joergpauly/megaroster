@@ -30,11 +30,14 @@
 #include <QSqlRecord>
 #include <QTableWidgetItem>
 #include <QColorDialog>
+#include <QSettings>
 
 #include "cdatabasemanager.h"
+#include "cdutytype.h"
 
-namespace Ui {
-class CDutyTypeEdit;
+namespace Ui
+{
+    class CDutyTypeEdit;
 }
 
 class CDutyTypeEdit : public QDialog
@@ -48,30 +51,20 @@ public:
 
 private slots:
     void on_tblDutytps_cellClicked(int row, int column);
-
     void on_cmdColor_clicked();
-
     void on_cmdNew_clicked();
-
     void on_txtMark_editingFinished();
-
     void on_txtDescr_editingFinished();
-
     void on_timStart_editingFinished();
-
     void on_timEnd_editingFinished();
-
     void on_timBefore_editingFinished();
-
     void on_timAfter_editingFinished();
-
     void on_timStart2_editingFinished();
-
     void on_timEnd2_editingFinished();
-
     void setSelected(QWidget* pold, QWidget* pnew);
-
     void on_cmbBaseType_currentIndexChanged(int index);
+
+    void on_cmbDefDutyType_currentIndexChanged(int index);
 
 private:
     // Member
@@ -87,6 +80,7 @@ private:
     void loadTable();
     void fillDTypeTable();
     void fillDBTcombo();
+    void fillDefDutyCombo();
     void updateUI();
     void updateRecord(int pID);
     void getFromID(int pID);
