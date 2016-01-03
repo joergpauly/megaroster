@@ -1,4 +1,4 @@
-/****************************************************************************************
+/********************************************************************
 *
 *   File: cholidayedit.cpp    Class: CHolidayEdit
 *   This file is part of the MEGA-Series Project.
@@ -6,20 +6,24 @@
 *   Created 30.12.2015 by joerg
 *   All Rights reserved
 *
-*   Alle Programme der MEGA-Serie sind Freie Software: Sie können sie unter den Bedingungen
-*   der GNU Lesser General Public License, wie von der Free Software Foundation,
-*   Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren
-*   veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*   Alle Programme der MEGA-Serie sind Freie Software:
+*   Sie können sie unter den Bedingungen
+*   der GNU Lesser General Public License, wie von der
+*   Free Software Foundation, Version 3 der Lizenz oder
+*   (nach Ihrer Option) jeder späteren veröffentlichten
+*   Version, weiterverbreiten und/oder modifizieren.
 *
-*   Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber
-*   OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-*   Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+*   Dieses Programm wird in der Hoffnung, dass es nützlich
+*   sein wird, aber OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt;
+*   sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT
+*   oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 *   Siehe die GNU Lesser General Public License für weitere Details.
 *
-*   Sie sollten eine Kopie der GNU Lesser General Public License zusammen mit diesem
-*   Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*   Sie sollten eine Kopie der GNU Lesser General Public License
+*   zusammen mit diesem Programm erhalten haben.
+*   Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
-*****************************************************************************************/
+********************************************************************/
 #include "cholidayedit.h"
 #include "ui_cholidayedit.h"
 
@@ -30,6 +34,10 @@ CHolidayEdit::CHolidayEdit(QWidget *parent) :
     m_init = true;
     ui->setupUi(this);
     getFromList();
+    ui->tblHolidays->setColumnWidth(0, 250);
+    ui->tblHolidays->setColumnWidth(1, 65);
+    ui->tblHolidays->setColumnWidth(2, 65);
+    ui->tblHolidays->setColumnWidth(3, 65);
     m_init = false;
 }
 
@@ -61,7 +69,7 @@ void CHolidayEdit::getFromList()
         lItem->setTextAlignment(Qt::AlignRight);
         ui->tblHolidays->setItem(i, 2, lItem);
         lItem = new QTableWidgetItem();
-        lItem->setFlags(Qt::ItemIsUserCheckable);
+        lItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 
         if(m_HolidayList->at(i).Movable())
         {
