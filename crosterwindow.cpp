@@ -1347,3 +1347,8 @@ void CRosterWindow::on_chkReq_clicked(bool checked)
     m_currentDuty->setRequest(checked);
     updateDutyDB();
 }
+
+void CRosterWindow::on_cmdPublish_clicked()
+{
+    //TODO: Datenbank auf FTP-Server hochladen; Datei "ver.dat" mit neuem Timestamp versehen.
+}

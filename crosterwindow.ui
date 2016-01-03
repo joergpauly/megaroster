@@ -77,6 +77,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="cmdPublish">
+       <property name="text">
+        <string>Ver&amp;öffentlichen</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cmdNextMonth">
        <property name="toolTip">
         <string>Folgemonat öffnen</string>
@@ -535,7 +542,7 @@
           <number>0</number>
          </property>
          <attribute name="horizontalHeaderVisible">
-          <bool>true</bool>
+          <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>70</number>
