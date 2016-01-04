@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql printsupport
+QT       += core gui sql printsupport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     cbranch.cpp \
     cholidaydata.cpp \
     cholidayedit.cpp \
-    cholidaylist.cpp
+    cholidaylist.cpp \
+    cuploadprogressdlg.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -67,7 +68,8 @@ HEADERS  += cmainwindow.h \
     cbranch.h \
     cholidaydata.h \
     cholidayedit.h \
-    cholidaylist.h
+    cholidaylist.h \
+    cuploadprogressdlg.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
@@ -78,7 +80,8 @@ FORMS    += cmainwindow.ui \
     clogbookview.ui \
     csingleprealertedit.ui \
     cbranchedit.ui \
-    cholidayedit.ui
+    cholidayedit.ui \
+    cuploadprogressdlg.ui
 
 OTHER_FILES += \
     mr.sql \

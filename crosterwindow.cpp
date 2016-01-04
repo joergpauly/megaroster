@@ -1351,4 +1351,44 @@ void CRosterWindow::on_chkReq_clicked(bool checked)
 void CRosterWindow::on_cmdPublish_clicked()
 {
     //TODO: Datenbank auf FTP-Server hochladen; Datei "ver.dat" mit neuem Timestamp versehen.
+    QUrl                    lUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
+
+    m_netMan = new QNetworkAccessManager(this);
+
+    connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));
+
+
+    lUrl.setUserName("u40207960");
+    lUrl.setPassword("P3rsephone");
+
+    QString dbname = ((CMainWindow*)m_parent)->path()->absolutePath();
+    dbname.append("/mr.sqlite");
+    m_fileDB = new QFile(dbname);
+    m_netReply = m_netMan->put(QNetworkRequest(lUrl),m_fileDB);
+
+    connect(m_netReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
+    m_upDlg = new CUploadProgressDlg(this);
+    QMessageBox lbox;
+    lbox.setWindowTitle("Fertig!");
+    lbox.setText(m_netReply->errorString());
+    lbox.exec();
+
+}
+
+void CRosterWindow::uploadFinished(QNetworkReply* pReply)
+{
+    QMessageBox lbox;
+    lbox.setWindowTitle("Fertig!");
+    lbox.setText(pReply->errorString());
+    lbox.exec();
+    m_upDlg->close();
+    m_upDlg->deleteLater();
+    m_netReply->deleteLater();
+    m_fileDB->deleteLater();
+}
+
+void CRosterWindow::uploadProgress(qint64 pSent, qint64 pTotal)
+{
+    m_upDlg->setProgress(pSent, pTotal);
+    m_upDlg->show();
 }
