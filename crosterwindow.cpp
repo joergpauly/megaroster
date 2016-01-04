@@ -1165,12 +1165,12 @@ void CRosterWindow::on_cmdPrint_clicked()
     QPainter* localPainter = new QPainter();
     localPainter->begin(prt);
 
-    QPoint lpos(10,10);
+    QPoint lpos(50,50);
     QImage *logo = new QImage(":/gfx/ico/logo.jpg");
     localPainter->drawImage(lpos,*logo);
 
-    lpos.setX(10 + logo->width() + 80);
-    lpos.setY(50);
+    lpos.setX(50 + logo->width() + 80);
+    lpos.setY(80);
     QFont fnt;
     fnt.setPointSize(24);
     QFont oldfnt = localPainter->font();
@@ -1178,8 +1178,8 @@ void CRosterWindow::on_cmdPrint_clicked()
     localPainter->drawText(lpos, "Dienstplan " + QDate::longMonthName(ui->dtedMonthChoice->date().month()) + " " + QString::number(ui->dtedMonthChoice->date().year()));
     localPainter->setFont(oldfnt);
 
-    lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
-    lpos.setY(150);
+    lpos.setX(50+ui->tbwRoster->verticalHeader()->width());
+    lpos.setY(130);
 
     for(int i = 0; i<ui->tbwRoster->columnCount() - 1; i++)
     {        
@@ -1195,18 +1195,19 @@ void CRosterWindow::on_cmdPrint_clicked()
 
     for(int row = 0; row < ui->tbwRoster->rowCount(); row++)
     {
-        lpos.setX(10);
+        lpos.setX(50);
         int lhig;
         CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->verticalHeader()->width(),ui->tbwRoster->rowHeight(row),ui->tbwRoster->verticalHeaderItem(row)->text());
         cell->setAlign(Qt::AlignLeft|Qt::AlignVCenter);
         cell->draw(localPainter);
-        lpos.setX(10+ui->tbwRoster->verticalHeader()->width());
+        lpos.setX(50+ui->tbwRoster->verticalHeader()->width());
 
         for(int col = 0; col < ui->tbwRoster->columnCount() - 1; col++)
         {
             ui->tbwRoster->setCurrentCell(row,col);
             CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(col)-5,ui->tbwRoster->rowHeight(row),ui->tbwRoster->currentItem()->text());
             cell->setBrush(ui->tbwRoster->currentItem()->background());
+
             if(ui->tbwRoster->columnCount() - col <= 3)
             {
                 cell->setAlign(Qt::AlignRight|Qt::AlignVCenter);
@@ -1215,10 +1216,12 @@ void CRosterWindow::on_cmdPrint_clicked()
             {
                 cell->setAlign(Qt::AlignCenter);
             }
+
             cell->draw(localPainter);
             lpos.setX(lpos.x() + cell->Rect().width());
             lhig = cell->Rect().height();
         }
+
         lpos.setY(lpos.y() + lhig);        
     }
     localPainter->end();
@@ -1350,45 +1353,6 @@ void CRosterWindow::on_chkReq_clicked(bool checked)
 
 void CRosterWindow::on_cmdPublish_clicked()
 {
-    //TODO: Datenbank auf FTP-Server hochladen; Datei "ver.dat" mit neuem Timestamp versehen.
-    QUrl                    lUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
-
-    m_netMan = new QNetworkAccessManager(this);
-
-    connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));
-
-
-    lUrl.setUserName("u40207960");
-    lUrl.setPassword("P3rsephone");
-
-    QString dbname = ((CMainWindow*)m_parent)->path()->absolutePath();
-    dbname.append("/mr.sqlite");
-    m_fileDB = new QFile(dbname);
-    m_netReply = m_netMan->put(QNetworkRequest(lUrl),m_fileDB);
-
-    connect(m_netReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
-    m_upDlg = new CUploadProgressDlg(this);
-    QMessageBox lbox;
-    lbox.setWindowTitle("Fertig!");
-    lbox.setText(m_netReply->errorString());
-    lbox.exec();
-
-}
-
-void CRosterWindow::uploadFinished(QNetworkReply* pReply)
-{
-    QMessageBox lbox;
-    lbox.setWindowTitle("Fertig!");
-    lbox.setText(pReply->errorString());
-    lbox.exec();
-    m_upDlg->close();
-    m_upDlg->deleteLater();
-    m_netReply->deleteLater();
-    m_fileDB->deleteLater();
-}
-
-void CRosterWindow::uploadProgress(qint64 pSent, qint64 pTotal)
-{
-    m_upDlg->setProgress(pSent, pTotal);
-    m_upDlg->show();
+    m_upLoader = new CDbUploader((CMainWindow*)m_parent);
+    m_upLoader->doUpload();
 }

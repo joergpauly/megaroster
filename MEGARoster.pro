@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     cholidaydata.cpp \
     cholidayedit.cpp \
     cholidaylist.cpp \
-    cuploadprogressdlg.cpp
+    cuploadprogressdlg.cpp \
+    cdbuploader.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -69,7 +70,8 @@ HEADERS  += cmainwindow.h \
     cholidaydata.h \
     cholidayedit.h \
     cholidaylist.h \
-    cuploadprogressdlg.h
+    cuploadprogressdlg.h \
+    cdbuploader.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

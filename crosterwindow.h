@@ -34,11 +34,7 @@
 #include <QXmlStreamReader>
 #include <QStringRef>
 #include <QImage>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
-#include <QUrl>
-#include <QFile>
+
 
 // Projekt-Header
 #include "cdatabasemanager.h"
@@ -51,7 +47,7 @@
 #include "cprealerttype.h"
 #include "crule.h"
 #include "cprinttable.h"
-#include "cuploadprogressdlg.h"
+#include "cdbuploader.h"
 
 
 namespace Ui {
@@ -90,8 +86,6 @@ private slots:
     void on_cmdPreviousMonth_clicked();
     void on_chkReq_clicked(bool checked);
     void on_cmdPublish_clicked();
-    void uploadFinished(QNetworkReply *pReply);
-    void uploadProgress(qint64 pSent, qint64 pTotal);
 
 
 private:
@@ -117,10 +111,8 @@ private:
     bool                m_checkingRules;
 
     // Nur für DB-Upload
-    QNetworkAccessManager*   m_netMan;
-    QNetworkReply*      m_netReply;
-    QFile*              m_fileDB;
-    CUploadProgressDlg* m_upDlg;
+    CDbUploader*        m_upLoader;
+
 
 
 
