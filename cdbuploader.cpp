@@ -17,14 +17,14 @@ CDbUploader::CDbUploader(QObject *parent) : QObject(parent)
 void CDbUploader::doUpload()
 {
     QUrl lUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
+    lUrl.setUserName("u40207960");
+    lUrl.setPassword("P3rsephone");
 
     if(m_fileDB->open(QIODevice::ReadOnly))
     {
         m_netReply = m_netMan->put(QNetworkRequest(lUrl),m_fileDB);
     }
 
-    lUrl.setUserName("u40207960");
-    lUrl.setPassword("P3rsephone");
     connect(m_netReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
     m_upDlg = new CUploadProgressDlg((CMainWindow*)m_parent);
     m_upDlg->setProgress(0, 100);
@@ -47,5 +47,11 @@ void CDbUploader::uploadProgress(qint64 pSent, qint64 pTotal)
 {
     m_upDlg->setProgress(pSent, pTotal);
     m_upDlg->show();
+}
+
+void CDbUploader::authenticate(QNetworkReply *pRply, QAuthenticator *pAuth)
+{
+    pAuth->setUser("u40207960");
+    pAuth->setPassword("P3rsephone");
 }
 
