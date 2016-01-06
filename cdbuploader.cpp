@@ -41,33 +41,52 @@ CDbUploader::CDbUploader(QObject *parent) : QObject(parent)
     m_fileDB = new QFile(dbname);
 }
 
+CDbUploader::~CDbUploader()
+{
+    m_netDbReply->deleteLater();
+    m_netTsReply->deleteLater();
+    m_fileDB->deleteLater();
+    m_fileTS->deleteLater();
+    m_upDlg->deleteLater();
+}
+
 void CDbUploader::doUpload()
 {
-    QUrl lUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
-    lUrl.setUserName("u40207960");
-    lUrl.setPassword("P3rsephone");
+    m_fileTS = new QFile("./dbts.ver");
+    m_fileTS->open(QIODevice::WriteOnly);
+    m_fileTS->write(QDateTime::currentDateTime().toString("YYMMdd.hhmmss").toLocal8Bit());
+    m_fileTS->close();
+
+    QUrl lDbUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
+    lDbUrl.setUserName("u40207960");
+    lDbUrl.setPassword("P3rsephone");
 
     if(m_fileDB->open(QIODevice::ReadOnly))
     {
-        m_netReply = m_netMan->put(QNetworkRequest(lUrl),m_fileDB);
+        m_netDbReply = m_netMan->put(QNetworkRequest(lDbUrl),m_fileDB);
     }
 
-    connect(m_netReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
+    connect(m_netDbReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
     m_upDlg = new CUploadProgressDlg((CMainWindow*)m_parent);
-    m_upDlg->setProgress(0, 100);
+    m_upDlg->setProgress(25, 100);
     m_upDlg->show();
+
+    QUrl lTsUrl("ftp://ftp.it-kramer.eu/mmv/brd/dbts.ver");
+    lTsUrl.setUserName("u40207960");
+    lTsUrl.setPassword("P3rsephone");
+    m_fileTS = new QFile("./dbts.ver");
+
+    if(m_fileTS->open(QIODevice::ReadOnly))
+    {
+        m_netTsReply = m_netMan->put(QNetworkRequest(lTsUrl),m_fileTS);
+    }
+
+    m_upDlg->setProgress(75, 100);
 }
 
 void CDbUploader::uploadFinished(QNetworkReply *pReply)
-{
-    QMessageBox lbox;
-    lbox.setWindowTitle("Fertig!");
-    lbox.setText(pReply->errorString());
-    lbox.exec();
+{    
     m_upDlg->close();
-    m_upDlg->deleteLater();
-    m_netReply->deleteLater();
-    m_fileDB->deleteLater();
 }
 
 void CDbUploader::uploadProgress(qint64 pSent, qint64 pTotal)

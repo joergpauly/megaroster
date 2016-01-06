@@ -44,6 +44,7 @@ class CDbUploader : public QObject
     Q_OBJECT
 public:
     explicit CDbUploader(QObject *parent = 0);
+    ~CDbUploader();
     void doUpload();
 
 signals:
@@ -56,8 +57,10 @@ public slots:
 private:
     QObject*                m_parent;
     QNetworkAccessManager*  m_netMan;
-    QNetworkReply*          m_netReply;
+    QNetworkReply*          m_netDbReply;
+    QNetworkReply*          m_netTsReply;
     QFile*                  m_fileDB;
+    QFile*                  m_fileTS;
     CUploadProgressDlg*     m_upDlg;
 };
 
