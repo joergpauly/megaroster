@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     cholidayedit.cpp \
     cholidaylist.cpp \
     cuploadprogressdlg.cpp \
-    cdbuploader.cpp
+    cdbuploader.cpp \
+    ccomment.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -71,7 +72,8 @@ HEADERS  += cmainwindow.h \
     cholidayedit.h \
     cholidaylist.h \
     cuploadprogressdlg.h \
-    cdbuploader.h
+    cdbuploader.h \
+    ccomment.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

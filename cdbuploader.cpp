@@ -30,15 +30,7 @@
 
 CDbUploader::CDbUploader(QObject *parent) : QObject(parent)
 {
-    m_parent = parent;
-    // Datenbank auf FTP-Server hochladen; Datei "ver.dat" mit neuem Timestamp versehen. (?)
-    m_netMan = new QNetworkAccessManager(this);
-
-    connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));
-
-    QString dbname = ((CMainWindow*)m_parent)->path()->absolutePath();
-    dbname.append("/mr.sqlite");
-    m_fileDB = new QFile(dbname);
+    m_parent = parent;  
 }
 
 CDbUploader::~CDbUploader()
@@ -52,9 +44,15 @@ CDbUploader::~CDbUploader()
 
 void CDbUploader::doUpload()
 {
+    // Datenbank auf FTP-Server hochladen; Datei "dbts.ver" mit neuem Timestamp versehen.
+    m_netMan = new QNetworkAccessManager(this);
+    connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));
+    QString dbname = ((CMainWindow*)m_parent)->path()->absolutePath();
+    dbname.append("/mr.sqlite");
+    m_fileDB = new QFile(dbname);
     m_fileTS = new QFile("./dbts.ver");
     m_fileTS->open(QIODevice::WriteOnly);
-    m_fileTS->write(QDateTime::currentDateTime().toString("YYMMdd.hhmmss").toLocal8Bit());
+    m_fileTS->write(QDateTime::currentDateTime().toString("yyyyMMdd.hhmmss").toLocal8Bit());
     m_fileTS->close();
 
     QUrl lDbUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
@@ -85,7 +83,8 @@ void CDbUploader::doUpload()
 }
 
 void CDbUploader::uploadFinished(QNetworkReply *pReply)
-{    
+{
+    QString err = pReply->errorString();
     m_upDlg->close();
 }
 
