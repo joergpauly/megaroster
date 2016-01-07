@@ -44,6 +44,9 @@ CDbUploader::~CDbUploader()
 
 void CDbUploader::doUpload()
 {
+    // Kommentar-Eingabe anbieten.
+    CCommentEdit lComm((QWidget*)m_parent);
+    lComm.exec();
     // Datenbank auf FTP-Server hochladen; Datei "dbts.ver" mit neuem Timestamp versehen.
     m_netMan = new QNetworkAccessManager(this);
     connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));

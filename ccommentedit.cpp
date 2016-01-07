@@ -1,6 +1,6 @@
 /********************************************************************
 *
-*   File: ccomment.h    Class: CComment
+*   File: ccommentedit.cpp    Class: CCommentEdit
 *
 *   This file is part of the MEGA-Series Project.
 *   Copyright (C) 2016 Joerg Pauly
@@ -25,44 +25,30 @@
 *   Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 ********************************************************************/
-#ifndef CCOMMENT_H
-#define CCOMMENT_H
+#include "ccommentedit.h"
+#include "ui_ccommentedit.h"
 
-// System-Header
-#include <QWidget>
-#include <QDateTime>
-#include <QString>
-#include <QSqlQuery>
-#include <QSqlRecord>
-
-// Projekt-Header
-#include "cpersonal.h"
-
-class CComment
+CCommentEdit::CCommentEdit(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::CCommentEdit)
 {
-private:
-    QObject*    m_parent;
-    int         m_ID;
-    CPersonal*  m_Pers;
-    QDateTime*  m_Timestamp;
-    QString*    m_CommentText;
+    ui->setupUi(this);
+    m_comment = new CComment(parent);
+}
 
-public:
-    CComment(QObject* parent);
-    ~CComment();
+CCommentEdit::~CCommentEdit()
+{
+    delete ui;
+}
 
-    // Getter-/Setter-Funktionen
-    int ID() const;
-    void setID(int ID);
-    CPersonal *Pers() const;
-    void setPers(CPersonal *Pers);
-    QDateTime *Timestamp() const;
-    void setTimestamp(QDateTime *Timestamp);
-    QString *CommentText() const;
-    void setCommentText(QString CommentText);
+void CCommentEdit::on_buttonBox_accepted()
+{
+    m_comment->setCommentText(ui->txtComment->text());
+    m_comment->saveToDB();
+    this->close();
+}
 
-    // Public Calls
-    void saveToDB();
-};
-
-#endif // CCOMMENT_H
+void CCommentEdit::on_buttonBox_rejected()
+{
+    this->close();
+}

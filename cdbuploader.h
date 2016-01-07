@@ -38,6 +38,7 @@
 #include <QFile>
 
 #include "cuploadprogressdlg.h"
+#include "ccommentedit.h"
 
 class CDbUploader : public QObject
 {

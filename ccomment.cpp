@@ -26,8 +26,73 @@
 *
 ********************************************************************/
 #include "ccomment.h"
+#include "cmainwindow.h"
 
-CComment::CComment()
+// Con-/Destructor
+CComment::CComment(QObject *parent)
 {
-
+    m_parent = parent;
+    m_CommentText = new QString();
+    m_Timestamp = new QDateTime(QDateTime::currentDateTime());
+    m_Pers = new CPersonal(((CMainWindow*)m_parent)->getUserID());
 }
+
+CComment::~CComment()
+{
+    delete m_Pers;
+    delete m_CommentText;
+    delete m_Timestamp;
+}
+
+// Getter-/Setter-Funktionen
+int CComment::ID() const
+{
+    return m_ID;
+}
+
+void CComment::setID(int ID)
+{
+    m_ID = ID;
+}
+
+CPersonal *CComment::Pers() const
+{
+    return m_Pers;
+}
+
+void CComment::setPers(CPersonal *Pers)
+{
+    m_Pers = Pers;
+}
+
+QDateTime *CComment::Timestamp() const
+{
+    return m_Timestamp;
+}
+
+void CComment::setTimestamp(QDateTime *Timestamp)
+{
+    m_Timestamp = Timestamp;
+}
+
+QString *CComment::CommentText() const
+{
+    return m_CommentText;
+}
+
+void CComment::setCommentText(QString CommentText)
+{
+    m_CommentText = &CommentText;
+}
+
+void CComment::saveToDB()
+{
+    QString lstr(*m_CommentText);
+    QSqlQuery lqry;
+    lqry.prepare("INSERT INTO tblComment (PID, TimeStamp, Comment) VALUES (:PID, :TSTP, :COMM);");
+    lqry.bindValue(":PID", m_Pers->id());
+    lqry.bindValue(":TSTP", m_Timestamp->toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    lqry.bindValue(":COMM", lstr);
+    lqry.exec();
+}
+
