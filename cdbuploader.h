@@ -33,7 +33,6 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QAuthenticator>
 #include <QUrl>
 #include <QFile>
 
@@ -53,7 +52,6 @@ signals:
 public slots:
     void uploadFinished(QNetworkReply *pReply);
     void uploadProgress(qint64 pSent, qint64 pTotal);
-    void authenticate(QNetworkReply* pRply, QAuthenticator* pAuth);
 
 private:
     QObject*                m_parent;

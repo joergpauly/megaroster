@@ -63,6 +63,7 @@ public:
 
     // Public Calls
     void saveToDB();
+    CComment();
 };
 
 #endif // CCOMMENT_H
