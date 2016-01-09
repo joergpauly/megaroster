@@ -94,12 +94,5 @@ void CDbUploader::uploadFinished(QNetworkReply *pReply)
 void CDbUploader::uploadProgress(qint64 pSent, qint64 pTotal)
 {
     m_upDlg->setProgress(pSent, pTotal);
-    m_upDlg->show();
-}
-
-void CDbUploader::authenticate(QNetworkReply *pRply, QAuthenticator *pAuth)
-{
-    pAuth->setUser("u40207960");
-    pAuth->setPassword("P3rsephone");
 }
 
