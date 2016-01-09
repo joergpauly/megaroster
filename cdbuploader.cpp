@@ -47,6 +47,8 @@ void CDbUploader::doUpload()
     // Kommentar-Eingabe anbieten.
     CCommentEdit lComm((QWidget*)m_parent);
     lComm.exec();
+    // Datenbank schließen; sonst wird die Datei auf dem Server beschädigt.
+    ((CMainWindow*)m_parent)->dataBase()->db().close();
     // Datenbank auf FTP-Server hochladen; Datei "dbts.ver" mit neuem Timestamp versehen.
     m_netMan = new QNetworkAccessManager(this);
     connect(m_netMan, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadFinished(QNetworkReply*)));
@@ -55,7 +57,7 @@ void CDbUploader::doUpload()
     m_fileDB = new QFile(dbname);
     m_fileTS = new QFile("./dbts.ver");
     m_fileTS->open(QIODevice::WriteOnly);
-    m_fileTS->write(QDateTime::currentDateTime().toString("yyyyMMdd.hhmmss").toLocal8Bit());
+    m_fileTS->write(QDateTime::currentDateTime().toString("yyyyMMddhhmmss").toLocal8Bit());
     m_fileTS->close();
 
     QUrl lDbUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
@@ -87,8 +89,11 @@ void CDbUploader::doUpload()
 
 void CDbUploader::uploadFinished(QNetworkReply *pReply)
 {
-    QString err = pReply->errorString();
+    QNetworkReply::NetworkError err = pReply->error();
+    QString errstr = pReply->errorString();
     m_upDlg->close();
+    ((CMainWindow*)m_parent)->dataBase()->db().open();
+    // TODO: Zieldatei prüfen; ganz wichtig!!!!
 }
 
 void CDbUploader::uploadProgress(qint64 pSent, qint64 pTotal)

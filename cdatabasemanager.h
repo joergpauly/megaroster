@@ -55,8 +55,8 @@ public:
     QList<CDutyType>    *dutyTypeList();
     QList<CDuty>        *dutyList(QDate fromDate, QDate toDate, int PerID = 0);
     QList<CDtyBaseType> *dbaseList();
-
-
+    QSqlDatabase db() const;
+    void setDb(const QSqlDatabase &db);
 };
 
 class CLogManager : public QObject

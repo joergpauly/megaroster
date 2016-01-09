@@ -80,6 +80,16 @@ CDatabaseManager::CDatabaseManager(QObject *parent) :
 
 }
 
+QSqlDatabase CDatabaseManager::db() const
+{
+    return m_db;
+}
+
+void CDatabaseManager::setDb(const QSqlDatabase &db)
+{
+    m_db = db;
+}
+
 QList<CPersonal> *CDatabaseManager::personalList(QDate fromDate, QDate toDate)
 {
     QSqlQuery* lqry = new QSqlQuery();    
