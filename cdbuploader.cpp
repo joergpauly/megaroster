@@ -57,7 +57,7 @@ void CDbUploader::doUpload()
     m_fileDB = new QFile(dbname);
     m_fileTS = new QFile("./dbts.ver");
     m_fileTS->open(QIODevice::WriteOnly);
-    m_fileTS->write(QDateTime::currentDateTime().toString("yyyyMMddhhmmss").toLocal8Bit());
+    m_fileTS->write(QDateTime::currentDateTime().toString("yyyyMMdd.hhmmsszzz").toLocal8Bit());
     m_fileTS->close();
 
     QUrl lDbUrl("ftp://ftp.it-kramer.eu/mmv/brd/mr.sqlite");
