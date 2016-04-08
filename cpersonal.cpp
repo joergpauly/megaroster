@@ -43,6 +43,8 @@ CPersonal::CPersonal(int pID)
     m_SollTag = QTime::fromString(lqry->value(lqry->record().indexOf("SollTag")).toString(),"hh:mm:ss.zzz");
     m_Admin = lqry->value(lqry->record().indexOf("Admin")).toBool();
     m_Edit = lqry->value(lqry->record().indexOf("PlanEdit")).toBool();
+    m_BreakDate = QDate::fromString(lqry->value(lqry->record().indexOf("BreakDate")).toString(), "yyyy-MM-dd");
+    m_BDdiff = QTime::fromString(lqry->value(lqry->record().indexOf("BDdiff")).toString(), "hh:mm:ss.zzz");
     delete lqry;
 }
 
@@ -144,6 +146,26 @@ bool CPersonal::Admin() const
 void CPersonal::setAdmin(const bool pAd)
 {
     m_Admin = pAd;
+}
+
+QDate CPersonal::BreakDate() const
+{
+    return m_BreakDate;
+}
+
+void CPersonal::setBreakDate(const QDate &BreakDate)
+{
+    m_BreakDate = BreakDate;
+}
+
+QTime CPersonal::BDdiff() const
+{
+    return m_BDdiff;
+}
+
+void CPersonal::setBDdiff(const QTime &BDdiff)
+{
+    m_BDdiff = BDdiff;
 }
 
 

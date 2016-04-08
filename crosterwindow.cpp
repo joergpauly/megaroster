@@ -139,7 +139,7 @@ void CRosterWindow::makeColumns(QDate pDate)
     QColor lHolFg(255,0,0);
     int ldays = pDate.daysInMonth();
     int lwdays = ldays;
-    ui->tbwRoster->setColumnCount(ldays+3);
+    ui->tbwRoster->setColumnCount(ldays+4);
 
     for(int i = 0; i < pDate.daysInMonth(); i++)
     {
@@ -179,14 +179,17 @@ void CRosterWindow::makeColumns(QDate pDate)
     }
 
     QTableWidgetItem* litem = new QTableWidgetItem("Ist-h");
-    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth(),litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth(),55);
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth(), litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth(), 55);
     litem = new QTableWidgetItem("Soll-h");
-    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+1,litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+1,55);
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+1, litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+1, 55);
     litem = new QTableWidgetItem("Diff.");
-    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+2,litem);
-    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2,55);
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+2, litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+2, 55);
+    litem = new QTableWidgetItem("Kum.Diff.");
+    ui->tbwRoster->setHorizontalHeaderItem(pDate.daysInMonth()+3, litem);
+    ui->tbwRoster->setColumnWidth(pDate.daysInMonth()+3, 55);
     makeSollH(pDate,lwdays,ldays+1);    
 }
 
@@ -259,6 +262,7 @@ void CRosterWindow::makeIstH()
         litem->setData(Qt::UserRole,"IST");
         ui->tbwRoster->setItem(row, dty.Date().daysInMonth(), litem);
         makeDiff(row);
+        makeKumDiff(row);
     }
 
 }
@@ -301,13 +305,14 @@ void CRosterWindow::makeIstH(int prow)
     litem->setData(Qt::UserRole,"IST");
     ui->tbwRoster->setItem(prow, dty->Date().daysInMonth(), litem);    
     makeDiff(prow);
+    makeKumDiff(prow);
 }
 
 void CRosterWindow::makeDiff(int prow)
 {
-    int istCol = ui->tbwRoster->columnCount()-3;
-    int solCol = ui->tbwRoster->columnCount()-2;
-    int difCol = ui->tbwRoster->columnCount()-1;
+    int istCol = ui->tbwRoster->columnCount()-4;
+    int solCol = ui->tbwRoster->columnCount()-3;
+    int difCol = ui->tbwRoster->columnCount()-2;
     QString istT = ui->tbwRoster->item(prow,istCol)->text();
     int istMins = istT.right(2).toInt();
     istMins += (istT.left(istT.length()-3).toInt() * 60);
@@ -335,6 +340,16 @@ void CRosterWindow::makeDiff(int prow)
     item->setText(difT);
     item->setTextAlignment(Qt::AlignRight);
     ui->tbwRoster->setItem(prow,difCol,item);
+}
+
+void CRosterWindow::makeKumDiff(int prow)
+{
+    /****************************************************************************
+     * TODO: Kumulierte Differenz über komplette Zeit ab Stichtag in CPersonal
+     * -> Anlage Felder "Stichtag" und "Differenz" in tblPersonal/CPersonal
+     * -> SELECT auf alle Datensätze von Stichtag bis heute in QList<CDuty>
+     * -> QList iterativ mit Stichtagswert verrechnen
+     * **************************************************************************/
 }
 
 void CRosterWindow::makeRoster(QDate pDate)
@@ -1178,12 +1193,12 @@ void CRosterWindow::on_cmdPrint_clicked()
     localPainter->drawText(lpos, "Dienstplan " + QDate::longMonthName(ui->dtedMonthChoice->date().month()) + " " + QString::number(ui->dtedMonthChoice->date().year()));
     localPainter->setFont(oldfnt);
 
-    lpos.setX(50+ui->tbwRoster->verticalHeader()->width());
+    lpos.setX(50 + ui->tbwRoster->verticalHeader()->width());
     lpos.setY(130);
 
-    for(int i = 0; i<ui->tbwRoster->columnCount() - 1; i++)
+    for(int i = 0; i < ui->tbwRoster->columnCount() - 1; i++)
     {        
-        CPrintTableCell *cell = new CPrintTableCell(lpos,ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(),ui->tbwRoster->horizontalHeaderItem(i)->text());        
+        CPrintTableCell *cell = new CPrintTableCell(lpos, ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(), ui->tbwRoster->horizontalHeaderItem(i)->text());
         QBrush brush = ui->tbwRoster->horizontalHeaderItem(i)->background();
         cell->setBrush(brush);
         cell->setAlign(Qt::AlignCenter);
@@ -1222,8 +1237,9 @@ void CRosterWindow::on_cmdPrint_clicked()
             lhig = cell->Rect().height();
         }
 
-        lpos.setY(lpos.y() + lhig);        
+        lpos.setY(lpos.y() + lhig);
     }
+
     localPainter->end();
 }
 

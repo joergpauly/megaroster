@@ -168,6 +168,10 @@ void CPersonalEdit::updateUI()
     QString ATDat = m_qry->value(m_qry->record().indexOf("Austritt")).toString();
     QDate ATDate = QDate::fromString(ATDat,"yyyy-MM-dd");
     ui->datAustritt->setDate(ATDate);
+    QDate BDate = QDate::fromString(m_qry->value(m_qry->record().indexOf("BreakDate")).toString(), "yyyy-MM-dd");
+    ui->datBreakDate->setDate(BDate);
+    QTime ltim = QTime::fromString(m_qry->value(m_qry->record().indexOf("BDdiff")).toString(), "hh:mm:ss.zzz");
+    ui->txtBDdiff->setText(ltim.toString("hh:mm"));
     bool lEdit = m_qry->value(m_qry->record().indexOf("PlanEdit")).toBool();
 
     if(lEdit)

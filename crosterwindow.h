@@ -124,6 +124,7 @@ private:
     void makeIstH();
     void makeIstH(int prow);
     void makeDiff(int prow);
+    void makeKumDiff(int prow);
     void makeRoster(QDate pDate);
     void updateDetails(int prow, int pcol);
     void updateDetails(CDuty* pDuty);

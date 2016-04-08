@@ -96,7 +96,7 @@ void CPrintTableCell::draw(QPainter *pPainter)
 {   
     pPainter->setBrush(m_Brush);
     pPainter->drawRect(m_Rect);
-    pPainter->drawText(m_Rect,m_Align,m_Text);
+    pPainter->drawText(m_Rect, m_Align, m_Text);
 }
 
 QBrush CPrintTableCell::Brush() const

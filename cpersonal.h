@@ -65,6 +65,12 @@ public:
     bool Admin() const;
     void setAdmin(const bool pAd);
 
+    QDate BreakDate() const;
+    void setBreakDate(const QDate &BreakDate);
+
+    QTime BDdiff() const;
+    void setBDdiff(const QTime &BDdiff);
+
 private:
     int m_id;
     QString m_Name;
@@ -76,6 +82,8 @@ private:
     QDate   m_Austritt;
     bool    m_Edit;
     bool    m_Admin;
+    QDate   m_BreakDate;
+    QTime   m_BDdiff;
 
 };
 
