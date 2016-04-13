@@ -549,7 +549,7 @@ void CRosterWindow::updatePrealerts(CDuty *pDuty)
     ui->tblPrealerts->setColumnCount(1);
     CPrealert lpa(pDuty->Kollege()->id(), pDuty->Date());
 
-    if(!lpa.paTypes())
+    if(!lpa.paTypes() | lpa.id() <= 0)
     {
         return;
     }
@@ -1196,7 +1196,7 @@ void CRosterWindow::on_cmdPrint_clicked()
     lpos.setX(50 + ui->tbwRoster->verticalHeader()->width());
     lpos.setY(130);
 
-    for(int i = 0; i < ui->tbwRoster->columnCount() - 1; i++)
+    for(int i = 0; i < ui->tbwRoster->columnCount() - 2; i++)
     {        
         CPrintTableCell *cell = new CPrintTableCell(lpos, ui->tbwRoster->columnWidth(i)-5, ui->tbwRoster->horizontalHeader()->height(), ui->tbwRoster->horizontalHeaderItem(i)->text());
         QBrush brush = ui->tbwRoster->horizontalHeaderItem(i)->background();
