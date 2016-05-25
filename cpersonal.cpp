@@ -44,7 +44,7 @@ CPersonal::CPersonal(int pID)
     m_Admin = lqry->value(lqry->record().indexOf("Admin")).toBool();
     m_Edit = lqry->value(lqry->record().indexOf("PlanEdit")).toBool();
     m_BreakDate = QDate::fromString(lqry->value(lqry->record().indexOf("BreakDate")).toString(), "yyyy-MM-dd");
-    m_BDdiff = QTime::fromString(lqry->value(lqry->record().indexOf("BDdiff")).toString(), "hh:mm:ss.zzz");
+    m_BDdiff = QTime::fromString(lqry->value(lqry->record().indexOf("BDDiff")).toString(), "hh:mm:ss.zzz");
     delete lqry;
 }
 

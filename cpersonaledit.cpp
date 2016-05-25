@@ -211,7 +211,7 @@ void CPersonalEdit::getFromID(int pID)
 void CPersonalEdit::updateRecord(int pID)
 {
     m_qry = new QSqlQuery();
-    m_qry->prepare("UPDATE tblPersonal SET Name = :Name, VName = :VName, PNr = :PNr, GebDat = :GBD, SollTag = :Soll, Eintritt = :ED, Austritt = :AD, PlanEdit = :PE, Admin = :ADM WHERE ID = :ID");
+    m_qry->prepare("UPDATE tblPersonal SET Name = :Name, VName = :VName, PNr = :PNr, GebDat = :GBD, SollTag = :Soll, Eintritt = :ED, Austritt = :AD, PlanEdit = :PE, Admin = :ADM, BreakDate = :BDT, BDDiff = :BDF WHERE ID = :ID");
     m_qry->bindValue(":Name",ui->txtName->text());
     m_qry->bindValue(":VName",ui->txtVName->text());
     m_qry->bindValue(":PNr",ui->txtPersNo->text());
@@ -219,6 +219,8 @@ void CPersonalEdit::updateRecord(int pID)
     m_qry->bindValue(":Soll",ui->timSollTag->time());
     m_qry->bindValue(":ED",ui->datEintritt->date());
     m_qry->bindValue(":AD",ui->datAustritt->date());
+    m_qry->bindValue(":BDT", ui->datBreakDate->date());
+    m_qry->bindValue(":BDF",ui->txtBDdiff->text());
 
     if(ui->chkEdit->checkState() == Qt::Checked)
     {
@@ -357,6 +359,16 @@ void CPersonalEdit::on_chkEdit_clicked()
 }
 
 void CPersonalEdit::on_chkAdmin_clicked()
+{
+    updateRecord(m_id);
+}
+
+void CPersonalEdit::on_datBreakDate_editingFinished()
+{
+    updateRecord(m_id);
+}
+
+void CPersonalEdit::on_txtBDdiff_editingFinished()
 {
     updateRecord(m_id);
 }

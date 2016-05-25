@@ -70,6 +70,10 @@ private slots:
 
     void on_chkAdmin_clicked();
 
+    void on_datBreakDate_editingFinished();
+
+    void on_txtBDdiff_editingFinished();
+
 private:
     // Member
     Ui::CPersonalEdit *ui;

@@ -9,8 +9,10 @@ QT       += core gui sql printsupport network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = MEGARoster
+target.path = /opt/megaroster
 TEMPLATE = app
 
+INSTALLS += target
 
 SOURCES += main.cpp\
         cmainwindow.cpp \
@@ -97,3 +99,4 @@ OTHER_FILES += \
 
 RESOURCES += \
     megaroster.qrc
+
