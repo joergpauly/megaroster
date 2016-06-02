@@ -344,6 +344,25 @@ void CRosterWindow::makeDiff(int prow)
 
 void CRosterWindow::makeKumDiff(int prow)
 {
+    int lPid = ui->tbwRoster->verticalHeaderItem(prow)->data(1).toInt();
+    CPersonal *lPer = new CPersonal(lPid);
+    QDate lBreak = lPer->BreakDate();
+    QSqlQuery lqry;
+    lqry.prepare("SELECT * from tblDuty WHERE PersID = :PID AND DDate > :BDate;");
+    lqry.bindValue(":PID", lPer->id());
+    lqry.bindValue(":BDate", lBreak.toString("yyyy-MM-dd"));
+    lqry.exec();
+    QString lerr = lqry.lastError().text();
+    lqry.first();
+    QList<CDuty> *dutyList = new QList<CDuty>();
+
+    while(lqry.isValid())
+    {
+        CDuty* lDuty = new CDuty(lqry.value(lqry.record().indexOf("ID")).toInt());
+        dutyList->append(*lDuty);
+        lqry.next();
+    }
+
     /****************************************************************************
      * TODO: Kumulierte Differenz über komplette Zeit ab Stichtag in CPersonal
      * -> Anlage Felder "Stichtag" und "Differenz" in tblPersonal/CPersonal
