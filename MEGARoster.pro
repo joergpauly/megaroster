@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     cuploadprogressdlg.cpp \
     cdbuploader.cpp \
     ccomment.cpp \
-    ccommentedit.cpp
+    ccommentedit.cpp \
+    cdifftime.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -77,7 +78,8 @@ HEADERS  += cmainwindow.h \
     cuploadprogressdlg.h \
     cdbuploader.h \
     ccomment.h \
-    ccommentedit.h
+    ccommentedit.h \
+    cdifftime.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

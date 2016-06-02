@@ -67,6 +67,11 @@ bool CHoliday::checkForHoliday(QDate pDate)
 
     }
 
+    if(pDate.dayOfWeek() > 5)
+    {
+        return true;
+    }
+
     return false;
 }
 

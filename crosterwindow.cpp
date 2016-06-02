@@ -162,7 +162,7 @@ void CRosterWindow::makeColumns(QDate pDate)
             lwdays--;
         }
 
-        if(m_Holidays->checkForHoliday(pDate))
+        if(m_Holidays->checkForHoliday(pDate) && pDate.dayOfWeek() < 6)
         {
             litem->setForeground(QBrush(lHolFg));
             litem->setBackground(QBrush(lHol));
@@ -363,12 +363,29 @@ void CRosterWindow::makeKumDiff(int prow)
         lqry.next();
     }
 
-    /****************************************************************************
-     * TODO: Kumulierte Differenz über komplette Zeit ab Stichtag in CPersonal
-     * -> Anlage Felder "Stichtag" und "Differenz" in tblPersonal/CPersonal
-     * -> SELECT auf alle Datensätze von Stichtag bis heute in QList<CDuty>
-     * -> QList iterativ mit Stichtagswert verrechnen
-     * **************************************************************************/
+    QTime lDiff;
+    lDiff.setHMS(0,0,0);
+
+    for(int i = 0; i < dutyList->count(); i++)
+    {
+        QTime lstart = lPer->BDdiff();
+        QTime ldur = dutyList->at(i).Duration();
+        ldur.addSecs((dutyList->at(i).Duration2().hour() * 3600) + (dutyList->at(i).Duration2().minute() * 60));
+        QTime lDailyHrs;
+
+        if(m_Holidays->checkForHoliday(dutyList->at(i).Date()))
+        {
+            lDailyHrs.setHMS(0,0,0);
+        }
+        else
+        {
+            lDailyHrs = lPer->SollTag();
+        }
+        int lsecs = lDailyHrs.secsTo(ldur);
+        lDiff.addSecs(lsecs);
+    }
+
+    ui->tbwRoster->item(prow, ui->tbwRoster->columnCount()-1)->setText(lDiff.toString("HH:mm"));
 }
 
 void CRosterWindow::makeRoster(QDate pDate)
