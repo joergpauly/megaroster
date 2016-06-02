@@ -28,11 +28,33 @@
 #ifndef CDIFFTIME_H
 #define CDIFFTIME_H
 
+#include <QTime>
+#include <QString>
 
 class CDiffTime
 {
+private:
+    int m_Hour;
+    int m_Min;
+    int m_totalMins;
+    int m_totalSecs;
+
+    void makeTotalTime();
+
 public:
     CDiffTime();
+    CDiffTime(QTime pTime);
+
+    int Hour() const;
+    void setHour(int Hour);
+    int Min() const;
+    void setMin(int Min);
+    int totalMins() const;
+    void setTotalMins(int totalMins);
+    int totalSecs() const;
+    void setTotalSecs(int totalSecs);
+
+    QString toString();
 };
 
 #endif // CDIFFTIME_H
