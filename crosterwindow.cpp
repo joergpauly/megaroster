@@ -363,30 +363,37 @@ void CRosterWindow::makeKumDiff(int prow)
         lqry.next();
     }
 
-    //TODO: Mit CDiffTime arbeiten!
-    QTime lDiff;
-    lDiff.setHMS(0,0,0);
+    CDiffTime lDiff;
+    lDiff.setTotalMins(0);
 
     for(int i = 0; i < dutyList->count(); i++)
     {
-        QTime lstart = lPer->BDdiff();
-        QTime ldur = dutyList->at(i).Duration();
-        ldur.addSecs((dutyList->at(i).Duration2().hour() * 3600) + (dutyList->at(i).Duration2().minute() * 60));
-        QTime lDailyHrs;
+        CDiffTime lDailyHrs;
+        CDiffTime lDur1;
+        CDiffTime lDur2;
+        CDiffTime lDur;
+
+        lDur1.setTime(dutyList->at(i).Duration());
+        lDur2.setTime(dutyList->at(i).Duration2());
+        lDur.setTotalMins(lDur1.totalMins() + lDur2.totalMins());
 
         if(m_Holidays->checkForHoliday(dutyList->at(i).Date()))
         {
-            lDailyHrs.setHMS(0,0,0);
+            lDailyHrs.setTotalMins(0);
         }
         else
         {
-            lDailyHrs = lPer->SollTag();
+            lDailyHrs.setTime(lPer->SollTag());
         }
-        int lsecs = lDailyHrs.secsTo(ldur);
-        lDiff.addSecs(lsecs);
+
+        CDiffTime bDiff;
+        bDiff.setTotalMins(lDur.totalMins() - lDailyHrs.totalMins());
+        lDiff.setTotalMins(lDiff.totalMins() + bDiff.totalMins());
     }
 
-    ui->tbwRoster->item(prow, ui->tbwRoster->columnCount()-1)->setText(lDiff.toString("HH:mm"));
+    QTableWidgetItem* litem = new QTableWidgetItem(lDiff.toString());
+
+    ui->tbwRoster->setItem(prow, ui->tbwRoster->columnCount()-1, litem);
 }
 
 void CRosterWindow::makeRoster(QDate pDate)

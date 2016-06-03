@@ -45,8 +45,7 @@ CDiffTime::CDiffTime(QTime pTime)
 {
     m_Hour = pTime.hour();
     m_Min = pTime.minute();
-    m_totalMins = (m_Hour * 60) + m_Min;
-    m_totalSecs = m_totalMins * 60;
+    m_totalMins = (m_Hour * 60) + m_Min;   
 }
 
 CDiffTime::CDiffTime(float pTime)
@@ -85,20 +84,19 @@ int CDiffTime::totalMins() const
 void CDiffTime::setTotalMins(int totalMins)
 {
     m_totalMins = totalMins;
+    makeTotalTime();
 }
 
-int CDiffTime::totalSecs() const
+void CDiffTime::setTime(QTime pTime)
 {
-    return m_totalSecs;
-}
-
-void CDiffTime::setTotalSecs(int totalSecs)
-{
-    m_totalSecs = totalSecs;
+    m_Hour = pTime.hour();
+    m_Min = pTime.minute();
+    m_totalMins = (m_Hour * 60) + m_Min;
 }
 
 QString CDiffTime::toString()
 {
+    //TODO: Stringformatierung optimieren!
     QString lStr;
     lStr = QString::number(m_Hour);
     lStr.append(':');
@@ -122,7 +120,7 @@ double CDiffTime::toNumber()
 
 void CDiffTime::makeTotalTime()
 {
-    m_Hour = m_totalSecs / 3600;
-    m_Min = (m_totalSecs - (m_Hour * 3600)) / 60;
+    m_Hour = m_totalMins / 60;
+    m_Min = m_totalMins - (m_Hour * 60);
 }
 

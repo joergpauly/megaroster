@@ -37,7 +37,6 @@ private:
     int m_Hour;
     int m_Min;
     int m_totalMins;
-    int m_totalSecs;
 
     void makeTotalTime();
 
@@ -52,8 +51,8 @@ public:
     void setMin(int Min);
     int totalMins() const;
     void setTotalMins(int totalMins);
-    int totalSecs() const;
-    void setTotalSecs(int totalSecs);
+
+    void setTime(QTime pTime);
 
     QString toString();
     double toNumber();
