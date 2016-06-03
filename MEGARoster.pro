@@ -102,3 +102,6 @@ OTHER_FILES += \
 RESOURCES += \
     megaroster.qrc
 
+DISTFILES += \
+    ../build-MEGARoster-Desktop_Qt_5_6_0_GCC_64bit-Debug/mr.sqlite
+
