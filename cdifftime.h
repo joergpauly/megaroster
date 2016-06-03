@@ -44,6 +44,7 @@ private:
 public:
     CDiffTime();
     CDiffTime(QTime pTime);
+    CDiffTime(float pTime);
 
     int Hour() const;
     void setHour(int Hour);
@@ -55,6 +56,7 @@ public:
     void setTotalSecs(int totalSecs);
 
     QString toString();
+    double toNumber();
 };
 
 #endif // CDIFFTIME_H

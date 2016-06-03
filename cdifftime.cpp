@@ -49,6 +49,13 @@ CDiffTime::CDiffTime(QTime pTime)
     m_totalSecs = m_totalMins * 60;
 }
 
+CDiffTime::CDiffTime(float pTime)
+{
+    m_Hour = pTime;
+    m_Min = (pTime - m_Hour) * 60;
+    makeTotalTime();
+}
+
 
 int CDiffTime::Hour() const
 {
@@ -104,6 +111,13 @@ QString CDiffTime::toString()
 
     lStr.append(lMin);
     return lStr;
+}
+
+double CDiffTime::toNumber()
+{
+    float lTime = m_Hour;
+    float lMins = m_Min / 60;
+    return (lTime + lMins);
 }
 
 void CDiffTime::makeTotalTime()

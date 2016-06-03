@@ -363,6 +363,7 @@ void CRosterWindow::makeKumDiff(int prow)
         lqry.next();
     }
 
+    //TODO: Mit CDiffTime arbeiten!
     QTime lDiff;
     lDiff.setHMS(0,0,0);
 

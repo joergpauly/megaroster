@@ -48,6 +48,7 @@
 #include "crule.h"
 #include "cprinttable.h"
 #include "cdbuploader.h"
+#include "cdifftime.h"
 
 
 namespace Ui {
