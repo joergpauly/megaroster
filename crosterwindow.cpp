@@ -347,10 +347,15 @@ void CRosterWindow::makeKumDiff(int prow)
     int lPid = ui->tbwRoster->verticalHeaderItem(prow)->data(1).toInt();
     CPersonal *lPer = new CPersonal(lPid);
     QDate lBreak = lPer->BreakDate();
+    CDiffTime BDdiff(lPer->BDdiff());
     QSqlQuery lqry;
-    lqry.prepare("SELECT * from tblDuty WHERE PersID = :PID AND DDate > :BDate;");
+    lqry.prepare("SELECT * from tblDuty WHERE PersID = :PID AND DDate > "":BDate"" AND DDate <= "":DDT;""");
     lqry.bindValue(":PID", lPer->id());
     lqry.bindValue(":BDate", lBreak.toString("yyyy-MM-dd"));
+    QDate x;
+    x.setDate(m_Year, m_Month, 1);
+    x.setDate(m_Year, m_Month, x.daysInMonth());
+    lqry.bindValue(":DDT", x.toString("yyyy-MM-dd"));
     lqry.exec();
     QString lerr = lqry.lastError().text();
     lqry.first();
@@ -391,8 +396,9 @@ void CRosterWindow::makeKumDiff(int prow)
         lDiff.setTotalMins(lDiff.totalMins() + bDiff.totalMins());
     }
 
+    lDiff.setTotalMins(lDiff.totalMins() + BDdiff.totalMins());
     QTableWidgetItem* litem = new QTableWidgetItem(lDiff.toString());
-
+    litem->setTextAlignment(Qt::AlignRight);
     ui->tbwRoster->setItem(prow, ui->tbwRoster->columnCount()-1, litem);
 }
 

@@ -43,7 +43,7 @@ private:
 public:
     CDiffTime();
     CDiffTime(QTime pTime);
-    CDiffTime(float pTime);
+    CDiffTime(double pTime);
 
     int Hour() const;
     void setHour(int Hour);

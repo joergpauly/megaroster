@@ -220,7 +220,7 @@ void CPersonalEdit::updateRecord(int pID)
     m_qry->bindValue(":ED",ui->datEintritt->date());
     m_qry->bindValue(":AD",ui->datAustritt->date());
     m_qry->bindValue(":BDT", ui->datBreakDate->date());
-    m_qry->bindValue(":BDF",ui->txtBDdiff->text());
+    m_qry->bindValue(":BDF",ui->txtBDdiff->text().toDouble());
 
     if(ui->chkEdit->checkState() == Qt::Checked)
     {

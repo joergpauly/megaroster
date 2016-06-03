@@ -48,11 +48,11 @@ CDiffTime::CDiffTime(QTime pTime)
     m_totalMins = (m_Hour * 60) + m_Min;   
 }
 
-CDiffTime::CDiffTime(float pTime)
+CDiffTime::CDiffTime(double pTime)
 {
     m_Hour = pTime;
     m_Min = (pTime - m_Hour) * 60;
-    makeTotalTime();
+    m_totalMins = (m_Hour * 60) + m_Min;
 }
 
 
@@ -95,12 +95,11 @@ void CDiffTime::setTime(QTime pTime)
 }
 
 QString CDiffTime::toString()
-{
-    //TODO: Stringformatierung optimieren!
+{    
     QString lStr;
     lStr = QString::number(m_Hour);
     lStr.append(':');
-    QString lMin = QString::number(m_Min);
+    QString lMin = QString::number(abs(m_Min));
 
     if(lMin.length() < 2)
     {
@@ -113,8 +112,8 @@ QString CDiffTime::toString()
 
 double CDiffTime::toNumber()
 {
-    float lTime = m_Hour;
-    float lMins = m_Min / 60;
+    double lTime = m_Hour;
+    double lMins = m_Min / 60;
     return (lTime + lMins);
 }
 

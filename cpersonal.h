@@ -68,8 +68,8 @@ public:
     QDate BreakDate() const;
     void setBreakDate(const QDate &BreakDate);
 
-    QTime BDdiff() const;
-    void setBDdiff(const QTime &BDdiff);
+    double BDdiff() const;
+    void setBDdiff(const double BDdiff);
 
 private:
     int m_id;
@@ -83,7 +83,7 @@ private:
     bool    m_Edit;
     bool    m_Admin;
     QDate   m_BreakDate;
-    QTime   m_BDdiff;
+    double  m_BDdiff;
 
 };
 
