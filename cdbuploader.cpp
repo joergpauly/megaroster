@@ -88,9 +88,7 @@ void CDbUploader::doUpload()
 }
 
 void CDbUploader::uploadFinished(QNetworkReply *pReply)
-{
-    QNetworkReply::NetworkError err = pReply->error();
-    QString errstr = pReply->errorString();
+{    
     m_upDlg->close();
     ((CMainWindow*)m_parent)->dataBase()->db().open();
     // TODO: Zieldatei prüfen; ganz wichtig!!!!
