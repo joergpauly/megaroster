@@ -506,12 +506,12 @@ void CRosterWindow::updateDetails(int prow, int pcol)
     }
 
     if(pcol < 0)
-    {
-        return;
+    {        
         ui->timFrom->setEnabled(false);
         ui->timFrom2->setEnabled(false);
         ui->timTo->setEnabled(false);
         ui->timTo2->setEnabled(false);
+        return;
     }
 
     m_currentDuty = new CDuty(ui->tbwRoster->item(prow, pcol)->data(Qt::UserRole).toInt());
@@ -1046,30 +1046,30 @@ void CRosterWindow::saveFromTable(int row, int col)
     saveFromTable(item);
 }
 
-void CRosterWindow::saveFromTable(QTableWidgetItem *item)
+void CRosterWindow::saveFromTable(QTableWidgetItem *pItem)
 {
     if(m_init)
     {
         return;
     }
 
-    if(item->data(Qt::UserRole).toInt() == 0)
+    if(pItem->data(Qt::UserRole).toInt() == 0)
     {
         return;
     }
 
     m_edit = true;
-    CDuty *dty = new CDuty(item->data(Qt::UserRole).toInt());
+    CDuty *dty = new CDuty(pItem->data(Qt::UserRole).toInt());
     CLogManager logman;
     CLogManager::sctLogEntry entry;
     entry.affDuty = *dty;
-    CDutyType *dtyp = new CDutyType(item->text().toUpper());
+    CDutyType *dtyp = new CDutyType(pItem->text().toUpper());
     entry.oldDuty = *m_previousDuty.Typ();
     entry.newDuty = *dtyp;
     entry.user = CPersonal(((CMainWindow*)m_parent)->getUserID());
     entry.timeStamp = QDateTime::currentDateTime();
     logman.writeEntry(entry);
-    item->setText(dtyp->Mark());
+    pItem->setText(dtyp->Mark());
     dty->setTyp(*dtyp);
     dty->setTimeFrom(dtyp->TimeFrom());
     dty->setTimeTo(dtyp->TimeTo());
@@ -1078,7 +1078,7 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *item)
     dty->setTimeTo2(dtyp->TimeTo2());
     dty->setDuration2(dtyp->TimeElapsed2());
     QColor lclr(dtyp->RosterColorR(),dtyp->RosterColorG(),dtyp->RosterColorB());
-    item->setBackground(QBrush(lclr));
+    pItem->setBackground(QBrush(lclr));
     QSqlQuery qry;
     qry.prepare("UPDATE tblDuty SET TypeID = :TID, TimeFrom = :TF, TimeTo = :TT, Dura = :Dura, TimeFrom2 = :TFF, TimeTo2 = :TTT, Dura2 = :Dura2 WHERE ID = :ID;");
     int tid = dtyp->id();
@@ -1099,8 +1099,8 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *item)
     qry.bindValue(":ID", did);
     qry.exec();
     updateDetails(dty);
-    makeIstH(ui->tbwRoster->currentRow());
-    checkRules(dty->Date());
+    //makeIstH(ui->tbwRoster->currentRow()); //TODO: makeIstH und checkRules in anderen Thread auslagern!!!
+    //checkRules(dty->Date());
     m_previousDuty = *dty;
     delete dty;
     delete dtyp;

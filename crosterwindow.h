@@ -139,7 +139,7 @@ private:
     int  getTotalManPower(CDuty *pDuty);
     int  getSingleManPower(CDuty *pDuty);
     void saveFromTable(int row, int col);
-    void saveFromTable(QTableWidgetItem *item);
+    void saveFromTable(QTableWidgetItem *pItem);
 
 };
 
