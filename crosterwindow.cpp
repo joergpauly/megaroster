@@ -1099,7 +1099,7 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *pItem)
     qry.bindValue(":ID", did);
     qry.exec();
     updateDetails(dty);
-    //makeIstH(ui->tbwRoster->currentRow()); //TODO: makeIstH und checkRules in anderen Thread auslagern!!!
+    makeIstH(ui->tbwRoster->currentRow()); //TODO: makeIstH und checkRules in anderen Thread auslagern!!!
     //checkRules(dty->Date());
     m_previousDuty = *dty;
     delete dty;
