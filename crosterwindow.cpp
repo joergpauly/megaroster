@@ -31,7 +31,7 @@ CRosterWindow::CRosterWindow(QWidget *parent) :
     m_edit = false;
     m_currentDuty = NULL;    
     m_parent = parent;
-    m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
+    m_actUser = new CPersonal(static_cast<CMainWindow*>(parent)->getUserID());
     ui->setupUi(this);
     m_Prefix = "";
     ui->cbShowAlerts->setChecked(true);
@@ -65,7 +65,7 @@ CRosterWindow::CRosterWindow(QWidget *parent, int pMonth, int pYear) :
     m_edit = false;
     m_currentDuty = NULL;
     m_parent = parent;
-    m_actUser = new CPersonal(((CMainWindow*)parent)->getUserID());
+    m_actUser = new CPersonal(static_cast<CMainWindow*>(parent)->getUserID());
     ui->setupUi(this);
     m_Prefix = "";
     ui->cbShowAlerts->setChecked(true);
@@ -455,7 +455,7 @@ void CRosterWindow::makeRoster(QDate pDate)
                 lstr.append(pers.VName());
                 lstr.append("; ");
                 lstr.append(ldate.toString("dd.MM.yyyy"));
-                ((CMainWindow*)m_parent)->setStatusText(lstr);
+                static_cast<CMainWindow*>(m_parent)->setStatusText(lstr);
                 QSqlQuery lvqry;
                 lvqry.prepare("SELECT * FROM tblPrealert WHERE DDate = :DAT AND PersID = :PID;");
                 lvqry.bindValue(":DAT",ldate.toString("yyyy-MM-dd"));
@@ -488,7 +488,7 @@ void CRosterWindow::makeRoster(QDate pDate)
         makeRoster(pDate);
     }
 
-    ((CMainWindow*)m_parent)->setStatusText("Bereit...");
+    static_cast<CMainWindow*>(m_parent)->setStatusText("Bereit...");
     qApp->restoreOverrideCursor();
     delete lqry;   
 }
@@ -599,7 +599,7 @@ void CRosterWindow::updatePrealerts(CDuty *pDuty)
     ui->tblPrealerts->setColumnCount(1);
     CPrealert lpa(pDuty->Kollege()->id(), pDuty->Date());
 
-    if(!lpa.paTypes() | lpa.id() <= 0)
+    if(!lpa.paTypes() | (lpa.id() <= 0))
     {
         return;
     }
@@ -645,7 +645,7 @@ bool CRosterWindow::checkRules(QDate pdate)
     int acCol = ui->tbwRoster->currentColumn();
     int acRow = ui->tbwRoster->currentRow();
     int lCol = pdate.day() - 1;
-    bool lRulesFullfilled;
+    bool lRulesFullfilled = false;
 
     for(int lrule = 0; lrule < m_ruleList->count(); lrule++)
     {
@@ -1066,7 +1066,7 @@ void CRosterWindow::saveFromTable(QTableWidgetItem *pItem)
     CDutyType *dtyp = new CDutyType(pItem->text().toUpper());
     entry.oldDuty = *m_previousDuty.Typ();
     entry.newDuty = *dtyp;
-    entry.user = CPersonal(((CMainWindow*)m_parent)->getUserID());
+    entry.user = CPersonal(static_cast<CMainWindow*>(m_parent)->getUserID());
     entry.timeStamp = QDateTime::currentDateTime();
     logman.writeEntry(entry);
     pItem->setText(dtyp->Mark());
@@ -1114,7 +1114,7 @@ void CRosterWindow::on_dtedMonthChoice_dateChanged(const QDate &date)
     m_Month = date.month();
     m_Year = date.year();
     m_Holidays = new CHoliday(date.year());
-    m_dbman = ((CMainWindow*)m_parent)->dataBase();
+    m_dbman = static_cast<CMainWindow*>(m_parent)->dataBase();
     setTabTitle(m_Prefix, date);
     makeRows(date);
     makeColumns(date);    
