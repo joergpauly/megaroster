@@ -47,8 +47,7 @@ SOURCES += main.cpp\
     ccomment.cpp \
     ccommentedit.cpp \
     cdifftime.cpp \
-    crosteredit.cpp \
-    ccurrentofficers.cpp
+    crosteredit.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -82,8 +81,7 @@ HEADERS  += cmainwindow.h \
     ccomment.h \
     ccommentedit.h \
     cdifftime.h \
-    crosteredit.h \
-    ccurrentofficers.h
+    crosteredit.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \

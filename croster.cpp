@@ -26,9 +26,15 @@ CRoster::CRoster()
 
 }
 
-CRoster::CRoster(QDate *pDate)
-{
-
+CRoster::CRoster(QList<CPersonal> pCurrentOfficers, QDate *pDate)
+{    
+    //TODO: Je Satz in pCurrentOfficers mit Datum aufsteigend Index bilden, Duty-Satz aus DB holen oder erzeugen; je pCurOff in m_PersDuties, anschließend m_PersDuties an m_DutyRows anhängen.
+    for(int i = 0; i < pCurrentOfficers.count(); i++)
+    {
+        QList<CDuty> lDutyRow;
+        lDutyRow = dutyRow(pCurrentOfficers.at(i).id(), pDate);
+        m_DutyRows.append(lDutyRow);
+    }
 }
 
 CRoster::~CRoster()
@@ -36,8 +42,9 @@ CRoster::~CRoster()
 
 }
 
-QList<CDuty *> *CRoster::dutyRow(int pPerID)
+QList<CDuty> CRoster::dutyRow(int pPerID, QDate *pDate)
 {
+    //TODO: Duties per PerID und Datum aufsteigend für den Monat aus DB holen und in Liste anhängen.
 
 }
 

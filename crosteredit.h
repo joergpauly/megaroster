@@ -45,7 +45,10 @@
 #include "cprinttable.h"
 #include "cdbuploader.h"
 #include "cdifftime.h"
-#include "ccurrentofficers.h"
+#include "choliday.h"
+#include "cholidaydata.h"
+#include "cholidaylist.h"
+
 
 namespace Ui {
 class CRosterEdit;
@@ -56,10 +59,16 @@ class CRosterEdit : public QWidget
     Q_OBJECT
 
 private:
+    QWidget*            m_subWnd;
+    QObject             *m_parent;
+    CDatabaseManager    *m_db;
     QDate               m_dateFrom;
     QDate               m_dateTo;
-    int                 m_Cols;
-    CCurrentOfficers    *m_currentOfficers;
+    int                 m_cols;
+    int                 m_rows;
+    QList<CPersonal>    m_currentOfficers;
+    bool                m_preSelected;
+    CHoliday*           m_Holidays;
 
 public:
     explicit CRosterEdit(QWidget *parent = 0);
@@ -76,8 +85,13 @@ private slots:
 private:
     Ui::CRosterEdit *ui;
 
+    void setSubWnd(QWidget *pSubWnd);
     void buildRoster(QDate *pDate);
-    CCurrentOfficers* getCurrentOfficers();
+    void buildHorizontalHeader();
+    void buildVerticalHeader();
+    void makeSollH(QDate pDate, int pwdays, int pcol);
+
+
 };
 
 #endif // CROSTEREDIT_H

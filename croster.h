@@ -22,8 +22,13 @@
 #ifndef CROSTER_H
 #define CROSTER_H
 
+// System-Header
 #include <QList>
 #include <QString>
+#include <QSqlQuery>
+#include <QSqlRecord>
+
+// Projekt-Header
 #include "cduty.h"
 #include "cdutytype.h"
 #include "cpersonal.h"
@@ -32,15 +37,14 @@ class CRoster
 {
 public:
     CRoster();
-    CRoster(QDate* pDate);
+    CRoster(QList<CPersonal> pCurrentOfficers, QDate* pDate);
     ~CRoster();
 
-    QList<CDuty*>* dutyRow(int pPerID);
+    QList<CDuty> dutyRow(int pPerID, QDate *pDate);
     CDuty* singleDuty(int pPerID, QDate pDate);
 
-private:
-    QList<CDuty*>           *m_PersDuties;
-    QList<QList<CDuty*> >   *m_DutyRows;
+private:    
+    QList<QList<CDuty>> m_DutyRows;
 
 
 };
