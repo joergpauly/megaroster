@@ -46,7 +46,9 @@ SOURCES += main.cpp\
     cdbuploader.cpp \
     ccomment.cpp \
     ccommentedit.cpp \
-    cdifftime.cpp
+    cdifftime.cpp \
+    crosteredit.cpp \
+    ccurrentofficers.cpp
 
 HEADERS  += cmainwindow.h \
     crosterwindow.h \
@@ -79,7 +81,9 @@ HEADERS  += cmainwindow.h \
     cdbuploader.h \
     ccomment.h \
     ccommentedit.h \
-    cdifftime.h
+    cdifftime.h \
+    crosteredit.h \
+    ccurrentofficers.h
 
 FORMS    += cmainwindow.ui \
     crosterwindow.ui \
@@ -92,7 +96,8 @@ FORMS    += cmainwindow.ui \
     cbranchedit.ui \
     cholidayedit.ui \
     cuploadprogressdlg.ui \
-    ccommentedit.ui
+    ccommentedit.ui \
+    crosteredit.ui
 
 OTHER_FILES += \
     mr.sql \
