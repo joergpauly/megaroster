@@ -40,12 +40,13 @@ public:
     CRoster(QList<CPersonal> pCurrentOfficers, QDate* pDate);
     ~CRoster();
 
-    QList<CDuty> dutyRow(int pPerID, QDate *pDate);
+
     CDuty* singleDuty(int pPerID, QDate pDate);
+    QList<QList<CDuty>> roster();
 
 private:    
     QList<QList<CDuty>> m_DutyRows;
-
+    QList<CDuty> dutyRow(int pPerID, QDate *pDate);
 
 };
 
