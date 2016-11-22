@@ -48,6 +48,7 @@
 #include "choliday.h"
 #include "cholidaydata.h"
 #include "cholidaylist.h"
+#include "croster.h"
 
 
 namespace Ui {
@@ -69,11 +70,25 @@ private:
     QList<CPersonal>    m_currentOfficers;
     bool                m_preSelected;
     CHoliday*           m_Holidays;
+    CRoster*            m_Roster;
+    QList<QList<CDuty>> m_list;
+    CDuty*              m_actDuty;
+    CDuty*              m_previousDuty;
+    bool                m_updatingDetails;
+    CPersonal           m_actUser;
+    bool                m_checkingRules;
+    bool                m_edit;
+    bool                m_init;
+    int                 m_Year;
+    int                 m_Month;
 
 public:
     explicit CRosterEdit(QWidget *parent = 0);
     CRosterEdit(QDate *pDate, QWidget *parent = 0);
     ~CRosterEdit();
+
+
+    void setSubWnd(QWidget *pSubWnd);
 
 private slots:
     void on_tbwRoster_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
@@ -82,15 +97,30 @@ private slots:
     void on_cmdCheckRoster_clicked();
     void on_dtedMonthChoice_dateChanged(const QDate &date);
 
+    void on_tbwRoster_cellActivated(int row, int column);
+
+    void on_tbwRoster_cellChanged(int row, int column);
+
+    void on_tbwRoster_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+
 private:
     Ui::CRosterEdit *ui;
 
-    void setSubWnd(QWidget *pSubWnd);
     void buildRoster(QDate *pDate);
     void buildHorizontalHeader();
     void buildVerticalHeader();
     void makeSollH(QDate pDate, int pwdays, int pcol);
-
+    void fillRoster(QDate *pDate);
+    void ActiveCellChanged(int row, int column);
+    void saveSingleDuty(int row, int column);
+    void updateDetails(int prow, int pcol);
+    void updateDetails(CDuty* pDuty);
+    void saveFromTable(int row, int col);
+    void saveFromTable(QTableWidgetItem *pItem);
+    void makeKumDiff(int prow);
+    void makeDiff(int prow);
+    void makeIstH(int prow);
+    void makeIstH();
 
 };
 

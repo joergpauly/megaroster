@@ -534,8 +534,7 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timFrom->setTime(pDuty->TimeFrom());
     ui->timTo->setTime(pDuty->TimeTo());
     ui->timFrom2->setTime(pDuty->TimeFrom2());
-    ui->timTo2->setTime(pDuty->TimeTo2());
-    ui->lblName->setText(pDuty->Kollege()->Name() + ", " + pDuty->Kollege()->VName());
+    ui->timTo2->setTime(pDuty->TimeTo2());    
     int hrs = pDuty->Duration().hour() + pDuty->Duration2().hour();
     int mins = pDuty->Duration().minute() + pDuty->Duration2().minute();
 
@@ -552,11 +551,6 @@ void CRosterWindow::updateDetails(CDuty *pDuty)
     ui->timTo->setEnabled(true);
     ui->timTo2->setEnabled(true);
     updatePrealerts(pDuty);
-
-    if(ui->chkRTCheck->checkState() == Qt::Checked)
-    {
-        checkBaseTarget(pDuty);
-    }
 
     m_updatingDetails = false;
 
@@ -785,259 +779,6 @@ void CRosterWindow::updateDutyDB()
     updateDetails(m_currentDuty);
     makeIstH(ui->tbwRoster->currentRow());
     checkRules(m_currentDuty->Date());
-}
-
-void CRosterWindow::checkBaseTarget(CDuty *pDuty)
-{
-    /* Ermittlung der Soll-Zahlen:
-     *
-     * 3 Basisdienste X Tage im Monat = lTtlDtys
-     * Anzahl Kollegen X Tage im Monat ./. Abzüge (K|U|L) = lTtlMP
-     * lTtlDtys / lTtlMP = lDtyKey
-     * je Kollegen-Zeile: (int) Tage/Monat ./. Abzüge X lDtyKey / 3 = min; +1 = max
-     */
-
-    QSqlQuery ltqry;
-    ltqry.prepare("SELECT * FROM tblDtyBase WHERE Codeletter <> '--' AND Codeletter <> './.';");
-    ltqry.exec();
-    ltqry.first();
-    int lRws = 0;
-
-    while(ltqry.isValid())
-    {
-        lRws++;
-        ltqry.next();
-    }
-
-    double lTtlDtys = pDuty->Date().daysInMonth() * lRws;
-    double lTtlMP = getTotalManPower(pDuty);
-    double lDtyKey = lTtlDtys / lTtlMP;
-    int lSglMP = getSingleManPower(pDuty);
-    int minBD = lSglMP * lDtyKey / lRws;
-    int maxBD = minBD + 1;
-    ui->tbwTarget->clear();
-    ui->tbwTarget->setRowCount(0);
-    ltqry.first();
-    QTableWidgetItem *ltitem;
-
-    for(int i = 0; i < lRws; i++)
-    {
-        ui->tbwTarget->setRowCount(ui->tbwTarget->rowCount()+1);
-        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
-        CDtyBaseType tpbase(ltid);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(tpbase.Desc());
-        ui->tbwTarget->setItem(i, 0, ltitem);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(minBD));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwTarget->setItem(i, 1, ltitem);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(maxBD));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwTarget->setItem(i, 2, ltitem);
-        ltqry.next();
-    }
-
-    ltitem = new QTableWidgetItem("Dienst");
-    ui->tbwTarget->setHorizontalHeaderItem(0, ltitem);
-    ltitem = new QTableWidgetItem("Min");
-    ui->tbwTarget->setHorizontalHeaderItem(1, ltitem);
-    ltitem = new QTableWidgetItem("Max");
-    ui->tbwTarget->setHorizontalHeaderItem(2, ltitem);
-
-    // Ist-Basisdienst-Zahlen ermitteln und auswerfen
-
-    QSqlQuery lamqry; // Kumulierte Summe aktueller Monat
-    QSqlQuery lpmqry; // Kumulierte Summe Vormonat
-    ui->tbwActual->clear();
-    ui->tbwActual->setColumnCount(4);
-    ui->tbwActual->setRowCount(0);
-    int lactrow = 0;
-    ltqry.first();
-
-    while(ltqry.isValid())
-    {
-        ui->tbwActual->setRowCount(ui->tbwActual->rowCount()+1);
-        int ltid = ltqry.value(ltqry.record().indexOf("ID")).toInt();
-        int actdtys = checkBaseActual(new CDtyBaseType(ltid));
-        CDtyBaseType tpbase(ltid);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(tpbase.Desc());
-        ui->tbwActual->setItem(lactrow,0,ltitem);
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(actdtys));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwActual->setItem(lactrow,1,ltitem);
-        ltitem = new QTableWidgetItem();
-        int diff = 0;
-        QColor red(255,0,0);
-
-        if((actdtys == ui->tbwTarget->item(lactrow,1)->text().toInt()) | (actdtys == ui->tbwTarget->item(lactrow,2)->text().toInt()))
-        {
-            diff = 0;
-        }
-
-        if(actdtys < ui->tbwTarget->item(lactrow,1)->text().toInt())
-        {
-            ltitem->setForeground(QBrush(red));
-            diff = actdtys - ui->tbwTarget->item(lactrow,1)->text().toInt();
-        }
-
-        if(actdtys > ui->tbwTarget->item(lactrow,2)->text().toInt())
-        {
-            diff = actdtys - ui->tbwTarget->item(lactrow,2)->text().toInt();
-        }
-
-        ltitem->setText(QString::number(diff));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwActual->setItem(lactrow,2,ltitem);
-
-        //Kumulierte Summen speichern
-        lamqry.prepare("SELECT * FROM tblDtyAccDiff WHERE TypID = :TID AND Month = :M AND Year = :Y AND PerID = :PID;");
-        lamqry.bindValue(":TID", ltid);
-        lamqry.bindValue(":Y", pDuty->Date().year());
-        lamqry.bindValue(":M", pDuty->Date().month());
-        lamqry.bindValue(":PID", pDuty->Kollege()->id());
-        lamqry.exec();
-        lamqry.first();
-        int lAccSumID;
-        int lpSum = 0;
-
-        if(lamqry.isValid())
-        {
-            lAccSumID = lamqry.value(lamqry.record().indexOf("ID")).toInt();
-        }
-        else
-        {
-            lamqry.prepare("INSERT INTO tblDtyAccDiff (TypID, Month, Year, PerID) VALUES (:TID, :M, :Y, :PID);");
-            lamqry.bindValue(":TID", ltid);
-            lamqry.bindValue(":Y", pDuty->Date().year());
-            lamqry.bindValue(":M", pDuty->Date().month());
-            lamqry.bindValue(":PID", pDuty->Kollege()->id());
-            lamqry.exec();
-            lAccSumID = lamqry.lastInsertId().toInt();
-        }
-
-        int lpYear = pDuty->Date().year();
-        int lpMonth = pDuty->Date().month() - 1;
-
-        if(lpMonth == 0)
-        {
-            lpMonth = 12;
-            lpYear--;
-        }
-
-        lpmqry.prepare("SELECT * FROM tblDtyAccDiff WHERE TypID = :TID AND Month = :M AND Year = :Y AND PerID = :PID;");
-        lpmqry.bindValue(":TID", ltid);
-        lpmqry.bindValue(":Y", lpYear);
-        lpmqry.bindValue(":M", lpMonth);
-        lpmqry.bindValue(":PID", pDuty->Kollege()->id());
-        lpmqry.exec();
-        lpmqry.first();
-        QString err = lpmqry.lastError().text();
-
-        if(lpmqry.isValid())
-        {
-            lpSum = lpmqry.value(lpmqry.record().indexOf("Diff")).toInt();
-        }
-
-        lpSum += diff;
-        lamqry.prepare("UPDATE tblDtyAccDiff SET Diff = :D WHERE ID = :ID;");
-        lamqry.bindValue(":D", lpSum);
-        lamqry.bindValue(":ID", lAccSumID);
-        lamqry.exec();
-
-        ltitem = new QTableWidgetItem();
-        ltitem->setText(QString::number(lpSum));
-        ltitem->setTextAlignment(Qt::AlignCenter);
-        ui->tbwActual->setItem(lactrow,3,ltitem);
-
-        lactrow++;
-        ltqry.next();
-    }
-
-    QTableWidgetItem* hdr = new QTableWidgetItem("Dienst");
-    ui->tbwActual->setHorizontalHeaderItem(0, hdr);
-    hdr = new QTableWidgetItem("Anzahl");
-    ui->tbwActual->setHorizontalHeaderItem(1, hdr);
-    hdr = new QTableWidgetItem("Diff.");
-    ui->tbwActual->setHorizontalHeaderItem(2, hdr);
-    hdr = new QTableWidgetItem("Kum.Df.");
-    ui->tbwActual->setHorizontalHeaderItem(3, hdr);
-}
-
-int CRosterWindow::checkBaseActual(CDtyBaseType *pType)
-{
-    int lRow = ui->tbwRoster->currentRow();
-    int lCol;
-    int lResult = 0;
-
-    for(lCol = 0; lCol < ui->dtedMonthChoice->date().daysInMonth(); lCol++ )
-    {
-        CDuty ldty(ui->tbwRoster->item(lRow, lCol)->data(Qt::UserRole).toInt());
-
-        if(ldty.Typ()->BaseType().id() == pType->id())
-        {
-            lResult++;
-        }
-
-    }
-
-    return lResult;
-}
-
-int CRosterWindow::getTotalManPower(CDuty *pDuty)
-{
-    int lResult = 0;
-    QSqlQuery lqry;
-    QDate fromDate(pDuty->Date().year(), pDuty->Date().month(), 1);
-    QDate toDate(pDuty->Date().year(), pDuty->Date().month(), pDuty->Date().daysInMonth());
-    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD;");
-    lqry.bindValue(":FD", fromDate.toString("yyyy-MM-dd"));
-    lqry.bindValue(":TD", toDate.toString("yyyy-MM-dd"));
-    lqry.exec();
-    lqry.first();
-
-    while(lqry.isValid())
-    {
-        CDutyType ldty(lqry.value(lqry.record().indexOf("TypeID")).toInt());
-
-        if(ldty.BaseType().CLetter() != "./.")
-        {
-            lResult++;
-        }
-
-        lqry.next();
-    }
-
-    return lResult;
-}
-
-int CRosterWindow::getSingleManPower(CDuty *pDuty)
-{
-    int lResult = 0;
-    QSqlQuery lqry;
-    QDate fromDate(pDuty->Date().year(), pDuty->Date().month(), 1);
-    QDate toDate(pDuty->Date().year(), pDuty->Date().month(), pDuty->Date().daysInMonth());
-    lqry.prepare("SELECT * FROM tblDuty WHERE DDate >= :FD AND DDate <= :TD AND PersID = :PID AND Status = 0;");
-    lqry.bindValue(":FD", fromDate.toString("yyyy-MM-dd"));
-    lqry.bindValue(":TD", toDate.toString("yyyy-MM-dd"));
-    lqry.bindValue(":PID", pDuty->Kollege()->id());
-    lqry.exec();    
-    lqry.first();
-
-    while(lqry.isValid())
-    {
-        CDutyType ldty(lqry.value(lqry.record().indexOf("TypeID")).toInt());
-        if(ldty.BaseType().CLetter() != "./.")
-        {
-            lResult++;
-        }
-        lqry.next();
-    }
-
-    return lResult;
 }
 
 void CRosterWindow::saveFromTable(int row, int col)
@@ -1308,9 +1049,7 @@ void CRosterWindow::on_cbShowAlerts_clicked(bool checked)
 
 void CRosterWindow::on_cmdCheckRoster_clicked()
 {
-    ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");
-    Qt::CheckState lCheckState = ui->chkRTCheck->checkState();
-    ui->chkRTCheck->setCheckState(Qt::Unchecked);
+    ((CMainWindow*)m_parent)->setStatusText("Prüfe Mindest-Besetzungsregeln...");    
     m_checkingRules = true;
     for(int day = 1; day <= QDate(m_Year, m_Month, 1).daysInMonth(); day++)
     {
@@ -1318,7 +1057,6 @@ void CRosterWindow::on_cmdCheckRoster_clicked()
         checkRules(QDate(m_Year,m_Month,day));
     }
     ((CMainWindow*)m_parent)->setStatusText("");
-    ui->chkRTCheck->setCheckState(lCheckState);
     m_checkingRules = false;
 }
 
@@ -1355,27 +1093,6 @@ void CRosterWindow::on_timTo2_timeChanged(const QTime &time)
     {
         m_currentDuty->setTimeTo2(time);
         updateDutyDB();
-    }
-}
-
-void CRosterWindow::on_chkRTCheck_stateChanged(int arg1)
-{
-    if((arg1 == Qt::Checked) & (m_currentDuty != NULL))
-    {
-        checkBaseTarget(m_currentDuty);
-    }
-    else
-    {
-        ui->tbwTarget->clear();
-        ui->tbwActual->clear();
-    }
-}
-
-void CRosterWindow::on_cmdBlocks_toggled(bool checked)
-{
-    if(checked)
-    {
-        ui->chkRTCheck->setCheckState(Qt::Unchecked);
     }
 }
 

@@ -81,8 +81,6 @@ private slots:
     void on_timTo_timeChanged(const QTime &time);
     void on_timFrom2_timeChanged(const QTime &time);
     void on_timTo2_timeChanged(const QTime &time);
-    void on_chkRTCheck_stateChanged(int arg1);
-    void on_cmdBlocks_toggled(bool checked);
     void on_cmdNextMonth_clicked();
     void on_cmdPreviousMonth_clicked();
     void on_chkReq_clicked(bool checked);
@@ -133,11 +131,7 @@ private:
     void loadRules();
     bool checkRules(QDate pdate);
     bool checkRuleSet(QList<CDutyType> pList);
-    void updateDutyDB();
-    void checkBaseTarget(CDuty *pDuty);
-    int  checkBaseActual(CDtyBaseType* pType);
-    int  getTotalManPower(CDuty *pDuty);
-    int  getSingleManPower(CDuty *pDuty);
+    void updateDutyDB();    
     void saveFromTable(int row, int col);
     void saveFromTable(QTableWidgetItem *pItem);
 

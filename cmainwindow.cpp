@@ -119,9 +119,14 @@ void CMainWindow::closeEvent(QCloseEvent *e)
 
 void CMainWindow::openEditableRoster()
 {
+    // Alte Version
     m_Roster = new CRosterWindow(this);
     m_Roster->setSubWnd(ui->mdiArea->addSubWindow(m_Roster));
     m_Roster->show();
+    // Neue Version
+    /*m_RosterEdit = new CRosterEdit(this);
+    m_RosterEdit->setSubWnd(ui->mdiArea->addSubWindow(m_RosterEdit));
+    m_RosterEdit->show();*/
 }
 
 void CMainWindow::openPersonalEdit()

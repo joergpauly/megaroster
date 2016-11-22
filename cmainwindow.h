@@ -36,6 +36,7 @@
 // Projekt-Header
 #include "cdatabasemanager.h"
 #include "crosterwindow.h"
+#include "crosteredit.h"
 #include "cpersonaledit.h"
 #include "cdutytypeedit.h"
 #include "choliday.h"
@@ -86,6 +87,7 @@ private:
     Ui::CMainWindow *ui;
     CDatabaseManager* m_dbman;
     CRosterWindow* m_Roster;
+    CRosterEdit* m_RosterEdit;
     CPersonalEdit* m_PersEdit;
     CDutyTypeEdit* m_DTEdit;
     CBranchEdit* m_BranchEdit;

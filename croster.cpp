@@ -55,12 +55,13 @@ QList<CDuty> CRoster::dutyRow(int pPerID, QDate *pDate)
     lFrom.setDate(pDate->year(), pDate->month(), 1);
     lTo.setDate(pDate->year(), pDate->month(), pDate->daysInMonth());
     // Abfrage aufbauen
-    lqry.prepare("SELECT ID FROM tblDuty WHERE PersID = :PID AND DDate => :FDT AND DDate <= TDT ORDER BY DDate;");
+    lqry.prepare("SELECT ID FROM tblDuty WHERE PersID = :PID AND DDate >= :FDT AND DDate <= :TDT ORDER BY DDate;");
     lqry.bindValue(":PID", pPerID);
     lqry.bindValue(":FDT", lFrom.toString("yyyy-MM-dd"));
     lqry.bindValue(":TDT", lTo.toString("yyyy-MM-dd"));
     // Ausführen und auf erstes Element setzen
     lqry.exec();
+    QString err = lqry.lastError().text();
     lqry.first();
 
     // Solange Daten gültig sind, Dienst-Daten in Objekte laden und an Liste anhängen
@@ -68,6 +69,7 @@ QList<CDuty> CRoster::dutyRow(int pPerID, QDate *pDate)
     {
         CDuty lDty(lqry.value(lqry.record().indexOf("ID")).toInt());
         lList.append(lDty);
+        lqry.next();
     }
 
     // Liste zurückgeben
@@ -78,7 +80,7 @@ CDuty *CRoster::singleDuty(int pPerID, QDate pDate)
 {        
 }
 
-QList<QList<CDuty> > CRoster::roster()
+QList<QList<CDuty>> CRoster::roster()
 {
     return m_DutyRows;
 }
