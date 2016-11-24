@@ -140,4 +140,9 @@ CREATE TABLE tblkumdiff (
     "Diff" DATETIME NOT NULL
 );
 
-CREATE VIEW "viewFullDuty" AS select * from tblDuty, tblDutyTypes, tblPersonal where tblDutyTypes.ID = tblDuty.TypeID and tblPersonal.ID = tblDuty.PersID;
+CREATE VIEW "viewFullDuty" AS
+    select * from tblDuty,
+    tblDutyTypes,
+    tblPersonal
+        where tblDutyTypes.ID = tblDuty.TypeID
+        and tblPersonal.ID = tblDuty.PersID;
