@@ -34,9 +34,9 @@ CRoster::CRoster(QList<CPersonal> pCurrentOfficers, QDate *pDate)
 
     for(int i = 0; i < pCurrentOfficers.count(); i++)
     {
-        QList<CDuty> lDutyRow;
-        lDutyRow = dutyRow(pCurrentOfficers.at(i).id(), pDate);
-        m_DutyRows.append(lDutyRow);
+        CRosterRow* lRosterRow;
+        lRosterRow = dutyRow(pCurrentOfficers.at(i).id(), pDate);
+        m_RosterRows.append(lRosterRow);
     }
 }
 
@@ -45,10 +45,9 @@ CRoster::~CRoster()
     // Bislang nix zu tun...
 }
 
-QList<CDuty> CRoster::dutyRow(int pPerID, QDate *pDate)
+CRosterRow* CRoster::dutyRow(int pPerID, QDate *pDate)
 {
-    CRosterRow *lRow = new CRosterRow(pPerID, *pDate);
-    return lRow->duties();
+    return new CRosterRow(pPerID, *pDate);
 }
 
 CDuty *CRoster::singleDuty(int pPerID, QDate pDate)
@@ -56,8 +55,8 @@ CDuty *CRoster::singleDuty(int pPerID, QDate pDate)
     return new CDuty(pPerID, pDate);
 }
 
-QList<QList<CDuty>> CRoster::roster()
+QList<CRosterRow*> CRoster::roster()
 {
-    return m_DutyRows;
+    return m_RosterRows;
 }
 

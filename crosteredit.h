@@ -49,6 +49,7 @@
 #include "cholidaydata.h"
 #include "cholidaylist.h"
 #include "croster.h"
+#include "crosterrow.h"
 
 
 namespace Ui {
@@ -71,7 +72,8 @@ private:
     bool                m_preSelected;
     CHoliday*           m_Holidays;
     CRoster*            m_Roster;
-    QList<QList<CDuty>> m_list;
+    CRosterRow*         m_RosterRow;
+    QList<CRosterRow*>  m_list;
     CDuty*              m_actDuty;
     CDuty*              m_previousDuty;
     bool                m_updatingDetails;

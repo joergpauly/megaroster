@@ -36,6 +36,7 @@
 // Project-Header
 #include <cduty.h>
 #include <choliday.h>
+#include <cpersonal.h>
 
 class CRosterRow
 {
@@ -48,6 +49,7 @@ private:
     QDate               m_Date;
     int                 m_workDays;
     CHoliday*           m_Holiday;
+    CPersonal*          m_Personal;
 
 public:
     // Constructors

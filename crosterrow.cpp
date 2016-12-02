@@ -37,6 +37,7 @@ CRosterRow::CRosterRow(int pPersID, QDate pDate)
     m_duties.clear();
     m_Holiday = new CHoliday(pDate.year());
     makeWorkDays();
+    m_Personal = new CPersonal(pPersID);
     QDate lFrom;
     lFrom.setDate(pDate.year(), pDate.month(), 1);
     QDate lTo;
@@ -86,17 +87,54 @@ QTime CRosterRow::totalDiff() const
 
 void CRosterRow::makeSollH()
 {
+    int shr = m_Personal->SollTag().hour();
+    int smn = m_Personal->SollTag().minute();
+    smn += (shr * 60);
+    smn = smn * m_workDays;
+    int sshr = smn / 60;
+    int ssmn = smn - (sshr * 60);
+    QString ltime = QString::number(sshr);
+    ltime.append(":");
 
+    if(ssmn < 10)
+    {
+        ltime.append("0");
+    }
+
+    ltime.append(QString::number(ssmn));
+    m_sollH = QTime::fromString(ltime, "hh:mm");
 }
 
 void CRosterRow::makeIstH()
 {
+    int lhr = 0;
+    int lmn = 0;
 
+    for(int i = 0; i < m_duties.count(); i++)
+    {
+        lmn = m_duties.at(i).Duration().hour() * 60;
+        lmn += m_duties.at(i).Duration().minute();
+        lmn += m_duties.at(i).Duration2().hour() * 60;
+        lmn += m_duties.at(i).Duration2().minute();
+    }
+
+    lhr = lmn / 60;
+    lmn = lmn - (lhr * 60);
+    QString lTime = QString::number(lhr);
+    lTime.append(":");
+
+    if(lmn < 10)
+    {
+        lTime.append("0");
+    }
+
+    lTime.append(QString::number(lmn));
+    m_istH.fromString(lTime, "hh:mm");
 }
 
 void CRosterRow::makeMonDiff()
 {
-
+    m_monDiff = (QTime::fromString("00:00", "hh:mm")).addSecs(m_sollH.secsTo(m_istH));
 }
 
 void CRosterRow::makeTotalDiff()

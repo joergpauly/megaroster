@@ -43,11 +43,12 @@ public:
 
 
     CDuty* singleDuty(int pPerID, QDate pDate);
-    QList<QList<CDuty>> roster();
+    QList<CRosterRow*>roster();
 
 private:    
     QList<QList<CDuty>> m_DutyRows;
-    QList<CDuty> dutyRow(int pPerID, QDate *pDate);
+    QList<CRosterRow*>  m_RosterRows;
+    CRosterRow* dutyRow(int pPerID, QDate *pDate);
 
 };
 

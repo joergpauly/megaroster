@@ -229,7 +229,7 @@ void CRosterEdit::fillRoster(QDate *pDate)
 
     for(int i = 0; i < m_list.count(); i++)
     {
-        QList<CDuty> lList = m_list.at(i);
+        QList<CDuty> lList = m_list.at(i)->duties();
 
         for(int j = 0; j < lList.count(); j++)
         {
