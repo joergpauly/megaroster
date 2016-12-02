@@ -32,6 +32,7 @@
 #include "cduty.h"
 #include "cdutytype.h"
 #include "cpersonal.h"
+#include "crosterrow.h"
 
 class CRoster
 {

@@ -38,6 +38,7 @@ class CDuty
 public:
     CDuty();    
     CDuty(int pid);
+    CDuty(int pPid, QDate pDate);
     ~CDuty();
 
     QDate Date() const;
@@ -48,6 +49,7 @@ public:
 
     CDutyType *Typ() const;
     void setTyp(const CDutyType &Typ);
+    void setTyp(QString typ);
 
     int id() const;
     void setId(int id);

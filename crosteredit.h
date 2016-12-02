@@ -81,6 +81,7 @@ private:
     bool                m_init;
     int                 m_Year;
     int                 m_Month;
+    int                 m_workDays;
 
 public:
     explicit CRosterEdit(QWidget *parent = 0);

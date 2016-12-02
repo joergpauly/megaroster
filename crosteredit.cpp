@@ -118,7 +118,7 @@ void CRosterEdit::buildHorizontalHeader()
     QColor lHol(255,255,0);
     QColor lHolFg(255,0,0);
     int ldays = m_dateFrom.daysInMonth();
-    int lwdays = ldays;
+    m_workDays = ldays;
 
     for(int i = 0; i < m_dateFrom.daysInMonth(); i++)
     {
@@ -132,13 +132,13 @@ void CRosterEdit::buildHorizontalHeader()
         if(lDate.dayOfWeek() == 6)
         {
             litem->setBackground(QBrush(lSat));
-            lwdays--;
+            m_workDays--;
         }
 
         if(lDate.dayOfWeek() == 7)
         {
             litem->setBackground(QBrush(lSun));
-            lwdays--;
+            m_workDays--;
         }
 
         if(m_Holidays->checkForHoliday(lDate) && lDate.dayOfWeek() < 6)
@@ -148,7 +148,7 @@ void CRosterEdit::buildHorizontalHeader()
 
             if(lDate.dayOfWeek()<6)
             {
-                lwdays--;
+                m_workDays--;
             }
 
         }
@@ -168,8 +168,7 @@ void CRosterEdit::buildHorizontalHeader()
     ui->tbwRoster->setColumnWidth(lDate.daysInMonth()+2, 55);
     litem = new QTableWidgetItem("Kum.Diff.");
     ui->tbwRoster->setHorizontalHeaderItem(lDate.daysInMonth()+3, litem);
-    ui->tbwRoster->setColumnWidth(lDate.daysInMonth()+3, 55);
-    makeSollH(lDate,lwdays,ldays+1);
+    ui->tbwRoster->setColumnWidth(lDate.daysInMonth()+3, 55);    
 }
 
 void CRosterEdit::buildVerticalHeader()
